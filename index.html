@@ -648,21 +648,53 @@ updateHealthBar(enemy);
     continue;
    }
 
-   data.phase+=dt;
-   enemy.position.x=Math.max(-4.5,Math.min(
-    4.5,data.homeX+Math.sin(data.phase)*1.5
-   ));
+   
+ // STEP 8C - SMART ENEMY AI
+data.phase += dt;
 
-   const dx=camera.position.x-enemy.position.x;
-   const dz=camera.position.z-enemy.position.z;
-   const distance=Math.hypot(dx,dz);
+let dx = camera.position.x - enemy.position.x;
+let dz = camera.position.z - enemy.position.z;
+let distance = Math.hypot(dx, dz);
 
-   enemy.rotation.y=Math.atan2(dx,dz);
-   data.cooldown-=dt;
+const detectionRange = 28;
+const attackRange = 14;
+const chaseSpeed = 2.2;
+const returnSpeed = 1.2;
 
-   if(distance<23&&data.cooldown<=0){
-    data.cooldown=2.5;
-    takeDamage(10);
+if (distance < detectionRange) {
+  enemy.rotation.y = Math.atan2(dx, dz);
+
+  if (distance > attackRange && distance > 0.01) {
+    enemy.position.x += (dx / distance) * chaseSpeed * dt;
+    enemy.position.z += (dz / distance) * chaseSpeed * dt;
+  }
+} else {
+  const homeDX = data.homeX - enemy.position.x;
+  const homeDZ = data.homeZ - enemy.position.z;
+  const homeDistance = Math.hypot(homeDX, homeDZ);
+
+  if (homeDistance > 1) {
+    enemy.position.x +=
+      (homeDX / homeDistance) * returnSpeed * dt;
+    enemy.position.z +=
+      (homeDZ / homeDistance) * returnSpeed * dt;
+  } else {
+    enemy.position.x =
+      data.homeX + Math.sin(data.phase) * 1.5;
+  }
+}
+
+dx = camera.position.x - enemy.position.x;
+dz = camera.position.z - enemy.position.z;
+distance = Math.hypot(dx, dz);
+
+data.cooldown -= dt;
+
+if (distance < attackRange && data.cooldown <= 0) {
+  data.cooldown = 2.5;
+  takeDamage(10);
+}
+
    }
   }
 
