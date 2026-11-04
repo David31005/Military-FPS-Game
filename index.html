@@ -91,7 +91,11 @@ button{touch-action:none}
 <body>
 <div id="damage"></div>
 <div id="title">PITTSBURGH STREETS</div>
-<div id="score">ELIMINATIONS: 0</div>
+<div id="score">ELIMINATIONS: 0</
+<div id="mission" style="position:absolute;top:115px;width:100%;text-align:center;color:#00ff88;font-size:14px;font-weight:bold;pointer-events:none;text-shadow:1px 1px 4px black;z-index:2;">
+MISSION: ELIMINATE 3 ENEMIES
+</div>
+ 
 <div id="message"></div>
 <div id="crosshair">+</div>
 <div id="hud">HEALTH: 100 | AMMO: 30</div>
@@ -442,6 +446,58 @@ document.getElementById("restart")
 });
 
 // GAME LOOP
+ 
+ // STEP 7B - MISSION SYSTEM
+let missionComplete = false;
+
+const missionDisplay =
+  document.getElementById("mission");
+
+function updateMission() {
+  if (missionComplete || gameEnded) return;
+
+  if (eliminations < 3) {
+    missionDisplay.textContent =
+      "MISSION: ELIMINATE " +
+      (3 - eliminations) +
+      " MORE ENEMIES";
+    return;
+  }
+
+  missionDisplay.textContent =
+    "MISSION: REACH GREEN CHECKPOINT";
+
+  // Marker position in world coordinates
+  const target = new THREE.Vector3();
+  marker.getWorldPosition(target);
+
+  const distance = Math.hypot(
+    camera.position.x - target.x,
+    camera.position.z - target.z
+  );
+
+  if (distance < 2.5) {
+    missionComplete = true;
+    moveX = 0;
+    moveY = 0;
+    missionDisplay.textContent =
+      "MISSION COMPLETE!";
+    showMessage("OPERATION STEEL CITY COMPLETE!");
+
+    const overlay =
+      document.getElementById("gameover");
+
+    overlay.style.display = "flex";
+    overlay.querySelector("h1").textContent =
+      "MISSION COMPLETE!";
+
+    document.getElementById("finalscore")
+      .textContent =
+      "Operation Steel City | Eliminations: " +
+      eliminations;
+  }
+}
+
 const clock=new THREE.Clock();
 
 function animate(){
@@ -509,6 +565,8 @@ function animate(){
   document.getElementById("damage")
    .style.opacity=damageFlash;
  }
+
+updateMission();
 
  renderer.render(scene,camera);
 }
