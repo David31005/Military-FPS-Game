@@ -4,92 +4,140 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<title>Pittsburgh Streets 9P</title>
+<title>Pittsburgh Streets 9R</title>
 <style>
 *{box-sizing:border-box;touch-action:none;user-select:none;-webkit-user-select:none}
 html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#101923;color:white;font-family:Arial}
 #game,#hud{position:fixed;inset:0}
 #hud{pointer-events:none;text-shadow:0 2px 4px black}
-#heading{position:absolute;top:8px;width:100%;text-align:center;font-size:18px;font-weight:bold}
-#mission{font-size:11px;color:#aaffb6;margin-top:3px}
-#stats,#health{position:absolute;left:8px;background:#071b25dd;padding:7px;border-radius:7px;font-size:12px;line-height:1.5}
-#stats{top:70px}
-#health{bottom:170px}
-#cross,#hit{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:30px}
+#title{position:absolute;top:5px;left:0;right:0;text-align:center;font-weight:bold;font-size:15px}
+#mission{font-size:10px;color:#adffb7;margin-top:3px}
+#stats,#health{position:absolute;left:8px;background:#071b25dd;padding:5px;border-radius:6px;font-size:10px;line-height:1.5}
+#stats{top:45px}
+#health{top:111px}
+#map{position:absolute;right:8px;top:45px;width:90px;height:90px;background:#071b25dd;border:2px solid #ffffff88;border-radius:7px}
+#cross,#hit{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:30px}
 #hit{opacity:0;color:yellow;font-size:38px}
 #scope{display:none;position:absolute;inset:0;align-items:center;justify-content:center;background:radial-gradient(circle,transparent 0 26%,black 27%);font-size:35px}
-#notice{position:absolute;top:29%;width:100%;text-align:center;color:#ffe66b;font-weight:bold}
+#notice{position:absolute;top:27%;left:0;right:0;text-align:center;color:#ffe66b;font-size:16px;font-weight:bold}
 #damage{position:absolute;inset:0;background:red;opacity:0}
-#map{position:absolute;top:70px;right:8px;width:105px;height:105px;border:2px solid #ffffff88;border-radius:8px;background:#071b25dd}
-button{background:#29485e;color:white;border:2px solid #ffffff91;border-radius:10px;font-size:12px;font-weight:bold;padding:9px}
-button:active{filter:brightness(1.4)}
-#joy{position:fixed;left:18px;bottom:28px;width:124px;height:124px;border:3px solid #ffffff99;border-radius:50%;background:#ffffff22}
+#night{position:absolute;inset:0;background:#00ff4422;display:none}
+button{background:#29485e;color:white;border:2px solid #ffffff88;border-radius:8px;font-weight:bold;font-size:10px;padding:6px}
+button.active{background:#248c55}
+#joy{position:fixed;left:12px;bottom:9px;width:88px;height:88px;border:3px solid #ffffff99;border-radius:50%;background:#ffffff22}
 #knob{position:absolute;left:30%;top:30%;width:40%;height:40%;border-radius:50%;background:#ffffffbb}
-#extras,#guns{position:fixed;top:190px;display:flex;flex-direction:column;gap:5px}
-#extras{left:8px}
-#guns{right:8px}
-#guns button.active{background:#27834b}
-#actions{position:fixed;right:12px;bottom:28px;display:grid;grid-template-columns:75px 90px;gap:7px}
-#fire{grid-row:span 2;background:#b72c2c;border-radius:50%;font-size:19px}
-#squad{position:fixed;left:150px;bottom:30px;display:flex;flex-direction:column;gap:5px}
+#extras,#squad,#movement{position:fixed;bottom:9px;display:flex;flex-direction:column;gap:3px}
+#extras{left:106px}
+#squad{left:178px}
+#movement{left:249px}
+#extras button,#squad button,#movement button{font-size:8px;padding:4px;min-height:22px}
 #squad button{background:#226c55}
-#start,#finish{position:fixed;inset:0;z-index:20;background:#071520f2;display:flex;align-items:center;justify-content:center;text-align:center;padding:20px}
+#movement button{background:#655225}
+#guns{position:fixed;right:8px;top:6px;display:flex;gap:4px}
+#guns button.active{background:#27834b}
+#actions{position:fixed;right:8px;bottom:9px;display:grid;grid-template-columns:58px 76px;gap:5px}
+#fire{grid-row:span 2;border-radius:50%;background:#b52d2d;font-size:17px}
+#start,#finish{position:fixed;inset:0;z-index:30;background:#071520f5;display:flex;align-items:center;justify-content:center;text-align:center;padding:15px;overflow:auto}
 #finish{display:none}
-#start button,#finish button{background:#26814c;font-size:18px;padding:15px 25px}
-@media(orientation:landscape){
-#heading{top:calc(env(safe-area-inset-top) + 2px);font-size:15px}
-#mission{font-size:10px;margin-top:1px}
-#stats{top:calc(env(safe-area-inset-top) + 43px);left:calc(env(safe-area-inset-left) + 8px);font-size:10px;padding:5px}
-#health{top:calc(env(safe-area-inset-top) + 106px);bottom:auto;left:calc(env(safe-area-inset-left) + 8px);font-size:10px;padding:5px}
-#map{top:calc(env(safe-area-inset-top) + 45px);right:calc(env(safe-area-inset-right) + 8px);width:90px;height:90px}
-#joy{left:calc(env(safe-area-inset-left) + 14px);bottom:calc(env(safe-area-inset-bottom) + 9px);width:clamp(75px,21vh,105px);height:clamp(75px,21vh,105px)}
-#extras{top:auto;bottom:calc(env(safe-area-inset-bottom) + 8px);left:calc(env(safe-area-inset-left) + clamp(105px,26vh,135px));gap:3px}
-#extras button{font-size:9px;padding:4px 6px;min-height:25px}
-#squad{left:calc(env(safe-area-inset-left) + clamp(175px,47vh,230px));bottom:calc(env(safe-area-inset-bottom) + 8px);gap:3px}
-#squad button{font-size:9px;padding:4px 6px;min-height:25px}
-#guns{top:calc(env(safe-area-inset-top) + 7px);right:calc(env(safe-area-inset-right) + 8px);flex-direction:row;gap:4px}
-#guns button{font-size:10px;padding:7px;min-width:52px}
-#actions{right:calc(env(safe-area-inset-right) + 9px);bottom:calc(env(safe-area-inset-bottom) + 9px);grid-template-columns:clamp(54px,13vh,76px) clamp(70px,20vh,100px);gap:6px}
-#actions button{font-size:11px;padding:5px}
-#fire{font-size:17px}
-#notice{top:25%;font-size:16px}
+#start h1{font-size:23px}
+#start p{font-size:12px;line-height:1.4}
+#start button,#finish button{background:#27824c;padding:10px;margin:3px;font-size:12px}
+#start button.selected{background:#bd8423}
+#brief{max-width:440px;margin:auto}
+@media(orientation:portrait){
+#joy{width:115px;height:115px;bottom:25px}
+#extras{left:140px;bottom:25px}
+#squad{left:140px;bottom:135px}
+#movement{left:220px;bottom:135px}
+#actions{bottom:25px}
+#guns{top:155px;flex-direction:column}
+}
+@media(orientation:landscape) and (max-height:390px){
+#joy{width:76px;height:76px;left:calc(env(safe-area-inset-left) + 7px)}
+#extras{left:calc(env(safe-area-inset-left) + 89px)}
+#squad{left:calc(env(safe-area-inset-left) + 158px)}
+#movement{left:calc(env(safe-area-inset-left) + 227px)}
+#extras button,#squad button,#movement button{min-height:20px;font-size:8px}
+#actions{right:calc(env(safe-area-inset-right) + 7px)}
+#guns{right:calc(env(safe-area-inset-right) + 7px)}
+#map{width:78px;height:78px}
 }
 </style>
 </head>
 <body>
 <div id="game"></div>
 <div id="hud">
-<div id="damage"></div>
-<div id="heading">PITTSBURGH STREETS<div id="mission">STEP 9P — TACTICAL WARFARE</div></div>
-<div id="stats">KILLS: <span id="kills">0</span><br>ENEMIES: <span id="enemies">0</span><br>GRENADES: <span id="grenades">3</span><br>SQUAD: <span id="team">2</span></div>
-<div id="health">HP: <span id="hp">100</span> | <span id="weapon">M4</span> <span id="ammo">30/180</span></div>
+<div id="damage"></div><div id="night"></div>
+<div id="title">PITTSBURGH STREETS<div id="mission">STEP 9R - COMBAT REALISM</div></div>
+<div id="stats">KILLS: <span id="kills">0</span><br>HOSTILES: <span id="enemies">0</span><br>GRENADES: <span id="grenades">3</span><br>SQUAD: <span id="team">2</span></div>
+<div id="health">HP: <span id="hp">100</span> | <span id="weapon">M4</span> <span id="ammo">30/180</span><br>STANCE: <span id="stance">STANDING</span></div>
 <canvas id="map" width="180" height="180"></canvas>
 <div id="cross">+</div><div id="hit">×</div><div id="scope">+</div><div id="notice"></div>
 </div>
 <div id="joy"><div id="knob"></div></div>
-<div id="extras"><button id="grenade">GRENADE</button><button id="sound">SOUND ON</button><button id="test">TEST SOUND</button></div>
-<div id="squad"><button id="follow">FOLLOW</button><button id="hold">HOLD</button><button id="attack">ATTACK</button></div>
-<div id="guns"><button data-gun="m4" class="active">M4</button><button data-gun="ak">AK-47</button><button data-gun="sniper">SNIPER</button></div>
-<div id="actions"><button id="aim">AIM</button><button id="fire">FIRE</button><button id="reload">RELOAD</button></div>
-<div id="start"><div><h1>PITTSBURGH STREETS</h1><p>STEP 9P — TACTICAL WARFARE</p><p>Command your squad, destroy enemy vehicles, capture positions, and survive three waves.</p><button id="play">START MISSION</button></div></div>
-<div id="finish"><div><h1 id="result"></h1><p id="score"></p><button id="restart">PLAY AGAIN</button></div></div>
+<div id="extras">
+<button id="grenade">GRENADE</button>
+<button id="vision">NIGHT VISION</button>
+<button id="sound">SOUND ON</button>
+<button id="test">TEST SOUND</button>
+</div>
+<div id="squad">
+<button id="follow">FOLLOW</button>
+<button id="hold">HOLD</button>
+<button id="attack">ATTACK</button>
+</div>
+<div id="movement">
+<button id="sprint">SPRINT</button>
+<button id="crouch">CROUCH</button>
+</div>
+<div id="guns">
+<button data-gun="m4" class="active">M4</button>
+<button data-gun="ak">AK-47</button>
+<button data-gun="sniper">SNIPER</button>
+</div>
+<div id="actions">
+<button id="aim">AIM</button>
+<button id="fire">FIRE</button>
+<button id="reload">RELOAD</button>
+</div>
+<div id="start"><div id="brief">
+<h1>PITTSBURGH STREETS</h1>
+<p>STEP 9R — COMBAT REALISM</p>
+<p>SELECT OPERATION</p>
+<button id="dayMode" class="selected">DAY ASSAULT</button>
+<button id="nightMode">NIGHT RESCUE</button>
+<p id="briefing">BRIEFING: Clear three enemy waves, destroy hostile armor, rescue the hostage and reach extraction. Your squad will provide support.</p>
+<p id="saved"></p>
+<button id="play">START MISSION</button>
+<button id="continue" style="display:none">CONTINUE SAVED MISSION</button>
+</div></div>
+<div id="finish"><div>
+<h1 id="result"></h1><p id="score"></p>
+<button id="restart">PLAY AGAIN</button>
+</div></div>
 
 <script type="module">
 import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js";
+
 const $=id=>document.getElementById(id);
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const mat=c=>new THREE.MeshLambertMaterial({color:c});
 let scene,camera,renderer,gunScene,gunCamera,gunGroup,clock;
-let enemies=[],allies=[],vehicles=[],items=[],effects=[],obstacles=[],checkpoint=null;
+let enemies=[],allies=[],vehicles=[],barrels=[],items=[],effects=[],obstacles=[];
+let helicopter=null,hostage=null,checkpoint=null;
 let player={x:0,z:15,hp:100},yaw=0,pitch=0,wave=0,kills=0,grenades=3;
-let playing=false,aiming=false,firing=false,soundOn=true,audio;
-let current="m4",lastShot=0,reloadEnd=0,reloadStart=0,reloadDuration=0,recoil=0,walk=0,session=0,pending=false;
-let squadMode="follow",objective="eliminate",capture=0,defend=0;
+let playing=false,aiming=false,firing=false,sprinting=false,crouching=false;
+let soundOn=true,nightMode=false,nightVision=false,audio;
+let current="m4",lastShot=0,reloadEnd=0,reloadStart=0,reloadDuration=0,recoil=0,walk=0;
+let session=0,pending=false,squadMode="follow",objective="eliminate",capture=0,defend=0;
 let joy={x:0,y:0},keys={},guns={};
+const SAVEKEY="pittsburgh_streets_9r_save";
 const specs={
 m4:{name:"M4",size:30,rate:115,damage:36,spread:.018},
 ak:{name:"AK-47",size:30,rate:155,damage:44,spread:.027},
 sniper:{name:"SNIPER",size:5,rate:1000,damage:125,spread:.003}
 };
+
 function cube(w,h,d,c,x,y,z,parent=scene){
 const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat(c));
 m.position.set(x,y,z);parent.add(m);return m;
@@ -104,7 +152,8 @@ try{
 audio??=new(window.AudioContext||window.webkitAudioContext)();
 audio.resume();
 const o=audio.createOscillator(),g=audio.createGain();
-o.type="sawtooth";o.frequency.setValueAtTime(f,audio.currentTime);
+o.type="sawtooth";
+o.frequency.setValueAtTime(f,audio.currentTime);
 o.frequency.exponentialRampToValueAtTime(Math.max(40,f*.5),audio.currentTime+d);
 g.gain.setValueAtTime(v,audio.currentTime);
 g.gain.exponentialRampToValueAtTime(.001,audio.currentTime+d);
@@ -112,14 +161,66 @@ o.connect(g);g.connect(audio.destination);o.start();o.stop(audio.currentTime+d);
 }catch(e){}
 }
 function message(t){
-$("notice").textContent=t;clearTimeout(message.timer);
-message.timer=setTimeout(()=>$("notice").textContent="",1400);
+$("notice").textContent=t;
+clearTimeout(message.timer);
+message.timer=setTimeout(()=>$("notice").textContent="",1500);
 }
 function resize(){
-const w=innerWidth,h=innerHeight;
-camera.aspect=w/h;camera.updateProjectionMatrix();
-gunCamera.aspect=w/h;gunCamera.updateProjectionMatrix();
-renderer.setSize(w,h);
+camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();
+gunCamera.aspect=innerWidth/innerHeight;gunCamera.updateProjectionMatrix();
+renderer.setSize(innerWidth,innerHeight);
+}
+function effect(mesh,duration,update){
+effects.push({mesh,start:performance.now(),duration,update});
+}
+function tracer(a,b,color=0xffee55){
+const d=b.clone().sub(a),length=d.length();
+if(length<.01)return;
+const m=new THREE.Mesh(new THREE.CylinderGeometry(.035,.06,length,6),
+new THREE.MeshBasicMaterial({color,transparent:true,opacity:1,depthTest:false,depthWrite:false}));
+m.position.copy(a).add(b).multiplyScalar(.5);
+m.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),d.normalize());
+scene.add(m);
+effect(m,220,t=>{m.material.opacity=1-t;return t<1;});
+}
+function flash(pos,color=0xffbb22){
+const m=new THREE.Mesh(new THREE.SphereGeometry(.25,8,6),
+new THREE.MeshBasicMaterial({color,transparent:true,opacity:1}));
+m.position.copy(pos);scene.add(m);
+effect(m,110,t=>{m.scale.setScalar(1+t*2);m.material.opacity=1-t;return t<1;});
+}
+function smoke(pos,count=7){
+for(let i=0;i<count;i++){
+const origin=pos.clone().add(new THREE.Vector3((Math.random()-.5),Math.random(),(Math.random()-.5)));
+const m=new THREE.Mesh(new THREE.SphereGeometry(.25,7,5),
+new THREE.MeshBasicMaterial({color:0x666b6c,transparent:true,opacity:.45,depthWrite:false}));
+m.position.copy(origin);scene.add(m);
+effect(m,900,t=>{
+m.position.copy(origin).add(new THREE.Vector3(0,t*2,0));
+m.scale.setScalar(1+t*3);m.material.opacity=.45*(1-t);
+return t<1;
+});
+}
+}
+function explode(x,z,radius=7,power=160){
+sound(65,.45,.18);
+const m=new THREE.Mesh(new THREE.SphereGeometry(2,12,8),
+new THREE.MeshBasicMaterial({color:0xffa42c,transparent:true,opacity:1}));
+m.position.set(x,1,z);scene.add(m);
+effect(m,350,t=>{m.scale.setScalar(1+t*1.8);m.material.opacity=1-t;return t<1;});
+smoke(new THREE.Vector3(x,1,z),10);
+for(const e of enemies){
+if(!e.dead){
+const d=Math.hypot(e.x-x,e.z-z);
+if(d<radius)damageEnemy(e,Math.max(30,power-d*15));
+}
+}
+for(const v of vehicles){
+if(v.enemy&&!v.dead&&Math.hypot(v.x-x,v.z-z)<radius+2)damageVehicle(v,power);
+}
+for(const b of barrels){
+if(!b.dead&&Math.hypot(b.x-x,b.z-z)<radius)destroyBarrel(b);
+}
 }
 function vehicle(x,z,enemy=false,armored=false){
 const g=new THREE.Group(),c=enemy?0x66554a:0x475e4b;
@@ -132,13 +233,28 @@ cube(.8,.55,.9,0x363f35,0,2.95,-.4,g);
 cube(.15,.15,1.5,0x181d1c,0,3.02,-1.45,g);
 }
 for(const side of [-1,1])for(const dz of [-1.5,1.5]){
-const wheel=new THREE.Mesh(new THREE.CylinderGeometry(.52,.52,.3,12),mat(0x171b1c));
-wheel.rotation.z=Math.PI/2;wheel.position.set(side*1.4,.55,dz);g.add(wheel);
+const w=new THREE.Mesh(new THREE.CylinderGeometry(.52,.52,.3,12),mat(0x171b1c));
+w.rotation.z=Math.PI/2;w.position.set(side*1.4,.55,dz);g.add(w);
 }
 g.position.set(x,0,z);scene.add(g);
 const v={group:g,x,z,enemy,armored,hp:armored?360:220,dead:false,fire:2};
-vehicles.push(v);obstacles.push({x,z,r:armored?3.4:2.8});
+vehicles.push(v);obstacles.push({x,z,r:armored?3.4:2.8,vehicle:v});
 return v;
+}
+function barrel(x,z){
+const g=new THREE.Group();
+const body=new THREE.Mesh(new THREE.CylinderGeometry(.42,.42,1,12),mat(0xa52d21));
+body.position.y=.55;g.add(body);
+cube(.85,.09,.85,0x292929,0,.97,0,g);
+cube(.85,.09,.85,0x292929,0,.15,0,g);
+g.position.set(x,0,z);scene.add(g);
+const b={group:g,x,z,dead:false};barrels.push(b);return b;
+}
+function destroyBarrel(b){
+if(b.dead)return;
+b.dead=true;scene.remove(b.group);
+const token=session;
+setTimeout(()=>{if(token===session&&playing)explode(b.x,b.z,6,135);},30);
 }
 function city(){
 cube(180,.2,220,0x566a50,0,-.2,-30);
@@ -150,17 +266,14 @@ for(let z=-110,i=0;z<70;z+=14,i++)for(const side of [-1,1]){
 const h=12+(i*7)%20,x=side*18;
 cube(11,h,12,colors[i%5],x,h/2,z);
 cube(11.4,.45,12.4,0x44484b,x,h+.2,z);
-for(let y=3;y<h-1;y+=4)for(let dz=-4;dz<=4;dz+=4){
+for(let y=3;y<h-1;y+=4)for(let dz=-4;dz<=4;dz+=4)
 cube(.15,2,1.8,0x253d54,side*12.4,y,z+dz);
-}
 }
 for(let z=-100;z<55;z+=28)for(const side of [-1,1]){
 cube(.22,9,.22,0x3b4247,side*10.5,4.5,z);
 cube(1,.45,.8,0xf0db9d,side*10.5,9,z);
 }
 vehicle(7,-26,false);
-vehicle(-7,-65,true,true);
-vehicle(7,-98,true);
 for(const z of [-45,-82]){
 cube(3.5,1.1,.65,0x8b8068,-4,.55,z);
 cube(3.5,.15,.7,0xe4b33b,-4,1.15,z);
@@ -171,18 +284,18 @@ function buildGun(){
 if(gunGroup)gunScene.remove(gunGroup);
 gunGroup=new THREE.Group();
 const ak=current==="ak",sniper=current==="sniper";
-const body=ak?0x80522d:0x354047,steel=0x11181d,barrel=sniper?1.4:1.05;
+const body=ak?0x80522d:0x354047,steel=0x11181d;
+const length=sniper?1.4:1.05;
 cube(.29,.26,.72,body,0,-.04,-.65,gunGroup);
 cube(.24,.13,.58,steel,0,.13,-.72,gunGroup);
-cube(.11,.11,barrel,steel,0,.04,-1.14,gunGroup);
-cube(.16,.15,.18,0x080b0e,0,.04,-1.14-barrel/2,gunGroup);
+cube(.11,.11,length,steel,0,.04,-1.14,gunGroup);
+cube(.16,.15,.18,0x080b0e,0,.04,-1.14-length/2,gunGroup);
 cube(.28,.22,.6,ak?0x9a663b:0x46535a,0,.02,-1.1,gunGroup);
 cube(.16,.05,.85,0x11171a,0,.2,-.85,gunGroup);
 cube(.23,.23,.46,ak?0x86512b:0x293338,0,-.04,-.2,gunGroup);
 cube(.16,.36,.18,0x202326,0,-.3,-.5,gunGroup);
 const mag=cube(.2,.44,.22,ak?0x42362a:0x20262b,0,-.39,-.81,gunGroup);
 mag.rotation.x=ak?-.23:.08;
-for(const z of [-1.35,-.47])cube(.1,.15,.09,steel,0,.27,z,gunGroup);
 if(sniper){
 cube(.2,.2,.67,0x12171b,0,.36,-.76,gunGroup);
 cube(.31,.28,.12,0x090b0d,0,.36,-1.12,gunGroup);
@@ -192,34 +305,77 @@ cube(.27,.25,.4,0x966b4b,.21,-.28,-.46,gunGroup);
 cube(.35,.35,.59,0x344b40,.32,-.55,-.27,gunGroup);
 cube(.27,.25,.39,0x966b4b,-.21,-.16,-1.1,gunGroup);
 cube(.35,.35,.63,0x344b40,-.32,-.4,-1,gunGroup);
-gunGroup.position.set(.19,-.2,-.14);
 gunScene.add(gunGroup);
 }
 function soldier(x,z,team=false,commander=false){
-const group=new THREE.Group(),c=team?0x315b77:commander?0x654044:0x4a5a45;
-cube(.82,1.12,.53,c,0,1.4,0,group);
-cube(.73,.3,.62,0x313b32,0,2,0,group);
-ball(.31,0xae8061,0,2.23,0,group);
-cube(.73,.18,.67,team?0x264c69:0x303c32,0,2.48,0,group);
-cube(.6,.65,.15,0x30382c,0,1.4,-.35,group);
+const g=new THREE.Group(),c=team?0x315b77:commander?0x654044:0x4a5a45;
+cube(.82,1.12,.53,c,0,1.4,0,g);
+cube(.73,.3,.62,0x313b32,0,2,0,g);
+ball(.31,0xae8061,0,2.23,0,g);
+cube(.73,.18,.67,team?0x264c69:0x303c32,0,2.48,0,g);
+cube(.6,.65,.15,0x30382c,0,1.4,-.35,g);
 for(const side of [-1,1]){
-cube(.25,.9,.3,c,side*.26,.5,0,group);
-cube(.24,.75,.3,c,side*.54,1.45,0,group);
+cube(.25,.9,.3,c,side*.26,.5,0,g);
+cube(.24,.75,.3,c,side*.54,1.45,0,g);
 }
-cube(.16,.16,.86,0x202428,0,1.55,.5,group);
-const bar=cube(1,.1,.1,team?0x36bfff:0x42f060,0,2.85,0,group);
-group.position.set(x,0,z);scene.add(group);
+cube(.16,.16,.86,0x202428,0,1.55,.5,g);
+const bar=cube(1,.1,.1,team?0x36bfff:0x42f060,0,2.85,0,g);
+g.position.set(x,0,z);scene.add(g);
 const hp=commander?280:100;
-return {group,x,z,hp,max:hp,bar,team,commander,dead:false,fall:0,fire:Math.random()+.5,mag:12,reload:0,strafe:Math.random()<.5?-1:1,move:0,holdX:x,holdZ:z};
+return {group:g,x,z,hp,max:hp,bar,team,commander,dead:false,fall:0,fire:Math.random()+.5,mag:12,reload:0,strafe:Math.random()<.5?-1:1,move:0,holdX:x,holdZ:z,hitTime:0};
+}
+function createHelicopter(){
+if(helicopter)scene.remove(helicopter.group);
+const g=new THREE.Group();
+cube(3,1.1,5,0x3b4a43,0,0,0,g);
+cube(1,.45,5,0x303b37,0,.1,3.8,g);
+cube(3,.4,1.2,0x172b39,0,.25,-1.8,g);
+for(const s of [-1,1]){
+cube(.1,.1,3.2,0x11191a,s*1.5,-.9,0,g);
+cube(.1,.9,.1,0x11191a,s*1.5,-.45,-1,g);
+cube(.1,.9,.1,0x11191a,s*1.5,-.45,1,g);
+}
+const rotor=new THREE.Group();
+cube(.15,.1,8,0x222929,0,0,0,rotor);
+cube(8,.1,.15,0x222929,0,0,0,rotor);
+rotor.position.y=1;g.add(rotor);
+g.position.set(0,12,-55);scene.add(g);
+helicopter={group:g,rotor,x:0,z:-55,hp:360,dead:false,fire:2};
+}
+function makeHostage(){
+if(hostage)scene.remove(hostage.group);
+const g=new THREE.Group();
+cube(.65,1,.45,0xe3bc39,0,1.3,0,g);
+ball(.3,0xb78c6d,0,2.1,0,g);
+for(const s of [-1,1]){
+cube(.2,.8,.25,0x3c4551,s*.2,.5,0,g);
+cube(.18,.7,.2,0xe3bc39,s*.45,1.4,0,g);
+}
+g.position.set(0,0,-91);scene.add(g);
+hostage={group:g,x:0,z:-91,rescued:false};
+}
+function checkpointAt(x,z){
+if(checkpoint)scene.remove(checkpoint);
+const g=new THREE.Group();
+const base=new THREE.Mesh(new THREE.CylinderGeometry(2.2,2.2,.1,20),
+new THREE.MeshBasicMaterial({color:0x32ff77}));
+base.position.y=.12;g.add(base);
+const beam=new THREE.Mesh(new THREE.CylinderGeometry(1.4,1.4,7,16,1,true),
+new THREE.MeshBasicMaterial({color:0x36ff80,transparent:true,opacity:.2,side:THREE.DoubleSide}));
+beam.position.y=3.5;g.add(beam);
+g.position.set(x,0,z);scene.add(g);checkpoint=g;
 }
 function updateHUD(){
 $("kills").textContent=kills;
-$("enemies").textContent=enemies.filter(e=>!e.dead).length+vehicles.filter(v=>v.enemy&&!v.dead).length;
+$("enemies").textContent=enemies.filter(e=>!e.dead).length+
+vehicles.filter(v=>v.enemy&&!v.dead).length+
+(helicopter&&!helicopter.dead?1:0);
 $("grenades").textContent=grenades;
 $("team").textContent=allies.filter(a=>!a.dead).length;
 $("hp").textContent=Math.ceil(player.hp);
 $("weapon").textContent=specs[current].name;
 $("ammo").textContent=guns[current].mag+"/"+guns[current].reserve;
+$("stance").textContent=crouching?"CROUCHED":sprinting?"SPRINTING":"STANDING";
 }
 function spawnWave(){
 pending=false;wave++;objective="eliminate";
@@ -229,11 +385,14 @@ const x=(i%4-1.5)*4.3;
 const z=Math.max(-106,player.z-25-Math.floor(i/4)*12-Math.random()*6);
 enemies.push(soldier(x,z,false,wave>1&&i===count-1));
 }
-$("mission").textContent="WAVE "+wave+" / 3 — CLEAR HOSTILES";
-message("WAVE "+wave+" INCOMING");updateHUD();
+if(wave===2&&!helicopter)createHelicopter();
+$("mission").textContent="WAVE "+wave+" / 3 - CLEAR HOSTILES";
+message("WAVE "+wave+" INCOMING");
+saveProgress();updateHUD();
 }
 function setAim(v){
-aiming=v;camera.fov=aiming?(current==="sniper"?23:54):74;
+aiming=v;
+camera.fov=aiming?(current==="sniper"?23:54):74;
 camera.updateProjectionMatrix();
 $("scope").style.display=aiming&&current==="sniper"?"flex":"none";
 $("cross").style.display=aiming&&current==="sniper"?"none":"block";
@@ -252,66 +411,32 @@ reloadDuration=current==="sniper"?1900:1450;
 reloadStart=performance.now();reloadEnd=reloadStart+reloadDuration;
 message("RELOADING");sound(400,.15);
 }
-function effect(mesh,duration,update){
-effects.push({mesh,start:performance.now(),duration,update});
-}
-function tracer(start,end,color=0xffee55,duration=230){
-const d=new THREE.Vector3().subVectors(end,start),length=d.length();
-if(length<.02)return;
-const mesh=new THREE.Mesh(new THREE.CylinderGeometry(.035,.06,length,6),
-new THREE.MeshBasicMaterial({color,transparent:true,opacity:1,depthTest:false,depthWrite:false}));
-mesh.position.copy(start).add(end).multiplyScalar(.5);
-mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),d.normalize());
-mesh.renderOrder=5;scene.add(mesh);
-effect(mesh,duration,t=>{mesh.material.opacity=1-t;return t<1;});
-}
-function flash(pos,color=0xffbb22){
-const mesh=new THREE.Mesh(new THREE.SphereGeometry(.25,8,6),
-new THREE.MeshBasicMaterial({color,transparent:true,opacity:1,depthTest:false}));
-mesh.position.copy(pos);mesh.renderOrder=6;scene.add(mesh);
-effect(mesh,100,t=>{mesh.scale.setScalar(1+t*2);mesh.material.opacity=1-t;return t<1;});
-}
-function smoke(pos,count=5){
-for(let i=0;i<count;i++){
-const m=new THREE.Mesh(new THREE.SphereGeometry(.3,7,5),
-new THREE.MeshBasicMaterial({color:0x666b6c,transparent:true,opacity:.4,depthWrite:false}));
-const origin=pos.clone().add(new THREE.Vector3((Math.random()-.5),Math.random(),(Math.random()-.5)));
-m.position.copy(origin);scene.add(m);
-effect(m,900,t=>{
-m.position.copy(origin).add(new THREE.Vector3(0,t*2,0));
-m.scale.setScalar(1+t*3);m.material.opacity=.4*(1-t);return t<1;
-});
-}
-}
-function sparks(pos){
-for(let i=0;i<5;i++){
-const m=new THREE.Mesh(new THREE.SphereGeometry(.05,6,4),
-new THREE.MeshBasicMaterial({color:0xffc84b,transparent:true,opacity:1}));
-m.position.copy(pos);scene.add(m);
-const v=new THREE.Vector3((Math.random()-.5)*4,Math.random()*3,(Math.random()-.5)*4);
-effect(m,280,t=>{m.position.copy(pos).addScaledVector(v,t);m.material.opacity=1-t;return t<1;});
-}
+function hitMarker(head=false){
+$("hit").style.opacity=1;$("hit").style.color=head?"red":"yellow";
+setTimeout(()=>$("hit").style.opacity=0,120);
 }
 function checkClear(){
 if(pending||objective!=="eliminate")return;
-if(enemies.some(e=>!e.dead)||vehicles.some(v=>v.enemy&&!v.dead&&Math.abs(v.z-player.z)<55))return;
+if(enemies.some(e=>!e.dead))return;
+if(vehicles.some(v=>v.enemy&&!v.dead&&Math.abs(v.z-player.z)<55))return;
+if(wave>=2&&helicopter&&!helicopter.dead)return;
 pending=true;
 if(wave<3){
 objective="capture";capture=0;
-makeCheckpoint();
+checkpointAt(0,Math.max(-105,player.z-13));
 $("mission").textContent="CAPTURE THE GREEN ZONE";
 message("CAPTURE POSITION");
 }else{
-objective="final";makeCheckpoint();
-$("mission").textContent="REACH THE EXTRACTION ZONE";
-message("EXTRACTION READY");
+objective="rescue";makeHostage();
+$("mission").textContent="RESCUE THE HOSTAGE";
+message("HOSTAGE LOCATED");
 }
+saveProgress();
 }
 function damageEnemy(e,amount,head=false){
 if(e.dead)return;
 e.hp-=amount;e.bar.scale.x=Math.max(0,e.hp/e.max);
-$("hit").style.opacity=1;$("hit").style.color=head?"red":"yellow";
-setTimeout(()=>$("hit").style.opacity=0,120);
+e.hitTime=.2;hitMarker(head);
 if(head)message("HEADSHOT!");
 if(e.hp<=0){
 e.dead=true;kills++;e.group.remove(e.bar);
@@ -322,35 +447,46 @@ updateHUD();
 }
 function damageVehicle(v,amount){
 if(v.dead||!v.enemy)return;
-v.hp-=amount;
+v.hp-=amount;hitMarker();
 if(v.hp<=0){
 v.dead=true;kills++;
-v.group.children.forEach(m=>{if(m.material?.color)m.material.color.setHex(0x282828);});
-explode(v.x,v.z,false);
-message("VEHICLE DESTROYED");
-checkClear();
+v.group.traverse(m=>{if(m.material?.color)m.material.color.setHex(0x282828);});
+smoke(new THREE.Vector3(v.x,1,v.z),12);
+sound(65,.4,.18);message("VEHICLE DESTROYED");checkClear();
+}
+updateHUD();
+}
+function damageHelicopter(h,amount){
+if(h.dead)return;
+h.hp-=amount;hitMarker();
+if(h.hp<=0){
+h.dead=true;kills++;
+smoke(new THREE.Vector3(h.x,12,h.z),16);
+sound(70,.5,.2);scene.remove(h.group);
+message("HELICOPTER DOWN");checkClear();
 }
 updateHUD();
 }
 function fire(){
-if(!playing||reloadEnd)return;
+if(!playing||reloadEnd||sprinting)return;
 const now=performance.now(),s=specs[current],g=guns[current];
 if(now-lastShot<s.rate)return;lastShot=now;
 if(g.mag<=0){sound(100,.06);reload();return;}
-g.mag--;recoil=.17;
+g.mag--;recoil=current==="sniper"?.3:current==="ak"?.22:.16;
+pitch=clamp(pitch+recoil*.08,-1.2,1.2);
 sound(current==="sniper"?90:current==="ak"?125:165,current==="sniper"?.26:.12,.1);
 const dir=new THREE.Vector3();camera.getWorldDirection(dir);
-const spread=s.spread*(aiming?.3:1);
+const spread=s.spread*(aiming?.3:1)*(crouching?.7:1);
 dir.x+=(Math.random()-.5)*spread;dir.y+=(Math.random()-.5)*spread;dir.normalize();
 const ray=new THREE.Ray(camera.position.clone(),dir);
-let target=null,car=null,closest=120,head=false;
+let target=null,car=null,drum=null,heli=null,closest=130,head=false;
 for(const e of enemies){
 if(e.dead)continue;
 const t=new THREE.Vector3(e.x,1.5,e.z).sub(camera.position).dot(dir);
 if(t<=0||t>=closest)continue;
 const p=ray.at(t,new THREE.Vector3());
 if(Math.abs(p.x-e.x)<.57&&Math.abs(p.z-e.z)<.7&&p.y>.3&&p.y<2.6){
-closest=t;target=e;car=null;head=p.y>1.95;
+closest=t;target=e;car=drum=heli=null;head=p.y>1.95;
 }
 }
 for(const v of vehicles){
@@ -359,135 +495,214 @@ const t=new THREE.Vector3(v.x,1.5,v.z).sub(camera.position).dot(dir);
 if(t<=0||t>=closest)continue;
 const p=ray.at(t,new THREE.Vector3());
 if(Math.abs(p.x-v.x)<1.5&&Math.abs(p.z-v.z)<3&&p.y>.3&&p.y<3){
-closest=t;target=null;car=v;
+closest=t;car=v;target=drum=heli=null;
 }
 }
-const start=camera.position.clone().addScaledVector(dir,1.1);start.y-=.13;
-const end=camera.position.clone().addScaledVector(dir,target||car?closest:65);
-tracer(start,end,current==="sniper"?0xff9222:0xffee55,230);flash(start);
-if(target){damageEnemy(target,s.damage*(head?2.3:1),head);sparks(end);}
-if(car){damageVehicle(car,s.damage);sparks(end);}
+for(const b of barrels){
+if(b.dead)continue;
+const t=new THREE.Vector3(b.x,.6,b.z).sub(camera.position).dot(dir);
+if(t<=0||t>=closest)continue;
+const p=ray.at(t,new THREE.Vector3());
+if(Math.abs(p.x-b.x)<.5&&Math.abs(p.z-b.z)<.5&&p.y>0&&p.y<1.2){
+closest=t;drum=b;target=car=heli=null;
+}
+}
+if(helicopter&&!helicopter.dead){
+const h=helicopter;
+const t=new THREE.Vector3(h.x,12,h.z).sub(camera.position).dot(dir);
+if(t>0&&t<closest){
+const p=ray.at(t,new THREE.Vector3());
+if(Math.abs(p.x-h.x)<2&&Math.abs(p.z-h.z)<3&&Math.abs(p.y-12)<1.2){
+closest=t;heli=h;target=car=drum=null;
+}
+}
+}
+const start=camera.position.clone().addScaledVector(dir,1.1);
+start.y-=.13;
+const end=camera.position.clone().addScaledVector(dir,target||car||drum||heli?closest:75);
+tracer(start,end,current==="sniper"?0xff9222:0xffee55);
+flash(start);
+if(target)damageEnemy(target,s.damage*(head?2.3:1),head);
+if(car)damageVehicle(car,s.damage);
+if(drum)destroyBarrel(drum);
+if(heli)damageHelicopter(heli,s.damage);
 updateHUD();
 }
 function dropItem(x,z,type){
-const group=new THREE.Group();
-cube(.8,.35,.8,type==="health"?0x27e85d:0xe3b937,0,.4,0,group);
+const g=new THREE.Group();
+cube(.8,.35,.8,type==="health"?0x27e85d:0xe3b937,0,.4,0,g);
 if(type==="health"){
-cube(.15,.04,.5,0xffffff,0,.63,0,group);
-cube(.5,.04,.15,0xffffff,0,.64,0,group);
+cube(.15,.04,.5,0xffffff,0,.63,0,g);
+cube(.5,.04,.15,0xffffff,0,.64,0,g);
 }
-group.position.set(x,0,z);scene.add(group);items.push({group,x,z,type});
+g.position.set(x,0,z);scene.add(g);items.push({group:g,x,z,type});
 }
 function grenadeThrow(){
 if(!playing||grenades<=0)return;
 grenades--;updateHUD();sound(260,.12);
 const dir=new THREE.Vector3();camera.getWorldDirection(dir);
 const sx=player.x,sz=player.z;
-const tx=Math.max(-8,Math.min(8,sx+dir.x*12));
-const tz=Math.max(-107,Math.min(55,sz+dir.z*12));
+const tx=clamp(sx+dir.x*12,-8,8),tz=clamp(sz+dir.z*12,-107,55);
 const orb=ball(.28,0x38523b,sx,1.5,sz);
 effect(orb,700,t=>{
 orb.position.set(sx+(tx-sx)*t,1.5+3*Math.sin(Math.PI*t),sz+(tz-sz)*t);
-if(t>=1){explode(tx,tz,true);return false;}return true;
+if(t>=1){explode(tx,tz);return false;}
+return true;
 });
-}
-function explode(x,z,damage=true){
-sound(65,.45,.18);
-const m=new THREE.Mesh(new THREE.SphereGeometry(2.2,12,8),
-new THREE.MeshBasicMaterial({color:0xffa42c,transparent:true,opacity:1}));
-m.position.set(x,1,z);scene.add(m);
-effect(m,350,t=>{m.scale.setScalar(1+t*1.7);m.material.opacity=1-t;return t<1;});
-smoke(new THREE.Vector3(x,1,z),10);
-if(damage){
-for(const e of enemies){
-if(e.dead)continue;
-const d=Math.hypot(e.x-x,e.z-z);
-if(d<7)damageEnemy(e,Math.max(50,170-d*18));
-}
-for(const v of vehicles){
-if(v.dead||!v.enemy)continue;
-if(Math.hypot(v.x-x,v.z-z)<8)damageVehicle(v,150);
-}
-}
-}
-function makeCheckpoint(){
-if(checkpoint)scene.remove(checkpoint);
-checkpoint=new THREE.Group();
-const base=new THREE.Mesh(new THREE.CylinderGeometry(2.2,2.2,.1,20),
-new THREE.MeshBasicMaterial({color:0x32ff77}));
-base.position.y=.12;checkpoint.add(base);
-const beam=new THREE.Mesh(new THREE.CylinderGeometry(1.4,1.4,7,16,1,true),
-new THREE.MeshBasicMaterial({color:0x36ff80,transparent:true,opacity:.2,side:THREE.DoubleSide}));
-beam.position.y=3.5;checkpoint.add(beam);
-checkpoint.position.set(0,0,Math.max(-105,player.z-13));
-scene.add(checkpoint);
-}
-function endGame(win){
-playing=false;firing=false;$("finish").style.display="flex";
-$("result").textContent=win?"MISSION COMPLETE":"MISSION FAILED";
-$("score").textContent="TOTAL ELIMINATIONS: "+kills;
 }
 function setSquad(mode){
 squadMode=mode;
 if(mode==="hold")for(const a of allies){a.holdX=a.x;a.holdZ=a.z;}
 message("SQUAD: "+mode.toUpperCase());
 }
-function reset(){
+function moveAI(e,tx,tz,speed,dt){
+const dx=tx-e.x,dz=tz-e.z,d=Math.hypot(dx,dz);
+if(d>.7){
+e.x+=dx/d*speed*dt;e.z+=dz/d*speed*dt;
+e.x=clamp(e.x,-8,8);e.z=clamp(e.z,-108,57);
+}
+e.group.position.set(e.x,0,e.z);
+}
+function hurt(amount){
+if(!playing)return;
+player.hp=Math.max(0,player.hp-amount*(crouching?.75:1));
+$("damage").style.opacity=.25;
+setTimeout(()=>$("damage").style.opacity=0,110);
+updateHUD();if(player.hp<=0)endGame(false);
+}
+function saveProgress(){
+try{
+localStorage.setItem(SAVEKEY,JSON.stringify({
+wave:Math.max(1,wave),hp:player.hp,kills,grenades,
+nightMode,player:{x:player.x,z:player.z},
+guns,current
+}));
+}catch(e){}
+}
+function loadProgress(){
+try{return JSON.parse(localStorage.getItem(SAVEKEY)||"null");}
+catch(e){return null;}
+}
+function showSaved(){
+const s=loadProgress();
+$("continue").style.display=s?"inline-block":"none";
+$("saved").textContent=s?"Saved checkpoint available — Wave "+s.wave:"";
+}
+function endGame(win){
+playing=false;firing=false;sprinting=false;
+if(win){
+try{localStorage.removeItem(SAVEKEY);}catch(e){}
+}
+$("finish").style.display="flex";
+$("result").textContent=win?"MISSION COMPLETE":"MISSION FAILED";
+$("score").textContent="TOTAL ELIMINATIONS: "+kills;
+}
+function reset(saved=null){
 session++;
 enemies.forEach(e=>scene.remove(e.group));
 allies.forEach(e=>scene.remove(e.group));
 items.forEach(e=>scene.remove(e.group));
 effects.forEach(e=>scene.remove(e.mesh));
+barrels.forEach(e=>scene.remove(e.group));
 if(checkpoint)scene.remove(checkpoint);
-enemies=[];allies=[];items=[];effects=[];checkpoint=null;pending=false;
+if(hostage)scene.remove(hostage.group);
+if(helicopter)scene.remove(helicopter.group);
+enemies=[];allies=[];items=[];effects=[];barrels=[];
+checkpoint=null;hostage=null;helicopter=null;pending=false;
+for(const v of vehicles)if(v.enemy)scene.remove(v.group);
+vehicles=vehicles.filter(v=>!v.enemy);
+obstacles=obstacles.filter(o=>!o.vehicle||!o.vehicle.enemy);
+vehicle(-7,-65,true,true);
+vehicle(7,-98,true);
+barrel(-5,-22);barrel(4,-49);barrel(-5,-90);
 player={x:0,z:15,hp:100};yaw=0;pitch=0;wave=0;kills=0;grenades=3;
 current="m4";lastShot=0;reloadEnd=0;recoil=0;walk=0;
 squadMode="follow";objective="eliminate";capture=0;defend=0;
-guns={m4:{mag:30,reserve:180},ak:{mag:30,reserve:150},sniper:{mag:5,reserve:30}};
-for(const v of vehicles){
-if(v.enemy){v.dead=false;v.hp=v.armored?360:220;}
+sprinting=false;crouching=false;nightVision=false;
+$("night").style.display="none";$("vision").textContent="NIGHT VISION";
+if(saved){
+nightMode=!!saved.nightMode;
+player.hp=clamp(Number(saved.hp)||100,1,100);
+kills=Number(saved.kills)||0;
+grenades=Number(saved.grenades)||3;
+player.x=clamp(Number(saved.player?.x)||0,-8,8);
+player.z=clamp(Number(saved.player?.z)||15,-108,57);
+wave=clamp((Number(saved.wave)||1)-1,0,2);
 }
-setAim(false);buildGun();playing=true;firing=false;
+scene.background=new THREE.Color(nightMode?0x101a29:0x91abc4);
+scene.fog=new THREE.Fog(nightMode?0x101a29:0x91abc4,nightMode?25:55,nightMode?85:145);
+guns={m4:{mag:30,reserve:180},ak:{mag:30,reserve:150},sniper:{mag:5,reserve:30}};
+if(saved?.guns){
+for(const k of Object.keys(guns)){
+if(saved.guns[k]){
+guns[k].mag=clamp(Number(saved.guns[k].mag)||0,0,specs[k].size);
+guns[k].reserve=clamp(Number(saved.guns[k].reserve)||0,0,999);
+}
+}
+}
+current=saved&&specs[saved.current]?saved.current:"m4";
+setAim(false);buildGun();
+playing=true;firing=false;
 $("start").style.display="none";$("finish").style.display="none";
-document.querySelectorAll("#guns button").forEach(b=>b.classList.toggle("active",b.dataset.gun==="m4"));
-allies.push(soldier(-3,12,true),soldier(3,12,true));
+document.querySelectorAll("#guns button").forEach(b=>b.classList.toggle("active",b.dataset.gun===current));
+allies.push(soldier(-3,player.z-3,true),soldier(3,player.z-3,true));
+if(wave>=1)createHelicopter();
 spawnWave();updateHUD();
 }
-function moveAI(e,tx,tz,speed,dt){
-const dx=tx-e.x,dz=tz-e.z,d=Math.hypot(dx,dz);
-if(d>.7){
-e.x+=dx/d*speed*dt;e.z+=dz/d*speed*dt;
-e.x=Math.max(-8,Math.min(8,e.x));
-e.z=Math.max(-108,Math.min(57,e.z));
+function drawMap(){
+const ctx=$("map").getContext("2d");
+ctx.clearRect(0,0,180,180);
+ctx.fillStyle="#13292d";ctx.fillRect(0,0,180,180);
+ctx.fillStyle="#555b60";ctx.fillRect(65,0,50,180);
+ctx.strokeStyle="#ffffff33";ctx.strokeRect(1,1,178,178);
+function dot(x,z,color,r=5){
+const px=90+(x-player.x)*4,py=90+(z-player.z)*4;
+if(px<4||px>176||py<4||py>176)return;
+ctx.fillStyle=color;ctx.beginPath();ctx.arc(px,py,r,0,Math.PI*2);ctx.fill();
 }
-e.group.position.set(e.x,0,e.z);
+for(const e of enemies)if(!e.dead)dot(e.x,e.z,"#ff4545");
+for(const a of allies)if(!a.dead)dot(a.x,a.z,"#35bfff");
+for(const v of vehicles)if(v.enemy&&!v.dead)dot(v.x,v.z,"#ff9933",7);
+for(const b of barrels)if(!b.dead)dot(b.x,b.z,"#ffab26",4);
+if(helicopter&&!helicopter.dead)dot(helicopter.x,helicopter.z,"#ff00cc",8);
+if(hostage&&!hostage.rescued)dot(hostage.x,hostage.z,"#ffe55c",7);
+if(checkpoint)dot(checkpoint.position.x,checkpoint.position.z,"#3aff72",8);
+ctx.save();ctx.translate(90,90);ctx.rotate(-yaw);
+ctx.fillStyle="#fff";ctx.beginPath();
+ctx.moveTo(0,-9);ctx.lineTo(-6,7);ctx.lineTo(6,7);
+ctx.closePath();ctx.fill();ctx.restore();
 }
 function animate(){
 requestAnimationFrame(animate);
 const dt=Math.min(clock.getDelta(),.05),now=performance.now();
 if(playing){
 if(reloadEnd&&now>=reloadEnd){
-const g=guns[current],s=specs[current],n=Math.min(s.size-g.mag,g.reserve);
+const g=guns[current],s=specs[current];
+const n=Math.min(s.size-g.mag,g.reserve);
 g.mag+=n;g.reserve-=n;reloadEnd=0;sound(520,.1);updateHUD();
 }
 if(firing)fire();
 let mx=joy.x+(keys.KeyD?1:0)-(keys.KeyA?1:0);
 let my=-joy.y+(keys.KeyW?1:0)-(keys.KeyS?1:0);
 const len=Math.max(1,Math.hypot(mx,my));mx/=len;my/=len;
-const speed=aiming?3.2:6.2,oldX=player.x,oldZ=player.z;
+const speed=crouching?2.5:sprinting?9:aiming?3.2:6.2;
+const oldX=player.x,oldZ=player.z;
 player.x+=(Math.cos(yaw)*mx-Math.sin(yaw)*my)*speed*dt;
 player.z+=(-Math.sin(yaw)*mx-Math.cos(yaw)*my)*speed*dt;
-player.x=Math.max(-8.5,Math.min(8.5,player.x));
-player.z=Math.max(-108,Math.min(57,player.z));
-for(const o of obstacles)if(Math.hypot(player.x-o.x,player.z-o.z)<o.r){
+player.x=clamp(player.x,-8.5,8.5);
+player.z=clamp(player.z,-108,57);
+for(const o of obstacles){
+if(o.vehicle?.dead)continue;
+if(Math.hypot(player.x-o.x,player.z-o.z)<o.r){
 player.x=oldX;player.z=oldZ;break;
 }
-camera.position.set(player.x,1.75,player.z);
+}
+camera.position.set(player.x,crouching?1.12:1.75,player.z);
 camera.rotation.set(pitch,yaw,0);
 recoil=Math.max(0,recoil-dt*.9);
-if(Math.hypot(mx,my)>.1)walk+=dt*10;
+if(Math.hypot(mx,my)>.1)walk+=dt*(sprinting?16:10);
 const bob=Math.hypot(mx,my)>.1?Math.sin(walk)*.018:0;
-const progress=reloadEnd?Math.max(0,Math.min(1,(now-reloadStart)/reloadDuration)):0;
+const progress=reloadEnd?clamp((now-reloadStart)/reloadDuration,0,1):0;
 const dip=reloadEnd?Math.sin(progress*Math.PI)*.3:0;
 if(gunGroup){
 const landscape=innerWidth>innerHeight;
@@ -501,16 +716,19 @@ gunGroup.visible=!(aiming&&current==="sniper");
 for(const e of enemies){
 if(e.dead){
 e.fall=Math.min(1.5,e.fall+dt*2);
-e.group.rotation.z=Math.min(Math.PI/2,e.fall);continue;
+e.group.rotation.z=Math.min(Math.PI/2,e.fall);
+continue;
 }
 const dx=player.x-e.x,dz=player.z-e.z;
 const dist=Math.max(.01,Math.hypot(dx,dz));
 e.group.rotation.y=Math.atan2(dx,dz);
+e.hitTime=Math.max(0,e.hitTime-dt);
+e.group.rotation.z=e.hitTime>0?Math.sin(now*.05)*.13:0;
 if(dist>11&&dist<65)moveAI(e,player.x,player.z,e.commander?1.7:1.3,dt);
 else if(dist<5)moveAI(e,e.x-dx,e.z-dz,2,dt);
-e.move+=dt;if(e.move>1.8){e.move=0;e.strafe*=-1;}
-e.x+=e.strafe*dt*.55;
-e.x=Math.max(-8,Math.min(8,e.x));
+e.move+=dt;
+if(e.move>1.8){e.move=0;e.strafe*=-1;}
+e.x=clamp(e.x+e.strafe*dt*.55,-8,8);
 e.group.position.set(e.x,0,e.z);
 if(e.reload>0){e.reload-=dt;continue;}
 e.fire-=dt;
@@ -521,15 +739,9 @@ const start=new THREE.Vector3(e.x,1.5,e.z);
 const end=camera.position.clone();
 end.x+=(Math.random()-.5)*1.8;
 end.y+=(Math.random()-.5)*1.1;
-tracer(start,end,0xff3030,250);flash(start,0xff5522);
+tracer(start,end,0xff3030);flash(start,0xff5522);
 if(e.mag<=0){e.reload=2.2;e.mag=12;}
-if(Math.random()<Math.max(.08,.65-dist*.012)){
-player.hp-=e.commander?9:6;
-$("damage").style.opacity=.25;
-setTimeout(()=>$("damage").style.opacity=0,110);
-if(player.hp<=0){player.hp=0;endGame(false);}
-}
-updateHUD();
+if(Math.random()<Math.max(.08,.65-dist*.012))hurt(e.commander?9:6);
 }
 }
 for(let i=0;i<allies.length;i++){
@@ -548,36 +760,42 @@ a.group.rotation.y=Math.atan2(target.x-a.x,target.z-a.z);
 a.fire-=dt;
 if(a.fire<=0){
 a.fire=.65+Math.random()*.5;
-const start=new THREE.Vector3(a.x,1.5,a.z);
-const end=new THREE.Vector3(target.x,1.5,target.z);
-tracer(start,end,0x45bfff,180);
+tracer(new THREE.Vector3(a.x,1.5,a.z),new THREE.Vector3(target.x,1.5,target.z),0x45bfff);
 damageEnemy(target,14);
 }
 }
 }
 for(const v of vehicles){
 if(!v.enemy||v.dead)continue;
-const dist=Math.hypot(v.x-player.x,v.z-player.z);
-if(dist<35){
+if(Math.hypot(v.x-player.x,v.z-player.z)<35){
 v.fire-=dt;
 if(v.fire<=0){
 v.fire=2.5;
-const start=new THREE.Vector3(v.x,2.8,v.z);
-const end=new THREE.Vector3(player.x,1.5,player.z);
-tracer(start,end,0xff6633,250);
-if(Math.random()<.5){
-player.hp=Math.max(0,player.hp-10);
-if(player.hp<=0)endGame(false);
+tracer(new THREE.Vector3(v.x,2.8,v.z),new THREE.Vector3(player.x,1.5,player.z),0xff6633);
+if(Math.random()<.5)hurt(10);
 }
-updateHUD();
 }
+}
+if(helicopter&&!helicopter.dead){
+const h=helicopter;
+h.rotor.rotation.y+=dt*22;
+h.x=Math.sin(now*.0005)*6;
+h.z=-55+Math.cos(now*.0003)*13;
+h.group.position.set(h.x,12+Math.sin(now*.002)*.5,h.z);
+h.group.rotation.y=Math.sin(now*.0005)*.4;
+h.fire-=dt;
+if(Math.hypot(h.x-player.x,h.z-player.z)<55&&h.fire<=0){
+h.fire=2.5;
+tracer(new THREE.Vector3(h.x,11,h.z),new THREE.Vector3(player.x,1.5,player.z),0xff3366);
+if(Math.random()<.5)hurt(8);
 }
 }
 for(let i=items.length-1;i>=0;i--){
 const p=items[i];p.group.rotation.y+=dt*2;
 if(Math.hypot(p.x-player.x,p.z-player.z)<1.7){
-if(p.type==="health"){player.hp=Math.min(100,player.hp+35);message("HEALTH +35");}
-else{
+if(p.type==="health"){
+player.hp=Math.min(100,player.hp+35);message("HEALTH +35");
+}else{
 guns.m4.reserve+=45;guns.ak.reserve+=45;guns.sniper.reserve+=8;
 message("AMMO RESTOCKED");
 }
@@ -587,28 +805,35 @@ scene.remove(p.group);items.splice(i,1);updateHUD();
 if(checkpoint){
 const inside=Math.hypot(checkpoint.position.x-player.x,checkpoint.position.z-player.z)<3;
 if(objective==="capture"){
-capture=Math.max(0,Math.min(3,capture+(inside?dt:-dt*.25)));
+capture=clamp(capture+(inside?dt:-dt*.25),0,3);
 $("mission").textContent="CAPTURE POSITION "+Math.floor(capture/3*100)+"%";
-if(capture>=3){
-objective="defend";defend=8;message("DEFEND POSITION");
-$("mission").textContent="DEFEND CHECKPOINT";
-}
+if(capture>=3){objective="defend";defend=8;message("DEFEND POSITION");}
 }else if(objective==="defend"){
 defend-=dt;
 $("mission").textContent="DEFEND "+Math.ceil(defend)+" SECONDS";
 if(defend<=0){
-scene.remove(checkpoint);checkpoint=null;
+scene.remove(checkpoint);checkpoint=null;objective="waiting";
 const token=session;
 setTimeout(()=>{if(playing&&token===session)spawnWave();},800);
-objective="waiting";
 }
-}else if(objective==="final"&&inside)endGame(true);
+}else if(objective==="extract"&&inside)endGame(true);
+}
+if(hostage&&objective==="rescue"){
+if(Math.hypot(hostage.x-player.x,hostage.z-player.z)<3){
+hostage.rescued=true;objective="extract";
+scene.remove(hostage.group);
+checkpointAt(0,Math.max(-105,player.z-10));
+$("mission").textContent="HOSTAGE RESCUED - REACH EXTRACTION";
+message("HOSTAGE RESCUED!");
+saveProgress();
+}
 }
 }
 for(let i=effects.length-1;i>=0;i--){
 const e=effects[i],t=Math.min(1,(now-e.start)/e.duration);
 if(!e.update(t)){
-scene.remove(e.mesh);e.mesh.geometry?.dispose();e.mesh.material?.dispose();
+scene.remove(e.mesh);
+e.mesh.geometry?.dispose();e.mesh.material?.dispose();
 effects.splice(i,1);
 }
 }
@@ -616,38 +841,18 @@ drawMap();
 renderer.clear();renderer.render(scene,camera);
 renderer.clearDepth();renderer.render(gunScene,gunCamera);
 }
-function drawMap(){
-const c=$("map"),ctx=c.getContext("2d");
-ctx.clearRect(0,0,180,180);
-ctx.fillStyle="#13292d";ctx.fillRect(0,0,180,180);
-ctx.fillStyle="#555b60";ctx.fillRect(65,0,50,180);
-ctx.strokeStyle="#ffffff33";ctx.strokeRect(1,1,178,178);
-function dot(x,z,color,r=5){
-const px=90+(x-player.x)*4;
-const py=90+(z-player.z)*4;
-if(px<4||px>176||py<4||py>176)return;
-ctx.fillStyle=color;ctx.beginPath();ctx.arc(px,py,r,0,Math.PI*2);ctx.fill();
-}
-for(const e of enemies)if(!e.dead)dot(e.x,e.z,"#ff4545");
-for(const a of allies)if(!a.dead)dot(a.x,a.z,"#35bfff");
-for(const v of vehicles)if(v.enemy&&!v.dead)dot(v.x,v.z,"#ff9933",7);
-if(checkpoint)dot(checkpoint.position.x,checkpoint.position.z,"#3aff72",8);
-ctx.save();ctx.translate(90,90);ctx.rotate(-yaw);
-ctx.fillStyle="#ffffff";ctx.beginPath();ctx.moveTo(0,-9);ctx.lineTo(-6,7);ctx.lineTo(6,7);ctx.closePath();ctx.fill();
-ctx.restore();
-}
 const stick=$("joy");let stickId=null;
 function moveStick(e){
 const r=stick.getBoundingClientRect();
 const dx=e.clientX-r.left-r.width/2,dy=e.clientY-r.top-r.height/2;
 const limit=r.width*.32,len=Math.max(1,Math.hypot(dx,dy));
-joy.x=Math.max(-1,Math.min(1,dx/limit));
-joy.y=Math.max(-1,Math.min(1,dy/limit));
+joy.x=clamp(dx/limit,-1,1);joy.y=clamp(dy/limit,-1,1);
 const factor=Math.min(limit,len)/len;
 $("knob").style.transform=`translate(${dx*factor}px,${dy*factor}px)`;
 }
 stick.addEventListener("pointerdown",e=>{
-e.preventDefault();stickId=e.pointerId;stick.setPointerCapture(e.pointerId);moveStick(e);
+e.preventDefault();stickId=e.pointerId;
+stick.setPointerCapture(e.pointerId);moveStick(e);
 });
 stick.addEventListener("pointermove",e=>{if(e.pointerId===stickId)moveStick(e);});
 function stopStick(e){
@@ -664,7 +869,7 @@ lookId=e.pointerId;lookX=e.clientX;lookY=e.clientY;
 window.addEventListener("pointermove",e=>{
 if(e.pointerId!==lookId||!playing)return;
 yaw-=(e.clientX-lookX)*.004;
-pitch=Math.max(-1.2,Math.min(1.2,pitch-(e.clientY-lookY)*.0035));
+pitch=clamp(pitch-(e.clientY-lookY)*.0035,-1.2,1.2);
 lookX=e.clientX;lookY=e.clientY;
 });
 window.addEventListener("pointerup",e=>{if(e.pointerId===lookId)lookId=null;});
@@ -684,10 +889,47 @@ control("grenade",grenadeThrow);
 control("follow",()=>setSquad("follow"));
 control("hold",()=>setSquad("hold"));
 control("attack",()=>setSquad("attack"));
-document.querySelectorAll("#guns button").forEach(b=>b.addEventListener("click",()=>switchGun(b.dataset.gun)));
-$("sound").onclick=()=>{soundOn=!soundOn;$("sound").textContent=soundOn?"SOUND ON":"SOUND OFF";};
+control("sprint",()=>{
+sprinting=!sprinting;
+if(sprinting){crouching=false;setAim(false);}
+$("sprint").classList.toggle("active",sprinting);
+$("crouch").classList.remove("active");
+updateHUD();
+});
+control("crouch",()=>{
+crouching=!crouching;sprinting=false;
+$("crouch").classList.toggle("active",crouching);
+$("sprint").classList.remove("active");
+updateHUD();
+});
+document.querySelectorAll("#guns button").forEach(b=>
+b.addEventListener("click",()=>switchGun(b.dataset.gun))
+);
+$("sound").onclick=()=>{
+soundOn=!soundOn;$("sound").textContent=soundOn?"SOUND ON":"SOUND OFF";
+};
 $("test").onclick=()=>sound(600,.25,.12);
-$("play").onclick=reset;$("restart").onclick=reset;
+$("vision").onclick=()=>{
+nightVision=!nightVision;
+$("night").style.display=nightVision?"block":"none";
+$("vision").textContent=nightVision?"VISION OFF":"NIGHT VISION";
+const color=nightVision?0x244b29:nightMode?0x101a29:0x91abc4;
+scene.background=new THREE.Color(color);
+scene.fog=new THREE.Fog(color,nightVision?40:nightMode?25:55,nightVision?120:nightMode?85:145);
+};
+$("dayMode").onclick=()=>{
+nightMode=false;
+$("dayMode").classList.add("selected");$("nightMode").classList.remove("selected");
+$("briefing").textContent="DAY ASSAULT: Eliminate enemy forces, capture positions, rescue the hostage and extract.";
+};
+$("nightMode").onclick=()=>{
+nightMode=true;
+$("nightMode").classList.add("selected");$("dayMode").classList.remove("selected");
+$("briefing").textContent="NIGHT RESCUE: Operate in darkness, use night vision, clear hostiles and rescue the hostage.";
+};
+$("play").onclick=()=>reset();
+$("continue").onclick=()=>reset(loadProgress());
+$("restart").onclick=()=>reset();
 window.addEventListener("keydown",e=>{
 keys[e.code]=true;
 if(e.code==="Space")fire();
@@ -717,9 +959,11 @@ gunScene.add(new THREE.HemisphereLight(0xffffff,0x888888,3));
 const light=new THREE.DirectionalLight(0xffffff,2);
 light.position.set(-2,5,5);gunScene.add(light);
 gunCamera=new THREE.PerspectiveCamera(55,innerWidth/innerHeight,.01,20);
-clock=new THREE.Clock();buildGun();resize();
+clock=new THREE.Clock();buildGun();resize();showSaved();
 window.addEventListener("resize",resize);
-window.addEventListener("orientationchange",()=>{setTimeout(resize,150);setTimeout(resize,500);});
+window.addEventListener("orientationchange",()=>{
+setTimeout(resize,150);setTimeout(resize,500);
+});
 animate();
 }
 setup();
