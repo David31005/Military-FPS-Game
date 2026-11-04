@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<title>Pittsburgh Streets - Step 9D</title>
+<title>Pittsburgh Streets - Step 9E</title>
 <style>
 *{box-sizing:border-box}
 html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#87a9c4;font-family:Arial,sans-serif;touch-action:none;overscroll-behavior:none}
@@ -17,7 +17,8 @@ canvas{display:block;touch-action:none}
 #crosshair{top:50%;left:50%;transform:translate(-50%,-50%);color:white;font-size:34px}
 #hitmarker{display:none;top:50%;left:50%;transform:translate(-50%,-50%);font-size:48px;font-weight:bold;color:white}
 #hud{left:15px;bottom:calc(175px + env(safe-area-inset-bottom));color:white;font-size:16px}
-#damage{position:absolute;inset:0;z-index:2;background:rgba(255,0,0,.35);opacity:0;pointer-events:none}
+#damage{position:absolute;inset:0;z-index:2;background:rgba(255,0,0,.45);opacity:0;pointer-events:none}
+#direction{position:absolute;z-index:3;top:34%;width:100%;text-align:center;color:#ff5555;font-size:27px;font-weight:bold;text-shadow:0 0 8px #000;opacity:0;pointer-events:none}
 #joystick{position:absolute;z-index:4;bottom:calc(25px + env(safe-area-inset-bottom));left:25px;width:125px;height:125px;border:2px solid #ffffff99;border-radius:50%;background:#ffffff33;touch-action:none}
 #stick{position:absolute;top:36px;left:36px;width:50px;height:50px;border-radius:50%;background:#ffffffbb;pointer-events:none}
 button{touch-action:none;user-select:none;-webkit-user-select:none}
@@ -25,14 +26,16 @@ button{touch-action:none;user-select:none;-webkit-user-select:none}
 #reload{position:absolute;z-index:4;right:135px;bottom:calc(28px + env(safe-area-inset-bottom));padding:11px 13px;background:#333;color:white;border:1px solid white;border-radius:10px;font-weight:bold}
 #aim{position:absolute;z-index:4;right:25px;bottom:calc(150px + env(safe-area-inset-bottom));width:88px;height:65px;border-radius:15px;background:#234d66;color:white;border:2px solid white;font-size:17px;font-weight:bold}
 #aim.active{background:#13865b}
+#sound{position:absolute;z-index:4;top:calc(145px + env(safe-area-inset-top));right:12px;background:#263c4a;color:white;border:1px solid white;border-radius:9px;padding:9px;font-size:12px}
 #gameover{display:none;position:absolute;inset:0;z-index:10;background:#000e;color:white;align-items:center;justify-content:center;flex-direction:column;gap:20px;text-align:center}
 #restart{padding:15px 25px;background:#c62828;color:white;border:2px solid white;border-radius:12px;font-size:18px}
-#error{display:none;position:absolute;top:145px;left:10px;right:10px;z-index:20;color:white;background:#a00000;padding:12px;font-size:13px}
+#error{display:none;position:absolute;top:190px;left:10px;right:10px;z-index:20;color:white;background:#a00000;padding:12px;font-size:13px}
 @media(max-width:390px){#hud{font-size:14px}#reload{right:125px;padding:9px}}
 </style>
 </head>
 <body>
 <div id="damage"></div>
+<div id="direction">⚠ INCOMING FIRE ⚠</div>
 <div id="title">PITTSBURGH STREETS</div>
 <div id="score">ELIMINATIONS: 0</div>
 <div id="mission">MISSION: ELIMINATE 3 ENEMIES</div>
@@ -44,6 +47,7 @@ button{touch-action:none;user-select:none;-webkit-user-select:none}
 <button id="fire">FIRE</button>
 <button id="aim">AIM</button>
 <button id="reload">RELOAD</button>
+<button id="sound">SOUND: ON</button>
 <div id="gameover">
 <h1 id="resultTitle">MISSION FAILED</h1>
 <div id="finalscore"></div>
@@ -54,7 +58,7 @@ button{touch-action:none;user-select:none;-webkit-user-select:none}
 <script type="module">
 import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js";
 
-// SCENE
+// THREE.JS SCENE
 const scene=new THREE.Scene();
 scene.background=new THREE.Color(0x87a9c4);
 scene.fog=new THREE.Fog(0x87a9c4,55,140);
@@ -67,12 +71,10 @@ camera.lookAt(0,1.7,-20);
 const renderer=new THREE.WebGLRenderer({antialias:true,alpha:false});
 renderer.setSize(innerWidth,innerHeight);
 renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));
-renderer.setClearColor(0x87a9c4,1);
 renderer.domElement.style.position="absolute";
 renderer.domElement.style.inset="0";
 renderer.domElement.style.zIndex="0";
 document.body.insertBefore(renderer.domElement,document.body.firstChild);
-
 scene.add(new THREE.HemisphereLight(0xffffff,0x777777,2));
 
 function box(parent,w,h,d,color,x,y,z){
@@ -107,12 +109,10 @@ box(scene,3,.2,180,0x999999,7.5,.1,0);
 
 const colors=[0x885544,0x777777,0x554c48,0x99775b];
 for(let i=0;i<12;i++){
- const z=15-i*12;
- const h=7+(i%4)*2;
+ const z=15-i*12,h=7+(i%4)*2;
  box(scene,8,h,9,colors[i%4],-13,h/2,z);
  box(scene,8,h+2,9,colors[(i+1)%4],13,(h+2)/2,z);
 }
-
 for(let z=-75;z<75;z+=9){
  const line=new THREE.Mesh(
   new THREE.PlaneGeometry(.25,4),
@@ -122,7 +122,6 @@ for(let z=-75;z<75;z+=9){
  line.position.set(0,.055,z);
  scene.add(line);
 }
-
 const crossRoad=new THREE.Mesh(
  new THREE.PlaneGeometry(80,10),
  new THREE.MeshBasicMaterial({color:0x303238,side:THREE.DoubleSide})
@@ -131,48 +130,29 @@ crossRoad.rotation.x=-Math.PI/2;
 crossRoad.position.set(0,.04,-32);
 scene.add(crossRoad);
 
-// COLLISION AND BULLET BLOCKING
-const obstacles=[];
-const solidMeshes=[];
-
-function registerObstacle(x,z,w,d){
- obstacles.push({x,z,w,d});
+// OBSTACLES
+const obstacles=[],solidMeshes=[],barriers=[];
+function registerObstacle(x,z,w,d){obstacles.push({x,z,w,d});}
+function solid(mesh){solidMeshes.push(mesh);return mesh;}
+function collides(x,z,r=.35){
+ return obstacles.some(o=>
+  Math.abs(x-o.x)<o.w/2+r &&
+  Math.abs(z-o.z)<o.d/2+r
+ );
 }
-function registerSolid(mesh){
- solidMeshes.push(mesh);
- return mesh;
-}
-
-function collides(x,z,radius=.35){
- for(const obstacle of obstacles){
-  if(
-   Math.abs(x-obstacle.x)<obstacle.w/2+radius &&
-   Math.abs(z-obstacle.z)<obstacle.d/2+radius
-  )return true;
- }
- return false;
-}
-
-// CONCRETE BARRIERS
-const barriers=[];
 function addBarrier(x,z){
- const block=registerSolid(
-  box(scene,2.3,1.25,.85,0x999b9b,x,.625,z)
- );
- const cap=registerSolid(
-  box(scene,2.38,.14,.95,0xc1c3c3,x,1.3,z)
- );
+ const block=solid(box(scene,2.3,1.25,.85,0x999b9b,x,.625,z));
+ solid(box(scene,2.38,.14,.95,0xc1c3c3,x,1.3,z));
  barriers.push({x,z,mesh:block});
  registerObstacle(x,z,2.3,.85);
 }
-
 addBarrier(-3.9,-15);
 addBarrier(3.9,-26);
 addBarrier(-3.9,-38);
 addBarrier(3.9,-50);
 addBarrier(-3.9,-64);
 
-// MILITARY VEHICLES
+// VEHICLES
 function wheel(parent,x,y,z){
  const tire=new THREE.Mesh(
   new THREE.CylinderGeometry(.43,.43,.24,12),
@@ -180,8 +160,7 @@ function wheel(parent,x,y,z){
  );
  tire.rotation.z=Math.PI/2;
  tire.position.set(x,y,z);
- parent.add(tire);
- registerSolid(tire);
+ parent.add(tire);solid(tire);
 
  const hub=new THREE.Mesh(
   new THREE.CylinderGeometry(.18,.18,.26,12),
@@ -191,90 +170,58 @@ function wheel(parent,x,y,z){
  hub.position.set(x,y,z);
  parent.add(hub);
 }
-
-function humvee(x,z,rotation=0){
- const vehicle=new THREE.Group();
- vehicle.position.set(x,0,z);
- vehicle.rotation.y=rotation;
- scene.add(vehicle);
-
- const green=0x48583a;
- const dark=0x25302b;
-
- registerSolid(box(vehicle,2.2,.85,4.1,green,0,1.05,0));
- registerSolid(box(vehicle,2.05,.8,2.15,green,0,1.82,.25));
-
- box(vehicle,1.85,.42,.08,dark,0,1.92,-.88);
- box(vehicle,.08,.4,1.3,dark,-1.05,1.95,.3);
- box(vehicle,.08,.4,1.3,dark,1.05,1.95,.3);
- box(vehicle,2.25,.28,.25,0x333333,0,.72,-2.1);
- box(vehicle,2.25,.28,.25,0x333333,0,.72,2.1);
- box(vehicle,.45,.22,.08,0xffe1a3,-.7,1.05,-2.1);
- box(vehicle,.45,.22,.08,0xffe1a3,.7,1.05,-2.1);
-
- for(const side of [-1,1]){
-  for(const wz of [-1.35,1.35]){
-   wheel(vehicle,side*1.12,.5,wz);
-  }
- }
-
- registerSolid(box(vehicle,.85,.24,.85,0x303b2d,0,2.38,.25));
- box(vehicle,.17,.16,1.2,0x151515,0,2.42,-.65);
+function humvee(x,z){
+ const v=new THREE.Group();
+ v.position.set(x,0,z);scene.add(v);
+ solid(box(v,2.2,.85,4.1,0x48583a,0,1.05,0));
+ solid(box(v,2.05,.8,2.15,0x48583a,0,1.82,.25));
+ box(v,1.85,.42,.08,0x25302b,0,1.92,-.88);
+ box(v,.08,.4,1.3,0x25302b,-1.05,1.95,.3);
+ box(v,.08,.4,1.3,0x25302b,1.05,1.95,.3);
+ box(v,2.25,.28,.25,0x333333,0,.72,-2.1);
+ box(v,2.25,.28,.25,0x333333,0,.72,2.1);
+ box(v,.45,.22,.08,0xffe1a3,-.7,1.05,-2.1);
+ box(v,.45,.22,.08,0xffe1a3,.7,1.05,-2.1);
+ for(const s of [-1,1])for(const wz of [-1.35,1.35])
+  wheel(v,s*1.12,.5,wz);
+ solid(box(v,.85,.24,.85,0x303b2d,0,2.38,.25));
+ box(v,.17,.16,1.2,0x151515,0,2.42,-.65);
  registerObstacle(x,z,2.5,4.4);
- return vehicle;
 }
-
-function transportTruck(x,z,rotation=0){
- const truck=new THREE.Group();
- truck.position.set(x,0,z);
- truck.rotation.y=rotation;
- scene.add(truck);
-
- registerSolid(box(truck,2.4,.65,6.5,0x252525,0,.9,0));
- registerSolid(box(truck,2.3,1.55,2,0x536247,0,1.75,-2.15));
- registerSolid(box(truck,2.35,1.65,3.8,0x6c7056,0,1.95,1.2));
-
- box(truck,2.05,.55,.08,0x273f43,0,2.05,-3.18);
- box(truck,.12,.55,.9,0x273f43,-1.18,2,-2.2);
- box(truck,.12,.55,.9,0x273f43,1.18,2,-2.2);
- box(truck,.45,.2,.08,0xffe4a1,-.75,1.2,-3.3);
- box(truck,.45,.2,.08,0xffe4a1,.75,1.2,-3.3);
-
- for(const side of [-1,1]){
-  for(const wz of [-2.25,.6,2.15]){
-   wheel(truck,side*1.23,.52,wz);
-  }
- }
-
+function transportTruck(x,z){
+ const t=new THREE.Group();
+ t.position.set(x,0,z);scene.add(t);
+ solid(box(t,2.4,.65,6.5,0x252525,0,.9,0));
+ solid(box(t,2.3,1.55,2,0x536247,0,1.75,-2.15));
+ solid(box(t,2.35,1.65,3.8,0x6c7056,0,1.95,1.2));
+ box(t,2.05,.55,.08,0x273f43,0,2.05,-3.18);
+ box(t,.12,.55,.9,0x273f43,-1.18,2,-2.2);
+ box(t,.12,.55,.9,0x273f43,1.18,2,-2.2);
+ box(t,.45,.2,.08,0xffe4a1,-.75,1.2,-3.3);
+ box(t,.45,.2,.08,0xffe4a1,.75,1.2,-3.3);
+ for(const s of [-1,1])for(const wz of [-2.25,.6,2.15])
+  wheel(t,s*1.23,.52,wz);
  registerObstacle(x,z,2.8,6.8);
- return truck;
 }
-
 humvee(-3.9,-20);
 humvee(3.8,-42);
 transportTruck(3.6,-60);
 transportTruck(-3.8,-72);
 
 function roadblock(x,z){
- const block=registerSolid(
-  box(scene,2.2,.85,.55,0xb0a99b,x,.425,z)
- );
- box(scene,2.25,.16,.62,0xf5c242,x,.9,z);
+ solid(box(scene,2.2,.85,.55,0xb0a99b,x,.425,z));
+ solid(box(scene,2.25,.16,.62,0xf5c242,x,.9,z));
  registerObstacle(x,z,2.2,.55);
- return block;
 }
 roadblock(-2.5,-30);
 roadblock(2.5,-34);
 roadblock(0,-68);
 
-// RIFLE AND AIM DOWN SIGHTS
+// PLAYER RIFLE
 const gun=new THREE.Group();
-camera.add(gun);
-scene.add(camera);
-
+camera.add(gun);scene.add(camera);
 const normalGunPosition=new THREE.Vector3(.28,-.18,-1.2);
 const aimedGunPosition=new THREE.Vector3(0,-.17,-1.05);
-
 gun.position.copy(normalGunPosition);
 gun.scale.set(1.4,1.4,1.4);
 
@@ -299,13 +246,11 @@ let flashTimer=0;
 const checkpoint=new THREE.Group();
 checkpoint.position.set(0,0,-55);
 scene.add(checkpoint);
-
 box(checkpoint,2,1.2,1,0x888888,-4,.6,0);
 box(checkpoint,2,1.2,1,0x888888,4,.6,0);
 box(checkpoint,1.5,3,1.5,0x4c5b42,-6,1.5,0);
 box(checkpoint,1.5,3,1.5,0x4c5b42,6,1.5,0);
 box(checkpoint,14,.5,.7,0x303030,0,4,0);
-
 const marker=new THREE.Mesh(
  new THREE.CylinderGeometry(1.2,1.2,.12,32),
  new THREE.MeshBasicMaterial({color:0x00ff66})
@@ -314,54 +259,41 @@ marker.position.set(0,.15,-4);
 checkpoint.add(marker);
 
 // ENEMY HEALTH BARS
-function createHealthBar(soldier){
- const group=new THREE.Group();
- group.position.set(0,3.1,0);
-
- const background=new THREE.Mesh(
+function createHealthBar(s){
+ const g=new THREE.Group();
+ g.position.set(0,3.1,0);
+ const bg=new THREE.Mesh(
   new THREE.PlaneGeometry(1.2,.16),
-  new THREE.MeshBasicMaterial({
-   color:0x333333,side:THREE.DoubleSide,depthTest:false
-  })
+  new THREE.MeshBasicMaterial({color:0x333333,side:THREE.DoubleSide,depthTest:false})
  );
  const fill=new THREE.Mesh(
   new THREE.PlaneGeometry(1.1,.1),
-  new THREE.MeshBasicMaterial({
-   color:0x00ff00,side:THREE.DoubleSide,depthTest:false
-  })
+  new THREE.MeshBasicMaterial({color:0x00ff00,side:THREE.DoubleSide,depthTest:false})
  );
  fill.position.z=.01;
- group.add(background,fill);
- soldier.add(group);
- soldier.userData.healthBar=group;
- soldier.userData.healthFill=fill;
+ g.add(bg,fill);s.add(g);
+ s.userData.healthBar=g;
+ s.userData.healthFill=fill;
+}
+function updateHealthBar(s){
+ const d=s.userData,f=d.healthFill;
+ if(!f)return;
+ const p=Math.max(0,d.health/100);
+ f.scale.x=Math.max(.001,p);
+ f.position.x=-1.1*(1-p)/2;
+ f.material.color.setHex(p>.5?0x00ff00:p>.25?0xffaa00:0xff0000);
 }
 
-function updateHealthBar(soldier){
- const data=soldier.userData;
- const fill=data.healthFill;
- if(!fill)return;
-
- const percent=Math.max(0,data.health/100);
- fill.scale.x=Math.max(.001,percent);
- fill.position.x=-(1.1*(1-percent))/2;
- fill.material.color.setHex(
-  percent>.5?0x00ff00:percent>.25?0xffaa00:0xff0000
- );
-}
-
-// ENEMIES
-const enemies=[];
-const targets=[];
-
+// STEP 9E: ENEMY RIFLES AND MUZZLE FLASHES
+const enemies=[],targets=[];
 function createEnemy(x,z){
- const soldier=new THREE.Group();
- soldier.position.set(x,0,z);
+ const s=new THREE.Group();
+ s.position.set(x,0,z);
 
  function part(w,h,d,c,px,py,pz){
-  const mesh=box(soldier,w,h,d,c,px,py,pz);
-  mesh.userData.enemy=soldier;
-  targets.push(mesh);
+  const m=box(s,w,h,d,c,px,py,pz);
+  m.userData.enemy=s;
+  targets.push(m);
  }
 
  part(.35,.8,.4,0x252a25,-.24,.4,0);
@@ -373,19 +305,37 @@ function createEnemy(x,z){
  part(.75,.25,.7,0x303e2b,0,2.5,0);
  part(.45,.45,.04,0xff3333,0,1.4,.3);
 
- soldier.userData={
+ // Rifle points forward from the soldier.
+ const rifle=new THREE.Group();
+ rifle.position.set(.3,1.5,.45);
+ box(rifle,.17,.2,.8,0x181818,0,0,.1);
+ box(rifle,.09,.09,.85,0x111111,0,.05,.85);
+ box(rifle,.13,.3,.17,0x382d24,0,-.22,-.12);
+ box(rifle,.1,.12,.14,0x222222,0,.17,.25);
+ s.add(rifle);
+
+ const flash=new THREE.Mesh(
+  new THREE.SphereGeometry(.16,8,8),
+  new THREE.MeshBasicMaterial({
+   color:0xffbb22,transparent:true,opacity:1,depthTest:false
+  })
+ );
+ flash.position.set(0,.05,1.35);
+ flash.visible=false;
+ rifle.add(flash);
+
+ s.userData={
   health:100,alive:true,homeX:x,homeZ:z,
   phase:Math.random()*Math.PI*2,
   cooldown:2,respawn:0,mode:"patrol",
-  coverTimer:0,coverPoint:null
+  coverTimer:0,coverPoint:null,
+  rifle,flash,flashTime:0
  };
-
- createHealthBar(soldier);
- updateHealthBar(soldier);
- scene.add(soldier);
- enemies.push(soldier);
+ createHealthBar(s);
+ updateHealthBar(s);
+ scene.add(s);
+ enemies.push(s);
 }
-
 createEnemy(-3,-12);
 createEnemy(3,-23);
 createEnemy(-2,-35);
@@ -401,15 +351,11 @@ function updateStick(e){
  const r=joystick.getBoundingClientRect();
  let x=e.clientX-r.left-r.width/2;
  let y=e.clientY-r.top-r.height/2;
- const d=Math.hypot(x,y);
- const max=37;
-
+ const d=Math.hypot(x,y),max=37;
  if(d>max){x=x/d*max;y=y/d*max;}
- moveX=x/max;
- moveY=y/max;
+ moveX=x/max;moveY=y/max;
  stick.style.transform=`translate(${x}px,${y}px)`;
 }
-
 joystick.addEventListener("pointerdown",e=>{
  e.preventDefault();
  if(joyId!==null)return;
@@ -428,29 +374,25 @@ function stopStick(e){
 joystick.addEventListener("pointerup",stopStick);
 joystick.addEventListener("pointercancel",stopStick);
 
-// TOUCH LOOK AND ADS
+// TOUCH LOOK
 let lookId=null,lastX=0,lastY=0;
 let yaw=0,pitch=0,aiming=false,aimId=null;
-
 renderer.domElement.addEventListener("pointerdown",e=>{
  if(e.clientX<innerWidth*.35||lookId!==null)return;
  lookId=e.pointerId;
- lastX=e.clientX;
- lastY=e.clientY;
+ lastX=e.clientX;lastY=e.clientY;
  renderer.domElement.setPointerCapture(e.pointerId);
 });
-
 renderer.domElement.addEventListener("pointermove",e=>{
  if(e.pointerId!==lookId)return;
  const sensitivity=aiming?.002:.004;
  yaw-=(e.clientX-lastX)*sensitivity;
  pitch-=(e.clientY-lastY)*sensitivity;
- pitch=Math.max(-1.2,Math.min(1.2,pitch));
+ pitch=THREE.MathUtils.clamp(pitch,-1.2,1.2);
  lastX=e.clientX;lastY=e.clientY;
  camera.rotation.y=yaw;
  camera.rotation.x=pitch;
 });
-
 function stopLook(e){
  if(e.pointerId===lookId)lookId=null;
 }
@@ -460,7 +402,7 @@ renderer.domElement.addEventListener("pointercancel",stopLook);
 // GAME STATE
 let health=100,ammo=30,eliminations=0;
 let gameEnded=false,missionComplete=false;
-let damageFlash=0,recoil=0;
+let damageFlash=0,recoil=0,directionFlash=0;
 
 const hud=document.getElementById("hud");
 const score=document.getElementById("score");
@@ -468,9 +410,9 @@ const missionDisplay=document.getElementById("mission");
 const message=document.getElementById("message");
 const aimButton=document.getElementById("aim");
 
-function setAiming(value){
- if(gameEnded||missionComplete)value=false;
- aiming=value;
+function setAiming(v){
+ if(gameEnded||missionComplete)v=false;
+ aiming=v;
  aimButton.classList.toggle("active",aiming);
  aimButton.textContent=aiming?"AIMING":"AIM";
 }
@@ -493,39 +435,126 @@ function updateHUD(){
  hud.textContent=`HEALTH: ${health} | AMMO: ${ammo}`;
  score.textContent=`ELIMINATIONS: ${eliminations}`;
 }
-
 let messageTimer;
-function showMessage(text){
- message.textContent=text;
+function showMessage(t){
+ message.textContent=t;
  clearTimeout(messageTimer);
  messageTimer=setTimeout(()=>message.textContent="",1000);
 }
 
-// HIT MARKERS AND IMPACTS
-const hitmarker=document.getElementById("hitmarker");
-let hitmarkerTimer;
-function showHitmarker(eliminated=false){
- hitmarker.textContent="×";
- hitmarker.style.color=eliminated?"#ff3333":"#ffffff";
- hitmarker.style.display="block";
- clearTimeout(hitmarkerTimer);
- hitmarkerTimer=setTimeout(()=>hitmarker.style.display="none",180);
+// STEP 9E: BROWSER-GENERATED COMBAT AUDIO
+let audioContext=null;
+let soundEnabled=true;
+const soundButton=document.getElementById("sound");
+
+function unlockAudio(){
+ if(!soundEnabled)return;
+ try{
+  if(!audioContext){
+   const AC=window.AudioContext||window.webkitAudioContext;
+   if(!AC)return;
+   audioContext=new AC();
+  }
+  if(audioContext.state==="suspended"){
+   audioContext.resume().catch(()=>{});
+  }
+ }catch(e){}
 }
 
+function playTone(freq,duration,type="square",volume=.07,slide=0){
+ if(!soundEnabled||!audioContext||audioContext.state!=="running")return;
+ try{
+  const now=audioContext.currentTime;
+  const osc=audioContext.createOscillator();
+  const gain=audioContext.createGain();
+  osc.type=type;
+  osc.frequency.setValueAtTime(Math.max(20,freq),now);
+  if(slide){
+   osc.frequency.exponentialRampToValueAtTime(
+    Math.max(20,freq+slide),now+duration
+   );
+  }
+  gain.gain.setValueAtTime(volume,now);
+  gain.gain.exponentialRampToValueAtTime(.001,now+duration);
+  osc.connect(gain);
+  gain.connect(audioContext.destination);
+  osc.start(now);
+  osc.stop(now+duration);
+ }catch(e){}
+}
+function playerGunSound(){
+ playTone(125,.12,"sawtooth",.13,-85);
+ playTone(55,.17,"triangle",.11,-25);
+}
+function enemyGunSound(distance){
+ const v=Math.max(.015,.075*(1-distance/35));
+ playTone(105,.11,"sawtooth",v,-65);
+}
+function hitSound(){
+ playTone(210,.13,"triangle",.08,-150);
+}
+function reloadSound(){
+ playTone(600,.055,"square",.04,-280);
+}
+soundButton.addEventListener("pointerdown",e=>{
+ e.preventDefault();
+ soundEnabled=!soundEnabled;
+ soundButton.textContent=soundEnabled?"SOUND: ON":"SOUND: OFF";
+ if(soundEnabled)unlockAudio();
+});
+
+// HIT MARKERS
+const hitmarker=document.getElementById("hitmarker");
+let hitmarkerTimer;
+function showHitmarker(kill=false){
+ hitmarker.textContent="×";
+ hitmarker.style.color=kill?"#ff3333":"#ffffff";
+ hitmarker.style.display="block";
+ clearTimeout(hitmarkerTimer);
+ hitmarkerTimer=setTimeout(()=>{
+  hitmarker.style.display="none";
+ },180);
+}
+
+// BULLET IMPACTS
 const impactEffects=[];
 function createImpact(point){
- const impact=new THREE.Mesh(
+ const m=new THREE.Mesh(
   new THREE.SphereGeometry(.18,8,8),
   new THREE.MeshBasicMaterial({
    color:0xffcc33,transparent:true,opacity:1,depthTest:false
   })
  );
- impact.position.copy(point);
- scene.add(impact);
- impactEffects.push({mesh:impact,life:.25});
+ m.position.copy(point);
+ scene.add(m);
+ impactEffects.push({mesh:m,life:.25});
 }
 
-// ENEMY COVER
+// STEP 9E: VISIBLE ENEMY BULLET TRACERS
+const tracers=[];
+function createTracer(start,end){
+ const direction=new THREE.Vector3().subVectors(end,start);
+ const length=direction.length();
+ if(length<.01)return;
+
+ const geometry=new THREE.CylinderGeometry(.025,.025,length,5);
+ const material=new THREE.MeshBasicMaterial({
+  color:0xffd24a,
+  transparent:true,
+  opacity:.95,
+  depthTest:false
+ });
+ const tracer=new THREE.Mesh(geometry,material);
+ tracer.position.copy(start).add(end).multiplyScalar(.5);
+ tracer.quaternion.setFromUnitVectors(
+  new THREE.Vector3(0,1,0),
+  direction.normalize()
+ );
+ scene.add(tracer);
+ tracers.push({mesh:tracer,life:.16});
+}
+
+// COVER SYSTEM
 function findCover(enemy){
  let best=null,bestDistance=Infinity;
  for(const barrier of barriers){
@@ -537,17 +566,16 @@ function findCover(enemy){
 
   const awayX=barrier.x-camera.position.x;
   const awayZ=barrier.z-camera.position.z;
-  const length=Math.hypot(awayX,awayZ)||1;
-
+  const len=Math.hypot(awayX,awayZ)||1;
   const x=THREE.MathUtils.clamp(
-   barrier.x+awayX/length*1.65,-5.3,5.3
+   barrier.x+awayX/len*1.65,-5.3,5.3
   );
-  const z=barrier.z+awayZ/length*1.65;
-  const travel=Math.hypot(
-   enemy.position.x-x,
-   enemy.position.z-z
-  );
+  const z=barrier.z+awayZ/len*1.65;
+  if(collides(x,z,.4))continue;
 
+  const travel=Math.hypot(
+   enemy.position.x-x,enemy.position.z-z
+  );
   if(travel<bestDistance){
    bestDistance=travel;
    best={x,z,barrier};
@@ -556,77 +584,57 @@ function findCover(enemy){
  return best;
 }
 
-// STEP 9D - ENEMY OBSTACLE NAVIGATION
+// STEP 9D: COLLISION-AWARE ENEMY MOVEMENT
 function moveToward(enemy,x,z,speed,dt){
  const dx=x-enemy.position.x;
  const dz=z-enemy.position.z;
  const distance=Math.hypot(dx,dz);
-
  if(distance<.08)return distance;
 
  const step=Math.min(distance,speed*dt);
- const dirX=dx/distance;
- const dirZ=dz/distance;
- const oldX=enemy.position.x;
- const oldZ=enemy.position.z;
+ const dirX=dx/distance,dirZ=dz/distance;
+ const oldX=enemy.position.x,oldZ=enemy.position.z;
+ const nx=oldX+dirX*step,nz=oldZ+dirZ*step;
 
- // Direct movement
- const nextX=oldX+dirX*step;
- const nextZ=oldZ+dirZ*step;
-
- if(!collides(nextX,nextZ,.4)){
-  enemy.position.x=nextX;
-  enemy.position.z=nextZ;
+ if(!collides(nx,nz,.4)){
+  enemy.position.x=nx;enemy.position.z=nz;
   return distance;
  }
-
- // Slide along an obstacle
- if(!collides(nextX,oldZ,.4)){
-  enemy.position.x=nextX;
-  return distance;
+ if(!collides(nx,oldZ,.4)){
+  enemy.position.x=nx;return distance;
  }
- if(!collides(oldX,nextZ,.4)){
-  enemy.position.z=nextZ;
-  return distance;
+ if(!collides(oldX,nz,.4)){
+  enemy.position.z=nz;return distance;
  }
 
- // Try moving around the obstacle
- const options=[
+ const sides=[
   {x:-dirZ,z:dirX},
   {x:dirZ,z:-dirX}
  ];
-
- options.sort((a,b)=>{
-  const da=Math.hypot(
-   x-(oldX+a.x*step),
-   z-(oldZ+a.z*step)
-  );
-  const db=Math.hypot(
-   x-(oldX+b.x*step),
-   z-(oldZ+b.z*step)
-  );
-  return da-db;
- });
-
- for(const side of options){
+ sides.sort((a,b)=>
+  Math.hypot(x-oldX-a.x*step,z-oldZ-a.z*step)-
+  Math.hypot(x-oldX-b.x*step,z-oldZ-b.z*step)
+ );
+ for(const side of sides){
   const sx=oldX+side.x*step;
   const sz=oldZ+side.z*step;
-
   if(!collides(sx,sz,.4)){
-   enemy.position.x=sx;
-   enemy.position.z=sz;
+   enemy.position.x=sx;enemy.position.z=sz;
    break;
   }
  }
  return distance;
 }
 
-// SHOOTING
+// RAYCASTING AND SHOOTING
 const raycaster=new THREE.Raycaster();
 const center=new THREE.Vector2(0,0);
+const solidSet=new Set(solidMeshes);
+const shootables=[...targets,...solidMeshes];
 
 function shoot(){
  if(gameEnded||missionComplete)return;
+ unlockAudio();
  if(ammo<=0){
   showMessage("OUT OF AMMO - RELOAD");
   return;
@@ -636,6 +644,7 @@ function shoot(){
  recoil=.12;
  flashTimer=.09;
  muzzleFlash.visible=true;
+ playerGunSound();
  updateHUD();
 
  camera.updateMatrixWorld(true);
@@ -643,18 +652,19 @@ function shoot(){
  raycaster.setFromCamera(center,camera);
  raycaster.far=100;
 
- const hits=raycaster.intersectObjects(
-  [...targets,...solidMeshes],false
- );
+ const hits=raycaster.intersectObjects(shootables,false);
  const hit=hits.find(h=>{
-  if(solidMeshes.includes(h.object))return true;
+  if(solidSet.has(h.object))return true;
   const soldier=h.object.userData.enemy;
   return soldier&&soldier.userData.alive;
  });
 
- if(!hit){showMessage("MISSED");return;}
+ if(!hit){
+  showMessage("MISSED");
+  return;
+ }
 
- if(solidMeshes.includes(hit.object)){
+ if(solidSet.has(hit.object)){
   createImpact(hit.point);
   showMessage("OBJECT HIT");
   return;
@@ -665,11 +675,13 @@ function shoot(){
  updateHealthBar(soldier);
  createImpact(hit.point);
  showHitmarker(soldier.userData.health<=0);
+ hitSound();
 
  if(soldier.userData.health<=0){
   soldier.userData.alive=false;
   soldier.visible=false;
   soldier.userData.respawn=5;
+  soldier.userData.flash.visible=false;
   eliminations++;
   updateHUD();
   showMessage("ENEMY ELIMINATED!");
@@ -684,24 +696,65 @@ function shoot(){
  }
 }
 
-document.getElementById("fire")
-.addEventListener("pointerdown",e=>{
+document.getElementById("fire").addEventListener("pointerdown",e=>{
  e.preventDefault();shoot();
 });
-document.getElementById("reload")
-.addEventListener("pointerdown",e=>{
+document.getElementById("reload").addEventListener("pointerdown",e=>{
  e.preventDefault();
  if(gameEnded||missionComplete)return;
+ unlockAudio();
  ammo=30;
+ reloadSound();
  updateHUD();
  showMessage("RELOADED");
 });
 
-// PLAYER DAMAGE
+// STEP 9E: ENEMY LINE OF SIGHT
+const sightRay=new THREE.Raycaster();
+function enemyHasClearShot(enemy){
+ enemy.updateMatrixWorld(true);
+ scene.updateMatrixWorld(true);
+
+ const start=enemy.localToWorld(
+  new THREE.Vector3(.3,1.55,1.8)
+ );
+ const end=camera.position.clone();
+ const dir=end.clone().sub(start);
+ const distance=dir.length();
+ if(distance<.1)return true;
+
+ sightRay.set(start,dir.normalize());
+ sightRay.far=distance;
+ return sightRay.intersectObjects(solidMeshes,false).length===0;
+}
+
+// STEP 9E: ENEMY GUNFIRE
+function enemyFire(enemy,distance){
+ const data=enemy.userData;
+ data.flashTime=.12;
+ data.flash.visible=true;
+
+ const start=enemy.localToWorld(
+  new THREE.Vector3(.3,1.55,1.8)
+ );
+ const end=camera.position.clone();
+ end.x+=(Math.random()-.5)*.5;
+ end.y+=(Math.random()-.5)*.5;
+ end.z+=(Math.random()-.5)*.5;
+
+ createTracer(start,end);
+ enemyGunSound(distance);
+
+ // Only a clear shot can damage the player.
+ takeDamage(10);
+}
+
+// DAMAGE FEEDBACK
 function takeDamage(amount){
  if(gameEnded||missionComplete)return;
  health=Math.max(0,health-amount);
- damageFlash=.5;
+ damageFlash=.65;
+ directionFlash=.65;
  updateHUD();
  showMessage("UNDER FIRE!");
 
@@ -710,7 +763,8 @@ function takeDamage(amount){
   moveX=0;moveY=0;
   setAiming(false);
   document.getElementById("resultTitle").textContent="MISSION FAILED";
-  document.getElementById("finalscore").textContent="Eliminations: "+eliminations;
+  document.getElementById("finalscore").textContent=
+   "Eliminations: "+eliminations;
   document.getElementById("gameover").style.display="flex";
  }
 }
@@ -718,17 +772,14 @@ function takeDamage(amount){
 // MISSION
 function updateMission(){
  if(missionComplete||gameEnded)return;
-
  if(eliminations<3){
   missionDisplay.textContent=
    `MISSION: ELIMINATE ${3-eliminations} MORE ENEMIES`;
   return;
  }
-
  missionDisplay.textContent="MISSION: REACH GREEN CHECKPOINT";
  const target=new THREE.Vector3();
  marker.getWorldPosition(target);
-
  if(Math.hypot(
   camera.position.x-target.x,
   camera.position.z-target.z
@@ -743,17 +794,14 @@ function updateMission(){
   document.getElementById("gameover").style.display="flex";
  }
 }
-document.getElementById("restart")
-.addEventListener("click",()=>location.reload());
+document.getElementById("restart").addEventListener("click",()=>location.reload());
 
-// GAME LOOP
+// ANIMATION LOOP
 const clock=new THREE.Clock();
-
 function animate(){
  requestAnimationFrame(animate);
  const dt=Math.min(clock.getDelta(),.05);
 
- // ADS
  camera.fov=THREE.MathUtils.lerp(
   camera.fov,aiming?45:75,Math.min(1,dt*10)
  );
@@ -770,121 +818,123 @@ function animate(){
   const deltaX=-Math.sin(yaw)*forward+Math.cos(yaw)*sideways;
   const deltaZ=-Math.cos(yaw)*forward-Math.sin(yaw)*sideways;
 
-  const nextX=THREE.MathUtils.clamp(
+  const nx=THREE.MathUtils.clamp(
    camera.position.x+deltaX,-8,8
   );
-  if(!collides(nextX,camera.position.z)){
-   camera.position.x=nextX;
+  if(!collides(nx,camera.position.z)){
+   camera.position.x=nx;
   }
-
-  const nextZ=THREE.MathUtils.clamp(
+  const nz=THREE.MathUtils.clamp(
    camera.position.z+deltaZ,-75,75
   );
-  if(!collides(camera.position.x,nextZ)){
-   camera.position.z=nextZ;
+  if(!collides(camera.position.x,nz)){
+   camera.position.z=nz;
   }
 
-  // ENEMY AI WITH NAVIGATION
+  // ENEMY AI
   for(const enemy of enemies){
-   const data=enemy.userData;
-   if(data.healthBar){
-    data.healthBar.quaternion.copy(camera.quaternion);
+   const d=enemy.userData;
+   if(d.healthBar){
+    d.healthBar.quaternion.copy(camera.quaternion);
    }
 
-   if(!data.alive){
-    data.respawn-=dt;
-    if(data.respawn<=0){
-     data.alive=true;
-     data.health=100;
+   d.flashTime=Math.max(0,d.flashTime-dt);
+   d.flash.visible=d.alive&&d.flashTime>0;
+
+   if(!d.alive){
+    d.respawn-=dt;
+    if(d.respawn<=0){
+     d.alive=true;
+     d.health=100;
      enemy.visible=true;
-     enemy.position.set(data.homeX,0,data.homeZ);
-     data.cooldown=2;
-     data.mode="patrol";
-     data.coverPoint=null;
+     enemy.position.set(d.homeX,0,d.homeZ);
+     d.cooldown=2;
+     d.mode="patrol";
+     d.coverPoint=null;
+     d.flashTime=0;
      updateHealthBar(enemy);
     }
     continue;
    }
 
-   data.phase+=dt;
-
+   d.phase+=dt;
    let dx=camera.position.x-enemy.position.x;
    let dz=camera.position.z-enemy.position.z;
    let distance=Math.hypot(dx,dz);
 
    enemy.rotation.y=Math.atan2(dx,dz);
 
-   if(data.mode==="toCover"&&data.coverPoint){
+   if(d.mode==="toCover"&&d.coverPoint){
     const remaining=moveToward(
-     enemy,data.coverPoint.x,data.coverPoint.z,3.6,dt
+     enemy,d.coverPoint.x,d.coverPoint.z,3.6,dt
     );
-    if(remaining<.25)data.mode="inCover";
-   }else if(data.mode==="inCover"){
-    data.coverTimer-=dt;
-    if(data.coverTimer<=0){
-     data.mode="chase";
-     data.coverPoint=null;
+    if(remaining<.25)d.mode="inCover";
+   }else if(d.mode==="inCover"){
+    d.coverTimer-=dt;
+    if(d.coverTimer<=0){
+     d.mode="chase";
+     d.coverPoint=null;
     }
    }else if(distance<28){
-    data.mode="chase";
+    d.mode="chase";
     if(distance>14){
      moveToward(
       enemy,camera.position.x,camera.position.z,2.2,dt
      );
     }
    }else{
-    data.mode="patrol";
+    d.mode="patrol";
     const homeDistance=Math.hypot(
-     data.homeX-enemy.position.x,
-     data.homeZ-enemy.position.z
+     d.homeX-enemy.position.x,
+     d.homeZ-enemy.position.z
     );
-
     if(homeDistance>1){
-     moveToward(
-      enemy,data.homeX,data.homeZ,1.2,dt
-     );
+     moveToward(enemy,d.homeX,d.homeZ,1.2,dt);
     }else{
-     // STEP 9D: patrol uses collision-aware movement
-     const patrolX=
-      data.homeX+Math.sin(data.phase)*1.5;
-     moveToward(
-      enemy,patrolX,data.homeZ,1.2,dt
-     );
+     const patrolX=d.homeX+Math.sin(d.phase)*1.5;
+     moveToward(enemy,patrolX,d.homeZ,1.2,dt);
     }
    }
 
    dx=camera.position.x-enemy.position.x;
    dz=camera.position.z-enemy.position.z;
    distance=Math.hypot(dx,dz);
-   data.cooldown-=dt;
+   d.cooldown-=dt;
 
    if(
-    data.mode!=="inCover" &&
-    data.mode!=="toCover" &&
+    d.mode!=="inCover" &&
+    d.mode!=="toCover" &&
     distance<14 &&
-    data.cooldown<=0
+    d.cooldown<=0
    ){
-    data.cooldown=2.5;
-    takeDamage(10);
+    d.cooldown=2.5;
+    if(enemyHasClearShot(enemy)){
+     enemyFire(enemy,distance);
+    }
    }
   }
 
   recoil=Math.max(0,recoil-dt*.5);
   flashTimer=Math.max(0,flashTimer-dt);
   muzzleFlash.visible=flashTimer>0;
+
   damageFlash=Math.max(0,damageFlash-dt);
-  document.getElementById("damage").style.opacity=damageFlash;
+  directionFlash=Math.max(0,directionFlash-dt);
+  document.getElementById("damage").style.opacity=
+   damageFlash*.8;
+  document.getElementById("direction").style.opacity=
+   directionFlash;
   updateMission();
  }
 
  gun.position.z+=recoil;
 
+ // IMPACT EFFECTS
  for(let i=impactEffects.length-1;i>=0;i--){
   const effect=impactEffects[i];
   effect.life-=dt;
   effect.mesh.material.opacity=Math.max(0,effect.life/.25);
   effect.mesh.scale.multiplyScalar(1+dt*3);
-
   if(effect.life<=0){
    scene.remove(effect.mesh);
    effect.mesh.geometry.dispose();
@@ -893,9 +943,21 @@ function animate(){
   }
  }
 
+ // ENEMY BULLET TRACERS
+ for(let i=tracers.length-1;i>=0;i--){
+  const t=tracers[i];
+  t.life-=dt;
+  t.mesh.material.opacity=Math.max(0,t.life/.16);
+  if(t.life<=0){
+   scene.remove(t.mesh);
+   t.mesh.geometry.dispose();
+   t.mesh.material.dispose();
+   tracers.splice(i,1);
+  }
+ }
+
  renderer.render(scene,camera);
 }
-
 animate();
 
 window.addEventListener("resize",()=>{
@@ -903,11 +965,15 @@ window.addEventListener("resize",()=>{
  camera.updateProjectionMatrix();
  renderer.setSize(innerWidth,innerHeight);
 });
-
 window.addEventListener("error",e=>{
  const el=document.getElementById("error");
  el.style.display="block";
  el.textContent="Game error: "+e.message;
+});
+window.addEventListener("unhandledrejection",e=>{
+ const el=document.getElementById("error");
+ el.style.display="block";
+ el.textContent="Game error: "+String(e.reason);
 });
 </script>
 </body>
