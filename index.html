@@ -368,6 +368,9 @@ function shoot(){
   soldier.userData.health-=50;
   updateHealthBar(soldier);
 
+createImpact(hit.point);
+showHitmarker(soldier.userData.health<=0);
+
   if(soldier.userData.health<=0){
    soldier.userData.alive=false;
    soldier.visible=false;
