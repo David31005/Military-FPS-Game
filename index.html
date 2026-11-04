@@ -4,28 +4,29 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<title>Pittsburgh Streets — Step 9N</title>
+<title>Pittsburgh Streets Step 9N</title>
 <style>
 *{box-sizing:border-box;touch-action:none;-webkit-user-select:none;user-select:none}
-html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#09131c;color:white;font-family:Arial,sans-serif}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#101923;color:white;font-family:Arial,sans-serif}
 #game{position:fixed;inset:0;overflow:hidden}
-canvas{display:block;width:100%;height:100%}
-#hud{position:fixed;inset:0;pointer-events:none;text-shadow:0 2px 4px black}
-#heading{position:absolute;top:calc(env(safe-area-inset-top) + 6px);left:0;right:0;text-align:center;font-weight:bold;font-size:18px}
-#mission{font-size:11px;color:#aaffad;margin-top:3px}
-#stats{position:absolute;top:calc(env(safe-area-inset-top) + 68px);left:8px;background:#071b25d9;padding:7px;border-radius:7px;font-size:12px;line-height:1.6}
-#health{position:absolute;bottom:calc(env(safe-area-inset-bottom) + 164px);left:9px;background:#071b25d9;padding:8px;border-radius:7px;font-size:12px}
-#cross,#hit{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:28px}
-#hit{font-size:35px;color:#ffdb44;opacity:0}
-#scope{display:none;position:absolute;inset:0;background:radial-gradient(circle,transparent 0 26%,#000 27%);align-items:center;justify-content:center;font-size:32px}
-#notice{position:absolute;top:30%;width:100%;text-align:center;color:#ffe66b;font-size:20px;font-weight:bold}
+#game canvas{display:block;width:100%;height:100%}
+#hud{position:fixed;inset:0;pointer-events:none;text-shadow:0 2px 4px #000}
+#heading{position:absolute;top:calc(env(safe-area-inset-top) + 6px);left:0;right:0;text-align:center;font-size:18px;font-weight:bold}
+#mission{font-size:11px;color:#aaffb6;margin-top:4px}
+#stats{position:absolute;top:calc(env(safe-area-inset-top) + 65px);left:8px;background:#071b25dd;padding:7px;border-radius:7px;font-size:12px;line-height:1.6}
+#health{position:absolute;bottom:calc(env(safe-area-inset-bottom) + 165px);left:8px;background:#071b25dd;padding:8px;border-radius:7px;font-size:12px}
+#cross,#hit{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:29px}
+#hit{font-size:37px;color:#ffe45c;opacity:0}
+#scope{display:none;position:absolute;inset:0;align-items:center;justify-content:center;background:radial-gradient(circle,transparent 0 26%,#000 27%);font-size:36px}
+#notice{position:absolute;top:30%;width:100%;text-align:center;font-size:20px;color:#ffe66b;font-weight:bold}
 #damage{position:absolute;inset:0;background:red;opacity:0}
+#version{position:absolute;bottom:3px;left:50%;transform:translateX(-50%);font-size:10px;color:#ddd}
 button{color:white;background:#29485e;border:2px solid #ffffff91;border-radius:10px;font-size:12px;font-weight:bold;padding:9px}
 button:active{filter:brightness(1.4)}
 #joy{position:fixed;left:18px;bottom:calc(env(safe-area-inset-bottom) + 28px);width:124px;height:124px;border:3px solid #ffffff99;border-radius:50%;background:#ffffff20}
-#knob{position:absolute;left:35px;top:35px;width:48px;height:48px;border-radius:50%;background:#ffffffbb}
-#extras{position:fixed;top:calc(env(safe-area-inset-top) + 140px);left:8px;display:flex;flex-direction:column;gap:5px}
-#guns{position:fixed;top:calc(env(safe-area-inset-top) + 140px);right:8px;display:flex;flex-direction:column;gap:5px}
+#knob{position:absolute;left:30%;top:30%;width:40%;height:40%;border-radius:50%;background:#ffffffbb}
+#extras{position:fixed;top:calc(env(safe-area-inset-top) + 145px);left:8px;display:flex;flex-direction:column;gap:5px}
+#guns{position:fixed;top:calc(env(safe-area-inset-top) + 145px);right:8px;display:flex;flex-direction:column;gap:5px}
 #guns button.active{background:#27834b}
 #actions{position:fixed;right:12px;bottom:calc(env(safe-area-inset-bottom) + 28px);display:grid;grid-template-columns:75px 90px;gap:7px}
 #fire{grid-row:span 2;border-radius:50%;background:#b72c2c;font-size:19px}
@@ -34,33 +35,28 @@ button:active{filter:brightness(1.4)}
 #start p{line-height:1.5}
 #start button,#finish button{font-size:18px;background:#26814c;padding:15px 25px}
 
-/* IPHONE LANDSCAPE LAYOUT */
-@media (orientation:landscape) and (max-height:600px){
-#heading{top:calc(env(safe-area-inset-top) + 2px);font-size:clamp(12px,2.6vh,17px)}
+/* LANDSCAPE FIX */
+@media (orientation:landscape){
+#heading{top:calc(env(safe-area-inset-top) + 3px);font-size:clamp(12px,2.8vh,17px)}
 #mission{font-size:10px;margin-top:1px}
-#stats{top:calc(env(safe-area-inset-top) + 46px);left:calc(env(safe-area-inset-left) + 9px);font-size:10px;line-height:1.3;padding:5px 8px}
-#health{top:calc(env(safe-area-inset-top) + 111px);bottom:auto;left:calc(env(safe-area-inset-left) + 9px);font-size:10px;padding:5px 8px}
-#joy{left:calc(env(safe-area-inset-left) + 17px);bottom:calc(env(safe-area-inset-bottom) + 10px);width:clamp(75px,22vh,110px);height:clamp(75px,22vh,110px)}
-#knob{width:40%;height:40%;left:30%;top:30%}
-#extras{top:auto;bottom:calc(env(safe-area-inset-bottom) + 8px);left:calc(env(safe-area-inset-left) + clamp(105px,27vh,144px));flex-direction:column;gap:4px}
-#extras button{font-size:10px;padding:6px 8px;min-height:29px}
-#guns{top:calc(env(safe-area-inset-top) + 7px);right:calc(env(safe-area-inset-right) + 10px);flex-direction:row;gap:5px}
-#guns button{font-size:10px;padding:7px 10px;min-width:55px}
-#actions{right:calc(env(safe-area-inset-right) + 10px);bottom:calc(env(safe-area-inset-bottom) + 9px);grid-template-columns:clamp(54px,13vh,76px) clamp(72px,21vh,105px);gap:6px}
-#actions button{font-size:11px;padding:6px}
+#stats{top:calc(env(safe-area-inset-top) + 46px);left:calc(env(safe-area-inset-left) + 8px);font-size:10px;line-height:1.35;padding:5px 7px}
+#health{top:calc(env(safe-area-inset-top) + 110px);bottom:auto;left:calc(env(safe-area-inset-left) + 8px);font-size:10px;padding:5px 7px}
+#joy{left:calc(env(safe-area-inset-left) + 14px);bottom:calc(env(safe-area-inset-bottom) + 9px);width:clamp(75px,21vh,105px);height:clamp(75px,21vh,105px)}
+#extras{top:auto;bottom:calc(env(safe-area-inset-bottom) + 8px);left:calc(env(safe-area-inset-left) + clamp(105px,26vh,135px));gap:4px}
+#extras button{font-size:10px;padding:5px 7px;min-height:28px}
+#guns{top:calc(env(safe-area-inset-top) + 7px);right:calc(env(safe-area-inset-right) + 8px);flex-direction:row;gap:4px}
+#guns button{font-size:10px;padding:7px;min-width:52px}
+#actions{right:calc(env(safe-area-inset-right) + 9px);bottom:calc(env(safe-area-inset-bottom) + 9px);grid-template-columns:clamp(54px,13vh,76px) clamp(70px,20vh,100px);gap:6px}
+#actions button{font-size:11px;padding:5px}
 #fire{font-size:17px!important}
 #notice{top:25%;font-size:16px}
 #cross{font-size:23px}
-#start h1,#finish h1{font-size:23px}
-#start p{font-size:13px;margin:8px 0}
-#start button,#finish button{font-size:14px;padding:10px 18px}
 }
-@media (orientation:landscape) and (max-height:350px){
+@media (orientation:landscape) and (max-height:340px){
 #heading{font-size:12px}
-#mission{font-size:9px}
-#stats{top:38px}
-#health{top:99px}
-#extras button{min-height:25px;padding:3px 6px}
+#stats{top:37px}
+#health{top:94px}
+#extras button{min-height:24px;padding:3px 5px}
 }
 </style>
 </head>
@@ -72,24 +68,27 @@ button:active{filter:brightness(1.4)}
 <div id="stats">KILLS: <span id="kills">0</span><br>ENEMIES: <span id="enemies">0</span><br>GRENADES: <span id="grenades">3</span></div>
 <div id="health">HP: <span id="hp">100</span> | <span id="weapon">M4</span> <span id="ammo">30/180</span></div>
 <div id="cross">+</div><div id="hit">×</div><div id="scope">+</div><div id="notice"></div>
+<div id="version">STEP 9N</div>
 </div>
 <div id="joy"><div id="knob"></div></div>
 <div id="extras"><button id="grenade">GRENADE</button><button id="sound">SOUND ON</button><button id="test">TEST SOUND</button></div>
 <div id="guns"><button data-gun="m4" class="active">M4</button><button data-gun="ak">AK-47</button><button data-gun="sniper">SNIPER</button></div>
 <div id="actions"><button id="aim">AIM</button><button id="fire">FIRE</button><button id="reload">RELOAD</button></div>
-<div id="start"><div><h1>PITTSBURGH STREETS</h1><p>STEP 9N — LANDSCAPE SUPPORT</p><p>Rotate your phone anytime. Three weapons, three waves, grenades, and checkpoint.</p><button id="play">START MISSION</button></div></div>
+<div id="start"><div><h1>PITTSBURGH STREETS</h1><p>STEP 9N — LANDSCAPE FIX</p><p>Rotate your iPhone sideways for the improved controls.</p><button id="play">START MISSION</button></div></div>
 <div id="finish"><div><h1 id="result"></h1><p id="score"></p><button id="restart">PLAY AGAIN</button></div></div>
 
 <script type="module">
 import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js";
+
 const $=id=>document.getElementById(id);
-let scene,camera,renderer,gunScene,gunCamera,clock,gunGroup,muzzlePoint;
+let scene,camera,renderer,gunScene,gunCamera,clock,gunGroup;
 let soldiers=[],items=[],effects=[],checkpoint=null;
 let player={x:0,z:15,hp:100},yaw=0,pitch=0,wave=0,kills=0,grenades=3;
 let playing=false,aiming=false,firing=false,soundOn=true,audioContext;
 let current="m4",lastShot=0,reloadEnd=0,reloadStart=0,reloadDuration=0;
 let recoil=0,walkTime=0,session=0,wavePending=false;
 let joy={x:0,y:0},keys={},guns={};
+
 const specs={
 m4:{name:"M4",size:30,rate:115,damage:36,range:100,spread:.018},
 ak:{name:"AK-47",size:30,rate:155,damage:44,range:95,spread:.027},
@@ -110,52 +109,25 @@ try{
 audioContext??=new(window.AudioContext||window.webkitAudioContext)();
 audioContext.resume();
 const o=audioContext.createOscillator(),g=audioContext.createGain();
-o.type="sawtooth";o.frequency.setValueAtTime(f,audioContext.currentTime);
+o.type="sawtooth";
+o.frequency.setValueAtTime(f,audioContext.currentTime);
 o.frequency.exponentialRampToValueAtTime(Math.max(40,f*.5),audioContext.currentTime+d);
 g.gain.setValueAtTime(v,audioContext.currentTime);
 g.gain.exponentialRampToValueAtTime(.001,audioContext.currentTime+d);
-o.connect(g);g.connect(audioContext.destination);o.start();o.stop(audioContext.currentTime+d);
+o.connect(g);g.connect(audioContext.destination);
+o.start();o.stop(audioContext.currentTime+d);
 }catch(e){}
 }
 function message(s){
-$("notice").textContent=s;clearTimeout(message.timer);
+$("notice").textContent=s;
+clearTimeout(message.timer);
 message.timer=setTimeout(()=>$("notice").textContent="",1400);
 }
 function resizeGame(){
-const w=document.documentElement.clientWidth,h=document.documentElement.clientHeight;
+const w=innerWidth,h=innerHeight;
 camera.aspect=w/h;camera.updateProjectionMatrix();
 gunCamera.aspect=w/h;gunCamera.updateProjectionMatrix();
-renderer.setSize(w,h,false);
-renderer.domElement.style.width=w+"px";
-renderer.domElement.style.height=h+"px";
-}
-function setup(){
-scene=new THREE.Scene();
-scene.background=new THREE.Color(0x91abc4);
-scene.fog=new THREE.Fog(0x91abc4,55,145);
-camera=new THREE.PerspectiveCamera(74,1,.1,220);
-camera.rotation.order="YXZ";scene.add(camera);
-renderer=new THREE.WebGLRenderer({antialias:false});
-renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));
-renderer.autoClear=false;
-$("game").appendChild(renderer.domElement);
-scene.add(new THREE.HemisphereLight(0xffffff,0x5b584f,2));
-const sun=new THREE.DirectionalLight(0xffd6a0,1.5);
-sun.position.set(-25,45,20);scene.add(sun);
-buildCity();
-gunScene=new THREE.Scene();
-gunScene.add(new THREE.HemisphereLight(0xffffff,0x888888,3));
-const light=new THREE.DirectionalLight(0xffffff,2);
-light.position.set(-2,5,5);gunScene.add(light);
-gunCamera=new THREE.PerspectiveCamera(55,1,.01,20);
-gunCamera.position.set(0,0,0);gunCamera.lookAt(0,0,-1);
-clock=new THREE.Clock();
-buildGun();resizeGame();
-window.addEventListener("resize",resizeGame);
-window.addEventListener("orientationchange",()=>{
-setTimeout(resizeGame,150);setTimeout(resizeGame,500);
-});
-animate();
+renderer.setSize(w,h);
 }
 function buildCity(){
 cube(180,.2,220,0x566a50,0,-.2,-30);
@@ -189,7 +161,9 @@ cube(1.9,.75,2.2,color,x,1.5,z-.25);
 cube(1.75,.42,.06,0x293e50,x,1.6,z-1.37);
 for(const dx of [-1,1])for(const dz of [-1.4,1.4]){
 const wheel=new THREE.Mesh(new THREE.CylinderGeometry(.42,.42,.2,12),mat(0x141719));
-wheel.rotation.z=Math.PI/2;wheel.position.set(x+dx*1.12,.45,z+dz);scene.add(wheel);
+wheel.rotation.z=Math.PI/2;
+wheel.position.set(x+dx*1.12,.45,z+dz);
+scene.add(wheel);
 }
 }
 for(const z of [-45,-82]){
@@ -223,9 +197,6 @@ cube(.27,.25,.4,0x966b4b,.21,-.28,-.46,gunGroup);
 cube(.35,.35,.59,0x344b40,.32,-.55,-.27,gunGroup);
 cube(.27,.25,.39,0x966b4b,-.21,-.16,-1.1,gunGroup);
 cube(.35,.35,.63,0x344b40,-.32,-.4,-1,gunGroup);
-muzzlePoint=new THREE.Object3D();
-muzzlePoint.position.set(0,.04,-1.14-barrel/2-.13);
-gunGroup.add(muzzlePoint);
 gunGroup.position.set(.19,-.2,-.14);
 gunGroup.scale.setScalar(.9);
 gunScene.add(gunGroup);
@@ -560,7 +531,7 @@ renderer.clear();renderer.render(scene,camera);
 renderer.clearDepth();renderer.render(gunScene,gunCamera);
 }
 
-/* TOUCH CONTROLS */
+/* IPHONE TOUCH CONTROLS */
 const stick=$("joy");let stickId=null;
 function moveStick(e){
 const r=stick.getBoundingClientRect();
@@ -634,6 +605,37 @@ if(e.code==="Digit3")switchGun("sniper");
 });
 window.addEventListener("keyup",e=>keys[e.code]=false);
 document.addEventListener("contextmenu",e=>e.preventDefault());
+
+/* INITIALIZE */
+function setup(){
+scene=new THREE.Scene();
+scene.background=new THREE.Color(0x91abc4);
+scene.fog=new THREE.Fog(0x91abc4,55,145);
+camera=new THREE.PerspectiveCamera(74,innerWidth/innerHeight,.1,220);
+camera.rotation.order="YXZ";
+scene.add(camera);
+renderer=new THREE.WebGLRenderer({antialias:false});
+renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));
+renderer.autoClear=false;
+$("game").appendChild(renderer.domElement);
+scene.add(new THREE.HemisphereLight(0xffffff,0x5b584f,2));
+const sun=new THREE.DirectionalLight(0xffd6a0,1.5);
+sun.position.set(-25,45,20);scene.add(sun);
+buildCity();
+gunScene=new THREE.Scene();
+gunScene.add(new THREE.HemisphereLight(0xffffff,0x888888,3));
+const light=new THREE.DirectionalLight(0xffffff,2);
+light.position.set(-2,5,5);gunScene.add(light);
+gunCamera=new THREE.PerspectiveCamera(55,innerWidth/innerHeight,.01,20);
+clock=new THREE.Clock();
+buildGun();resizeGame();
+window.addEventListener("resize",resizeGame);
+window.addEventListener("orientationchange",()=>{
+setTimeout(resizeGame,150);
+setTimeout(resizeGame,500);
+});
+animate();
+}
 setup();
 </script>
 </body>
