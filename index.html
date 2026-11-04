@@ -2,44 +2,105 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"
- content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>Pittsburgh Streets</title>
 <style>
-  body {
-    margin: 0;
-    overflow: hidden;
-    background: #111;
-    font-family: Arial, sans-serif;
-  }
-  #title {
-    position: absolute;
-    top: 15px;
-    width: 100%;
-    text-align: center;
-    color: white;
-    font-size: 23px;
-    font-weight: bold;
-    text-shadow: 2px 2px 5px black;
-    pointer-events: none;
-  }
-  #crosshair {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: white;
-    font-size: 28px;
-    pointer-events: none;
-  }
-  #hud {
-    position: absolute;
-    bottom: 15px;
-    left: 15px;
-    color: white;
-    font-size: 16px;
-    text-shadow: 1px 1px 3px black;
-  }
+* { box-sizing: border-box; }
+html, body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #111;
+  font-family: Arial, sans-serif;
+  touch-action: none;
+}
+canvas { display: block; touch-action: none; }
+#title {
+  position: absolute;
+  top: 18px;
+  width: 100%;
+  color: white;
+  text-align: center;
+  font-size: 23px;
+  font-weight: bold;
+  text-shadow: 2px 2px 5px black;
+  pointer-events: none;
+}
+#crosshair {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 30px;
+  pointer-events: none;
+}
+#hud {
+  position: absolute;
+  left: 15px;
+  bottom: 165px;
+  color: white;
+  font-size: 16px;
+  text-shadow: 1px 1px 3px black;
+  pointer-events: none;
+}
+#joystick {
+  position: absolute;
+  bottom: 30px;
+  left: 25px;
+  width: 125px;
+  height: 125px;
+  border-radius: 50%;
+  border: 2px solid #ffffff80;
+  background: #ffffff35;
+  touch-action: none;
+}
+#stick {
+  position: absolute;
+  top: 36px;
+  left: 36px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #ffffffbb;
+  pointer-events: none;
+}
+#fire {
+  position: absolute;
+  right: 25px;
+  bottom: 45px;
+  width: 95px;
+  height: 95px;
+  border-radius: 50%;
+  background: #c62828;
+  color: white;
+  border: 3px solid white;
+  font-size: 19px;
+  font-weight: bold;
+  touch-action: none;
+}
+#reload {
+  position: absolute;
+  right: 40px;
+  bottom: 150px;
+  padding: 10px 15px;
+  background: #333c;
+  color: white;
+  border: 1px solid white;
+  border-radius: 10px;
+  font-weight: bold;
+  touch-action: none;
+}
+#message {
+  position: absolute;
+  top: 85px;
+  width: 100%;
+  color: #ffe36b;
+  text-align: center;
+  font-weight: bold;
+  pointer-events: none;
+}
 </style>
 </head>
 <body>
@@ -47,40 +108,35 @@
 <div id="title">PITTSBURGH STREETS</div>
 <div id="crosshair">+</div>
 <div id="hud">HEALTH: 100 | AMMO: 30</div>
+<div id="message"></div>
+<div id="joystick"><div id="stick"></div></div>
+<button id="fire">FIRE</button>
+<button id="reload">RELOAD</button>
 
 <script type="module">
-import * as THREE from
-"https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js";
+import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js";
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x91a6b2);
 scene.fog = new THREE.Fog(0x91a6b2, 25, 110);
 
 const camera = new THREE.PerspectiveCamera(
-  75,
-  window.innerWidth / window.innerHeight,
-  0.1,
-  200
+  75, innerWidth / innerHeight, 0.1, 200
 );
 camera.position.set(0, 1.7, 8);
+camera.rotation.order = "YXZ";
 
 const renderer = new THREE.WebGLRenderer({
   antialias: true
 });
-renderer.setSize(
-  window.innerWidth,
-  window.innerHeight
-);
-renderer.setPixelRatio(
-  Math.min(window.devicePixelRatio, 2)
-);
-document.body.appendChild(renderer.domElement);
+renderer.setSize(innerWidth, innerHeight);
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+document.body.prepend(renderer.domElement);
 
 // Lighting
 scene.add(new THREE.HemisphereLight(
   0xffffff, 0x555555, 2
 ));
-
 const sun = new THREE.DirectionalLight(
   0xffffff, 2
 );
@@ -90,9 +146,7 @@ scene.add(sun);
 // Ground
 const ground = new THREE.Mesh(
   new THREE.PlaneGeometry(200, 200),
-  new THREE.MeshStandardMaterial({
-    color: 0x527044
-  })
+  new THREE.MeshStandardMaterial({ color: 0x527044 })
 );
 ground.rotation.x = -Math.PI / 2;
 scene.add(ground);
@@ -100,79 +154,208 @@ scene.add(ground);
 // Road
 const road = new THREE.Mesh(
   new THREE.PlaneGeometry(12, 160),
-  new THREE.MeshStandardMaterial({
-    color: 0x303238
-  })
+  new THREE.MeshStandardMaterial({ color: 0x303238 })
 );
 road.rotation.x = -Math.PI / 2;
 road.position.y = 0.02;
 scene.add(road);
 
-// Sidewalks
 function makeBox(w, h, d, color, x, y, z) {
   const box = new THREE.Mesh(
     new THREE.BoxGeometry(w, h, d),
-    new THREE.MeshStandardMaterial({color})
+    new THREE.MeshStandardMaterial({ color })
   );
   box.position.set(x, y, z);
   scene.add(box);
   return box;
 }
 
-makeBox(3, 0.2, 160, 0x999999,
-  -7.5, 0.1, 0);
-makeBox(3, 0.2, 160, 0x999999,
-  7.5, 0.1, 0);
+// Sidewalks
+makeBox(3, 0.2, 160, 0x999999, -7.5, 0.1, 0);
+makeBox(3, 0.2, 160, 0x999999, 7.5, 0.1, 0);
 
 // Buildings
 const colors = [
-  0x885544,
-  0x777777,
-  0x554c48,
-  0x99775b
+  0x885544, 0x777777, 0x554c48, 0x99775b
 ];
-
 for (let i = 0; i < 12; i++) {
   const z = 15 - i * 12;
   const height = 7 + (i % 4) * 2;
-
-  makeBox(8, height, 9,
-    colors[i % colors.length],
-    -13, height / 2, z);
-
-  makeBox(8, height + 2, 9,
-    colors[(i + 1) % colors.length],
-    13, (height + 2) / 2, z);
+  makeBox(
+    8, height, 9, colors[i % 4],
+    -13, height / 2, z
+  );
+  makeBox(
+    8, height + 2, 9, colors[(i + 1) % 4],
+    13, (height + 2) / 2, z
+  );
 }
 
 // Yellow road markings
 for (let z = -70; z < 70; z += 9) {
   const line = new THREE.Mesh(
     new THREE.PlaneGeometry(0.25, 4),
-    new THREE.MeshBasicMaterial({
-      color: 0xffd447
-    })
+    new THREE.MeshBasicMaterial({ color: 0xffd447 })
   );
   line.rotation.x = -Math.PI / 2;
   line.position.set(0, 0.04, z);
   scene.add(line);
 }
 
-// Animation
+// iPhone joystick
+const joystick = document.getElementById("joystick");
+const stick = document.getElementById("stick");
+let moveX = 0;
+let moveY = 0;
+let joystickPointer = null;
+
+function updateStick(e) {
+  const rect = joystick.getBoundingClientRect();
+  let x = e.clientX - (rect.left + rect.width / 2);
+  let y = e.clientY - (rect.top + rect.height / 2);
+  const distance = Math.hypot(x, y);
+  const max = 37;
+
+  if (distance > max) {
+    x = x / distance * max;
+    y = y / distance * max;
+  }
+  moveX = x / max;
+  moveY = y / max;
+  stick.style.transform =
+    "translate(" + x + "px," + y + "px)";
+}
+
+joystick.addEventListener("pointerdown", e => {
+  if (joystickPointer !== null) return;
+  joystickPointer = e.pointerId;
+  joystick.setPointerCapture(e.pointerId);
+  updateStick(e);
+});
+joystick.addEventListener("pointermove", e => {
+  if (e.pointerId === joystickPointer) updateStick(e);
+});
+function stopStick(e) {
+  if (e.pointerId !== joystickPointer) return;
+  joystickPointer = null;
+  moveX = 0;
+  moveY = 0;
+  stick.style.transform = "translate(0px,0px)";
+}
+joystick.addEventListener("pointerup", stopStick);
+joystick.addEventListener("pointercancel", stopStick);
+
+// Swipe to look around
+let lookPointer = null;
+let lastX = 0;
+let lastY = 0;
+let yaw = 0;
+let pitch = 0;
+
+renderer.domElement.addEventListener("pointerdown", e => {
+  if (e.clientX < innerWidth * 0.35 ||
+      lookPointer !== null) return;
+  lookPointer = e.pointerId;
+  lastX = e.clientX;
+  lastY = e.clientY;
+  renderer.domElement.setPointerCapture(e.pointerId);
+});
+
+renderer.domElement.addEventListener("pointermove", e => {
+  if (e.pointerId !== lookPointer) return;
+  yaw -= (e.clientX - lastX) * 0.004;
+  pitch -= (e.clientY - lastY) * 0.004;
+  pitch = Math.max(-1.2, Math.min(1.2, pitch));
+  lastX = e.clientX;
+  lastY = e.clientY;
+  camera.rotation.y = yaw;
+  camera.rotation.x = pitch;
+});
+
+function stopLook(e) {
+  if (e.pointerId === lookPointer) lookPointer = null;
+}
+renderer.domElement.addEventListener("pointerup", stopLook);
+renderer.domElement.addEventListener("pointercancel", stopLook);
+
+// Shooting and reloading
+let health = 100;
+let ammo = 30;
+const hud = document.getElementById("hud");
+const message = document.getElementById("message");
+let messageTimeout;
+
+function updateHUD() {
+  hud.textContent =
+    "HEALTH: " + health + " | AMMO: " + ammo;
+}
+
+function showMessage(text) {
+  message.textContent = text;
+  clearTimeout(messageTimeout);
+  messageTimeout = setTimeout(() => {
+    message.textContent = "";
+  }, 1000);
+}
+
+document.getElementById("fire").addEventListener(
+  "pointerdown", e => {
+    e.preventDefault();
+    if (ammo <= 0) {
+      showMessage("OUT OF AMMO - RELOAD");
+      return;
+    }
+    ammo--;
+    updateHUD();
+    const crosshair = document.getElementById("crosshair");
+    crosshair.style.color = "#ffdd44";
+    setTimeout(() => {
+      crosshair.style.color = "white";
+    }, 100);
+  }
+);
+
+document.getElementById("reload").addEventListener(
+  "pointerdown", e => {
+    e.preventDefault();
+    ammo = 30;
+    updateHUD();
+    showMessage("RELOADED");
+  }
+);
+
+// Game loop
+const clock = new THREE.Clock();
+
 function animate() {
   requestAnimationFrame(animate);
+  const dt = Math.min(clock.getDelta(), 0.05);
+  const speed = 6;
+  const forward = -moveY * speed * dt;
+  const sideways = moveX * speed * dt;
+
+  camera.position.x +=
+    -Math.sin(yaw) * forward +
+    Math.cos(yaw) * sideways;
+  camera.position.z +=
+    -Math.cos(yaw) * forward -
+    Math.sin(yaw) * sideways;
+
+  camera.position.x = Math.max(
+    -8, Math.min(8, camera.position.x)
+  );
+  camera.position.z = Math.max(
+    -75, Math.min(75, camera.position.z)
+  );
+
   renderer.render(scene, camera);
 }
 animate();
 
 window.addEventListener("resize", () => {
-  camera.aspect =
-    window.innerWidth / window.innerHeight;
+  camera.aspect = innerWidth / innerHeight;
   camera.updateProjectionMatrix();
-  renderer.setSize(
-    window.innerWidth,
-    window.innerHeight
-  );
+  renderer.setSize(innerWidth, innerHeight);
 });
 </script>
 </body>
