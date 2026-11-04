@@ -278,6 +278,61 @@ const marker=new THREE.Mesh(
 marker.position.set(0,.15,-4);
 checkpoint.add(marker);
 
+ // STEP 8B - ENEMY HEALTH BARS
+
+function createHealthBar(soldier) {
+  const group = new THREE.Group();
+  group.position.set(0, 3.1, 0);
+
+  const background = new THREE.Mesh(
+    new THREE.PlaneGeometry(1.2, 0.16),
+    new THREE.MeshBasicMaterial({
+      color: 0x333333,
+      side: THREE.DoubleSide,
+      depthTest: false
+    })
+  );
+
+  const fill = new THREE.Mesh(
+    new THREE.PlaneGeometry(1.1, 0.1),
+    new THREE.MeshBasicMaterial({
+      color: 0x00ff00,
+      side: THREE.DoubleSide,
+      depthTest: false
+    })
+  );
+
+  fill.position.z = 0.01;
+
+  group.add(background);
+  group.add(fill);
+  soldier.add(group);
+
+  soldier.userData.healthBar = group;
+  soldier.userData.healthFill = fill;
+}
+
+function updateHealthBar(soldier) {
+  const health = Math.max(
+    0,
+    soldier.userData.health
+  );
+
+  const fill = soldier.userData.healthFill;
+  if (!fill) return;
+
+  const percent = health / 100;
+
+  fill.scale.x = Math.max(0.001, percent);
+  fill.position.x = -(1.1 * (1 - percent)) / 2;
+
+  fill.material.color.setHex(
+    percent > 0.5 ? 0x00ff00 :
+    percent > 0.25 ? 0xffaa00 :
+    0xff0000
+  );
+}
+
 // ENEMY SOLDIERS
 const enemies=[];
 const targets=[];
@@ -311,8 +366,13 @@ function createEnemy(x,z){
   respawn:0
  };
 
- scene.add(soldier);
- enemies.push(soldier);
+ 
+createHealthBar(soldier);
+updateHealthBar(soldier);
+
+scene.add(soldier);
+enemies.push(soldier);
+
 }
 
 createEnemy(-3,-12);
@@ -445,6 +505,9 @@ updateHUD();
  if(hit){
   const soldier=hit.object.userData.enemy;
   soldier.userData.health-=50;
+  
+updateHealthBar(soldier);
+
 
   if(soldier.userData.health<=0){
    soldier.userData.alive=false;
@@ -566,12 +629,19 @@ function animate(){
   for(const enemy of enemies){
    const data=enemy.userData;
 
+if (data.healthBar) {
+  data.healthBar.quaternion.copy(camera.quaternion);
+}
+
    if(!data.alive){
     data.respawn-=dt;
     if(data.respawn<=0){
      data.alive=true;
      data.health=100;
-     enemy.visible=true;
+     enemy.visible=true;  
+     
+updateHealthBar(enemy);
+
      enemy.position.set(data.homeX,0,data.homeZ);
      data.cooldown=2;
     }
