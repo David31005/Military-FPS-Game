@@ -1,0 +1,50 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+  <title>Military FPS Game</title>
+
+  <style>
+    body {
+      margin: 0;
+      background: #17251b;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+
+    h1 {
+      margin-top: 80px;
+      color: #8fba77;
+    }
+
+    button {
+      background: #527344;
+      color: white;
+      padding: 16px 35px;
+      font-size: 20px;
+      border: none;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>MILITARY FPS</h1>
+  <p>Operation: First Strike</p>
+
+  <button id="startButton">START GAME</button>
+  <p id="message"></p>
+
+  <script>
+    document.getElementById("startButton")
+      .addEventListener("click", function() {
+        document.getElementById("message")
+          .textContent = "Preparing battlefield...";
+      });
+  </script>
+</body>
+</html>
