@@ -1632,7 +1632,194 @@ step14StreetDetails();
 // The two squadmates begin oriented toward the mission route.
 for(const a of allies)a.g.rotation.y=Math.PI;
 };
-setup();
+
+========================================== */
+
+/* Fix squad facing direction */
+const step15OriginalAllyAI = allyAI;
+
+allyAI = function(a, dt, i) {
+  step15OriginalAllyAI(a, dt, i);
+
+  if (a.dead) return;
+
+  let target = null;
+  let nearest = 45;
+
+  for (const e of enemies) {
+    if (e.dead) continue;
+
+    const d = Math.hypot(
+      e.x - a.x,
+      e.z - a.z
+    );
+
+    if (d < nearest) {
+      nearest = d;
+      target = e;
+    }
+  }
+
+  let direction;
+
+  if (target && (squadMode === "attack" || nearest < 24)) {
+    direction = Math.atan2(
+      target.x - a.x,
+      target.z - a.z
+    );
+  } else {
+    // Face down the street, away from the player
+    direction = Math.PI;
+  }
+
+  let difference = Math.atan2(
+    Math.sin(direction - a.g.rotation.y),
+    Math.cos(direction - a.g.rotation.y)
+  );
+
+  a.g.rotation.y += difference * Math.min(1, dt * 9);
+};
+
+/* Improved street details */
+function step15AddDetails() {
+
+  const detail = new THREE.Group();
+  scene.add(detail);
+
+  const darkMetal = new THREE.MeshStandardMaterial({
+    color: 0x263039,
+    metalness: 0.65,
+    roughness: 0.4
+  });
+
+  const concrete = new THREE.MeshStandardMaterial({
+    color: 0xa3a29a,
+    roughness: 0.92
+  });
+
+  const orange = new THREE.MeshStandardMaterial({
+    color: 0xe87a21,
+    roughness: 0.8
+  });
+
+  const white = new THREE.MeshStandardMaterial({
+    color: 0xece8db,
+    roughness: 0.85
+  });
+
+  function block(w, h, d, material, x, y, z) {
+    const m = new THREE.Mesh(
+      new THREE.BoxGeometry(w, h, d),
+      material
+    );
+
+    m.position.set(x, y, z);
+    m.receiveShadow = true;
+    m.castShadow = true;
+    detail.add(m);
+    return m;
+  }
+
+  // More realistic road lane markings
+  for (let z = -145; z < 70; z += 9) {
+    block(.15, .025, 3.8, white, -4.7, .11, z);
+    block(.15, .025, 3.8, white, 4.7, .11, z);
+  }
+
+  // Street crossing markings
+  for (let z of [-45, -105]) {
+    for (let x = -8; x <= 8; x += 2) {
+      block(1.15, .025, 2.3, white, x, .12, z);
+    }
+  }
+
+  // Construction cones
+  for (let z of [-32, -62, -92, -122]) {
+    for (let x of [-7.8, 7.8]) {
+
+      const cone = new THREE.Mesh(
+        new THREE.ConeGeometry(.3, .85, 8),
+        orange
+      );
+
+      cone.position.set(x, .45, z);
+      detail.add(cone);
+
+      block(.65, .12, .65, darkMetal, x, .08, z);
+      block(.42, .08, .42, white, x, .35, z);
+    }
+  }
+
+  // Concrete construction barriers
+  for (let z of [-55, -115]) {
+    for (let x of [-7.2, 7.2]) {
+      block(
+        1.8, 1.1, .55,
+        concrete, x, .55, z
+      );
+
+      block(
+        1.5, .18, .58,
+        orange, x, .85, z
+      );
+    }
+  }
+
+  // Storefront awnings along buildings
+  for (let z = -145; z < 70; z += 30) {
+    for (let side of [-1, 1]) {
+      const awning = block(
+        2.5, .16, 4,
+        darkMetal,
+        side * 12.8, 3.5, z
+      );
+
+      awning.rotation.z = side * .08;
+    }
+  }
+
+  // Road surface patches
+  const asphalt = new THREE.MeshStandardMaterial({
+    color: 0x333a3e,
+    roughness: .95
+  });
+
+  for (let z = -130; z < 65; z += 22) {
+    block(
+      2.5, .018, 3.5,
+      asphalt,
+      (Math.sin(z) * 4),
+      .105,
+      z
+    );
+  }
+
+  // Improve renderer lighting and tone
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.15;
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+  // Add subtle atmospheric lighting
+  const fillLight = new THREE.DirectionalLight(
+    0xc6dfff, .35
+  );
+
+  fillLight.position.set(-25, 30, 15);
+  scene.add(fillLight);
+}
+
+/* Apply new graphics after every mission reset */
+const step15OriginalReset = reset;
+
+reset = function(data = null) {
+  step15OriginalReset(data);
+  step15AddDetails();
+};
+
+console.log(
+  "Pittsburgh Streets Step 15 upgrade loaded"
+);
+
 </script>
 </body>
 </html>
