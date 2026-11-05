@@ -2297,6 +2297,123 @@ step23ResetBase(data);
 step23World();
 step23Gun();
 };
+/* STEP 24 — Character overhaul + environmental depth
+Compatible with the existing mission, AI, and weapon systems. */
+function step24Character(u){
+if(!u||!u.torso||u.civilian)return;
+const cloth=mat(u.team?0x48616c:u.commander?0x575243:0x52614a,.04,.94);
+const armor=mat(u.team?0x293e47:0x333d31,.12,.75);
+const straps=mat(0x20292b,.16,.82),metal=mat(0x697578,.52,.46);
+const tan=mat(0x857458,.03,.94);
+// Layered chest armor and equipment, mounted to animated torso.
+box(.58,.52,.16,armor,0,.13,.35,u.torso);
+box(.62,.13,.2,straps,0,.39,.33,u.torso);
+for(let side of [-1,1]){
+box(.09,.7,.12,straps,side*.31,.12,.3,u.torso);
+box(.19,.25,.14,armor,side*.21,-.1,.47,u.torso);
+box(.2,.17,.13,tan,side*.42,-.18,.11,u.torso);
+box(.18,.22,.09,armor,side*.03,-.49,.17,u.arms[side===-1?0:1]);
+box(.26,.18,.11,straps,0,-.5,.23,u.legs[side===-1?0:1]);
+box(.3,.07,.12,metal,0,-.48,.29,u.legs[side===-1?0:1]);
+}
+// Backpack silhouette, side pouches and shoulder radio.
+box(.65,.68,.28,cloth,0,.04,-.52,u.torso);
+box(.43,.22,.1,armor,0,-.21,-.72,u.torso);
+box(.14,.25,.11,straps,-.35,.29,.26,u.torso);
+box(.025,.23,.025,metal,-.35,.53,.26,u.torso);
+// Visor, helmet side rails, chin strap and mounted light.
+box(.57,.11,.24,armor,0,.34,.14,u.head);
+for(const side of [-1,1]){
+box(.19,.08,.29,straps,side*.27,.34,-.01,u.head);
+box(.035,.22,.035,straps,side*.23,-.02,.18,u.head);
+}
+box(.19,.09,.14,metal,0,.52,.14,u.head);
+box(.18,.07,.06,straps,0,-.18,.29,u.head);
+// Extra shoulder pads and an identifiable friendly shoulder patch.
+for(const side of [-1,1]){
+const arm=u.arms[side===-1?0:1];
+box(.27,.15,.29,cloth,0,-.17,.04,arm);
+box(.15,.09,.045,u.team?0x5da4b9:0x807751,side*.07,-.15,.2,arm);
+}
+// Helmet-mounted goggles, with dark lenses, not a face replacement.
+const lens=mat(0x1b303a,.32,.22);
+for(const side of [-1,1]){
+box(.18,.095,.05,lens,side*.125,.16,.3,u.head);
+}
+}
+function step24Scene(){
+const q=settings.quality,high=q!=="performance";
+const stone=mat(0xa1a6a1,.08,.87),iron=mat(0x35434b,.5,.5);
+const asphalt=mat(0x383e42,.03,.98),brick=mat(0x8e7061,.05,.9);
+const leaf=mat(0x426f45,.02,.92);
+// More natural, varied foliage, positioned off the playable road.
+if(high && [1,3,5,6].includes(mission)){
+for(let z=-133;z<72;z+=36){
+for(const side of [-1,1]){
+const x=side*14.1;
+for(let i=0;i<4;i++){
+const m=mesh(new THREE.IcosahedronGeometry(.5+(i%2)*.18,1),leaf);
+m.position.set(x+Math.sin(i*2+z)*.75,3.5+i*.35,z+Math.cos(i*3)*.7);
+m.scale.set(1.05,.8,1.05);
+}
+}
+}
+}
+// Parapets, cornices and wall relief give skyline less repetitive edges.
+if([1,3,5,6].includes(mission)){
+for(let z=-140;z<75;z+=30){
+for(const side of [-1,1]){
+const x=side*12.38;
+for(let level=0;level<3;level++){
+const y=4.1+level*3.6;
+box(.21,.18,4.6,brick,x,y,z+1.5);
+if(high){
+box(.25,.11,4.9,stone,x+side*.09,y+.17,z+1.5);
+box(.12,2.6,.12,iron,x+side*.15,y+1.3,z-.6);
+box(.12,2.6,.12,iron,x+side*.15,y+1.3,z+3.6);
+}
+}
+}
+}
+}
+// Road paint variation and utility access plates.
+for(let z=-155;z<80;z+=25){
+box(1.7,.011,2.4,asphalt,Math.sin(z*.17)*4,.135,z);
+if(high){
+for(const side of [-1,1]){
+const x=side*8.2;
+box(.78,.025,.78,iron,x,.15,z+6);
+for(let k=0;k<4;k++)
+box(.06,.028,.66,stone,x+(k-1.5)*.17,.169,z+6);
+}
+}
+}
+// Decorative utility piping on exterior walls.
+if(high&&[1,3,5,6].includes(mission)){
+for(let z=-130;z<75;z+=60){
+for(const side of [-1,1]){
+const x=side*12.55;
+box(.13,7,.13,iron,x,4.3,z);
+box(.13,.13,2.3,iron,x,7.75,z+1.15);
+box(.23,.22,.23,stone,x,2.0,z);
+}
+}
+}
+if(scene.fog){scene.fog.near=night?48:84;scene.fog.far=night?158:225;}
+}
+const step24SpawnBase=spawnWave;
+spawnWave=function(){
+const previous=new Set(enemies);
+step24SpawnBase();
+for(const u of enemies)if(!previous.has(u))step24Character(u);
+};
+const step24ResetBase=reset;
+reset=function(data=null){
+step24ResetBase(data);
+step24Scene();
+for(const u of allies)step24Character(u);
+for(const u of enemies)step24Character(u);
+};
 setup();
 </script>
 </body>
