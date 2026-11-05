@@ -7,29 +7,30 @@
 <title>Pittsburgh Streets — HD Edition</title>
 <style>
 *{box-sizing:border-box;touch-action:none;user-select:none}
-html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#09121c;color:white;font-family:Arial,sans-serif}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#09121c;color:white;font-family:Arial,san
+s-serif}
 #game{position:fixed;inset:0}
 #hud{position:fixed;inset:0;pointer-events:none;text-shadow:1px 2px 4px black}
-#top{position:absolute;top:5px;left:50%;transform:translateX(-50%);width:75%;text-align:center;font-size:13px;font-weight:bol
-d}
+#top{position:absolute;top:5px;left:50%;transform:translateX(-50%);width:75%;text-align:center;font-size:13px;
+font-weight:bold}
 #objective{font-size:10px;color:#9affb4;margin-top:3px}
-#stats{position:absolute;left:5px;top:43px;padding:7px;background:#071520dc;border:1px solid
-#ffffff66;border-radius:5px;font-size:10px;line-height:1.6}
+#stats{position:absolute;left:5px;top:43px;padding:7px;background:#071520dc;border:1px solid #ffffff66;border-
+radius:5px;font-size:10px;line-height:1.6}
 #map{position:absolute;right:5px;top:42px;width:85px;height:85px;background:#152731;border:1px solid white}
 #cross{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:26px}
-#scope{position:absolute;inset:0;display:none;align-items:center;justify-content:center;font-size:35px;background:radial-grad
-ient(circle,transparent 0 24%,black 25%)}
+#scope{position:absolute;inset:0;display:none;align-items:center;justify-content:center;font-size:35px;backgro
+und:radial-gradient(circle,transparent 0 24%,black 25%)}
 #notice{position:absolute;top:29%;width:100%;text-align:center;color:#ffe09a;font-size:14px;font-weight:bold}
 #damage{position:absolute;inset:0;background:red;opacity:0}
 #thermal{position:absolute;inset:0;background:#00ff3320;display:none}
-#boss{position:absolute;left:50%;top:78px;transform:translateX(-50%);width:160px;height:9px;background:#451414;border:1px
-solid white;display:none}
+#boss{position:absolute;left:50%;top:78px;transform:translateX(-50%);width:160px;height:9px;background:#451414
+;border:1px solid white;display:none}
 #bossFill{height:100%;background:#ff4545}
-button{border:1px solid
-#ffffff99;border-radius:6px;background:#254a60;color:white;font-size:9px;font-weight:bold;padding:7px}
+button{border:1px solid #ffffff99;border-radius:6px;background:#254a60;color:white;font-size:9px;font-weight:b
+old;padding:7px}
 button.active{background:#23844c}
-#joy{position:fixed;left:10px;bottom:13px;width:95px;height:95px;border-radius:50%;border:2px solid
-#ffffff99;background:#ffffff22}
+#joy{position:fixed;left:10px;bottom:13px;width:95px;height:95px;border-radius:50%;border:2px solid #ffffff99;
+background:#ffffff22}
 #knob{position:absolute;left:28px;top:28px;width:35px;height:35px;border-radius:50%;background:#ffffffcc}
 #tools,#squad,#movement{position:fixed;bottom:10px;display:flex;flex-direction:column;gap:3px}
 #tools{left:112px}#squad{left:182px}#movement{left:252px}
@@ -37,8 +38,8 @@ button.active{background:#23844c}
 #weapons{position:fixed;right:5px;top:5px;display:flex;gap:3px}
 #actions{position:fixed;right:7px;bottom:10px;display:grid;grid-template-columns:54px 70px;gap:4px}
 #fire{grid-row:span 2;background:#b62e35;font-size:15px;border-radius:32%}
-.overlay{position:fixed;inset:0;z-index:20;background:#07111bf2;display:flex;align-items:center;justify-content:center;text-a
-lign:center;padding:12px}
+.overlay{position:fixed;inset:0;z-index:20;background:#07111bf2;display:flex;align-items:center;justify-conten
+t:center;text-align:center;padding:12px}
 .panel{width:100%;max-width:650px;max-height:96vh;overflow:auto;position:relative;z-index:2}
 .panel h1{font-size:clamp(28px,7vw,54px);margin:10px;text-shadow:0 4px 10px black}
 .panel p{font-size:12px;line-height:1.5}
@@ -58,13 +59,40 @@ lign:center;padding:12px}
 #actions{bottom:23px}
 #joy{bottom:23px}
 }
+/* STEP 13: DOWNTOWN PITTSBURGH CINEMATIC START SCREEN */
+#cityStart{position:fixed;inset:0;z-index:80;display:flex;flex-direction:column;justify-content:flex-end;align
+-items:center;padding:22px 16px 9vh;background:linear-gradient(180deg,rgba(3,8,18,.02) 0%,rgba(3,8,18,.1) 48%,
+rgba(3,8,18,.9) 100%),url("pittsburgh-downtown-start.jpg") center center/cover no-repeat;text-align:center}
+#cityStart h1{font-size:clamp(30px,8vw,65px);margin:0 0 6px;color:#fff;text-shadow:0 4px 14px #000;letter-spac
+ing:2px}
+#cityStart p{margin:0 0 14px;color:#f6d278;letter-spacing:2px;font-weight:bold;font-size:12px;text-shadow:0 2p
+x 5px #000}
+#cityPlay{font-size:17px;min-width:215px;padding:15px 25px;background:linear-gradient(#f9d267,#d99820);color:#
+111;border:2px solid #ffedac;box-shadow:0 0 22px #e3ac4188}
+#menu{background:linear-gradient(180deg,rgba(3,10,20,.68),rgba(3,10,20,.94)),url("pittsburgh-downtown-start.jp
+g") center/cover no-repeat}
+#menu .panel{background:rgba(4,13,25,.48);border:1px solid #b1b9c04d;border-radius:14px;padding:16px;backdrop-
+filter:blur(3px)}
+#menu .panel button{border-color:#d5ba7c;background:linear-gradient(#3b5260,#1d3440)}
+#menu .panel button.selected,#menu #start{background:linear-gradient(#e3b14b,#a96c1b);color:#13171b}
+#cross{color:#fff;text-shadow:0 0 3px black,0 0 8px black}
+#stats{background:#071520e8;border:1px solid #b5cad0a8;box-shadow:0 4px 15px #0005;backdrop-filter:blur(4px)}
+#map{border-radius:8px;box-shadow:0 3px 12px #0008}
+#fire{background:linear-gradient(#cb4046,#84212c);border:2px solid #f3a8aa}
+@media(max-width:450px){#cityStart{background-position:60% center}#cityStart h1{font-size:36px}#cityStart{padd
+ing-bottom:13vh}}
 </style>
 </head>
 <body>
+<div id="cityStart">
+<h1>PITTSBURGH STREETS</h1>
+<p>DOWNTOWN PITTSBURGH • TACTICAL FPS</p>
+<button id="cityPlay">PLAY CAMPAIGN</button>
+</div>
 <div id="game"></div>
 <div id="hud">
 <div id="damage"></div><div id="thermal"></div>
-<div id="top">PITTSBURGH STREETS — HD EDITION
+<div id="top">PITTSBURGH STREETS — STEP 13 DOWNTOWN EDITION
 <div id="objective">SELECT A MISSION</div></div>
 <div id="stats">
 HP <span id="hp">100</span> |
@@ -116,7 +144,7 @@ WAVE <span id="wave">1</span>/3<br>
 <div class="panel">
 <p style="color:#ffd890;letter-spacing:3px">PITTSBURGH, PENNSYLVANIA</p>
 <h1>PITTSBURGH<br>STREETS</h1>
-<p>HD TACTICAL FPS • STEP 10B</p>
+<p>CINEMATIC TACTICAL FPS • STEP 12</p>
 <h3>SELECT MISSION</h3>
 <div id="missions">
 <button data-mission="1">1 STREETS</button>
@@ -529,90 +557,84 @@ g.position.set(x,0,z);scene.add(g);
 devices.push({g,x,z,hp:170,dead:false});
 }
 /* HUMAN-LIKE SOLDIERS WITH FACES */
+/* STEP 12 — articulated, higher-detail low-poly characters.
+Uses built-in meshes only: no downloads or paid models. */
 function human(x,z,team=false,commander=false,sniper=false,civilian=false){
 const g=new THREE.Group();
-const skinPalette=[0xd7a783,0xb47b58,0x865638,0x5a392b,0xe5bc9b];
-const skin=skinPalette[Math.floor(Math.random()*skinPalette.length)];
-const cloth=civilian?0x987b5c:team?0x486b72:commander?0x514d43:sniper?0x777c65:0x596b54;
-const vest=team?0x2d4952:commander?0x383e34:0x39463b;
-const trousers=civilian?0x3e5264:cloth;
-const boot=0x252a29, metal=0x20282b;
-const torso=new THREE.Group();torso.position.y=1.42;g.add(torso);
-// Tapered chest, shoulders, waist and overlapping ballistic plates
-ellipsoid(0,.07,0,.43,.52,.265,cloth,torso);
-ellipsoid(0,-.39,0,.33,.23,.24,cloth,torso);
-ellipsoid(0,.06,.225,.385,.42,.105,vest,torso);
-box(.69,.12,.10,0x242f2b,0,-.31,.33,torso);
+const skins=[0xd6aa8b,0x9b694e,0x67412f,0xe1b99a,0xb98361];
+const skin=skins[Math.floor(Math.random()*skins.length)];
+const uniform=civilian?0xc4a35b:team?0x526c75:commander?0x5a5144:sniper?0x696c5b:0x58634b;
+const vest=team?0x293e43:commander?0x403b30:0x303c32;
+const pants=civilian?0x444a52:uniform;
+const dark=0x222a29;
+const torso=new THREE.Group();torso.position.y=1.46;g.add(torso);
+// Chest, waist, shoulders and vest shaped as separate organic volumes.
+ellipsoid(0,.12,0,.40,.52,.24,uniform,torso);
+ellipsoid(0,-.31,0,.32,.28,.22,uniform,torso);
+ellipsoid(0,.12,.19,.37,.40,.13,vest,torso);
+ellipsoid(0,.12,-.22,.33,.38,.12,vest,torso);
 for(const side of [-1,1]){
-ellipsoid(side*.33,.35,0,.20,.17,.27,cloth,torso);
-box(.14,.22,.12,0x293a32,side*.25,.16,.35,torso);
-box(.17,.19,.10,0x394c3d,side*.22,-.12,.35,torso);
+ellipsoid(side*.36,.37,0,.19,.19,.23,uniform,torso);
+box(.17,.25,.12,0x3c483d,side*.23,.15,.33,torso);
+box(.18,.20,.12,0x3c483d,side*.24,-.12,.33,torso);
 }
-// Anatomical neck, jaw, cheeks, nose, ears and face details
-const head=new THREE.Group();head.position.set(0,.70,0);torso.add(head);
-cyl(.135,.16,.25,skin,0,-.24,0,head);
-ellipsoid(0,.10,0,.285,.355,.275,skin,head);
-ellipsoid(0,-.10,.095,.24,.205,.21,skin,head);
+box(.68,.12,.44,dark,0,-.43,0,torso);
+const head=new THREE.Group();head.position.set(0,.76,0);torso.add(head);
+cyl(.13,.15,.24,skin,0,-.26,0,head);
+ellipsoid(0,.07,0,.285,.36,.275,skin,head);
+ellipsoid(0,-.105,.10,.235,.20,.20,skin,head);
 for(const side of [-1,1]){
-ellipsoid(side*.286,.055,0,.065,.11,.065,skin,head);
-ellipsoid(side*.13,.025,.20,.12,.13,.075,skin,head);
-ellipsoid(side*.12,.14,.261,.072,.039,.018,0xe9e1d7,head);
-sphere(.027,0x2b211b,side*.12,.14,.279,head);
-box(.15,.025,.027,0x30231d,side*.12,.225,.267,head);
+ellipsoid(side*.287,.06,-.01,.063,.115,.066,skin,head);
+ellipsoid(side*.112,.115,.26,.068,.036,.023,0xe5ded0,head);
+sphere(.024,0x282923,side*.112,.115,.281,head);
+box(.14,.028,.03,0x3b3028,side*.112,.20,.267,head);
 }
-ellipsoid(0,.005,.28,.067,.12,.079,skin,head);
-sphere(.045,skin,0,-.055,.34,head);
-box(.14,.017,.018,0x69463b,0,-.16,.287,head);
-const hair=0x242321;
-ellipsoid(0,.36,-.025,.285,.13,.265,hair,head);
-if(Math.random()>.52)ellipsoid(0,-.16,.19,.17,.07,.08,0x30241f,head);
+ellipsoid(0,-.01,.275,.065,.11,.072,skin,head);
+ellipsoid(0,-.15,.23,.13,.025,.026,0x6e463b,head);
+ellipsoid(0,.34,-.025,.28,.11,.27,0x272521,head);
+if(!civilian&&Math.random()>.55)ellipsoid(0,-.19,.16,.19,.065,.10,0x322922,head);
 if(!civilian){
-ellipsoid(0,.41,-.015,.345,.17,.33,team?0x405760:0x444e3e,head);
-box(.71,.065,.65,0x303b36,0,.34,.03,head);
-box(.23,.09,.12,0x273232,0,.54,.11,head);
-for(const side of [-1,1])box(.04,.30,.05,0x2b332f,side*.28,.055,.08,head);
+ellipsoid(0,.38,-.025,.34,.17,.32,team?0x435963:0x465044,head);
+box(.72,.065,.59,team?0x394c53:0x374337,0,.32,.02,head);
+for(const side of [-1,1])box(.035,.29,.04,dark,side*.26,.05,.08,head);
+box(.22,.10,.12,0x2a3330,0,.51,.08,head);
+if(commander)box(.22,.09,.10,0x9c7d43,0,.56,.08,head);
 }
-// Hinged arms preserve existing walking animations
 const arms=[];
 for(const side of [-1,1]){
-const arm=new THREE.Group();arm.position.set(side*.47,.30,0);torso.add(arm);
-ellipsoid(side*.015,-.17,0,.18,.26,.19,cloth,arm);
-sphere(.145,cloth,side*.035,-.39,.045,arm);
-ellipsoid(side*.065,-.56,.085,.135,.23,.14,cloth,arm);
-ellipsoid(side*.085,-.78,.12,.13,.13,.115,civilian?skin:boot,arm);
-if(!civilian)box(.15,.12,.12,0x364a3d,side*.06,-.51,.20,arm);
+const arm=new THREE.Group();arm.position.set(side*.49,.35,0);torso.add(arm);
+ellipsoid(0,-.20,0,.17,.28,.18,uniform,arm);
+ellipsoid(side*.025,-.47,.075,.135,.15,.14,0x495347,arm);
+ellipsoid(side*.045,-.65,.13,.13,.23,.14,uniform,arm);
+ellipsoid(side*.06,-.85,.16,.115,.13,.11,civilian?skin:dark,arm);
+for(let f=0;f<3;f++)ellipsoid(side*.06+(f-1)*.065,-.94,.20,.035,.085,.047,civilian?skin:dark,arm);
 arms.push(arm);
 }
-// Articulated legs, knees, shin protection and shaped boots
 const legs=[];
 for(const side of [-1,1]){
-const leg=new THREE.Group();leg.position.set(side*.215,.98,0);g.add(leg);
-ellipsoid(0,-.21,0,.20,.32,.205,trousers,leg);
-sphere(.165,trousers,0,-.47,.025,leg);
-ellipsoid(0,-.66,.01,.15,.25,.165,trousers,leg);
-if(!civilian)ellipsoid(0,-.51,.16,.15,.14,.075,0x39483e,leg);
-ellipsoid(0,-.89,-.10,.18,.14,.29,boot,leg);
-box(.35,.055,.49,0x171b1b,0,-.98,-.13,leg);
+const leg=new THREE.Group();leg.position.set(side*.20,.99,0);g.add(leg);
+ellipsoid(0,-.22,0,.19,.32,.21,pants,leg);
+ellipsoid(0,-.50,.025,.17,.14,.17,pants,leg);
+ellipsoid(0,-.69,-.015,.145,.27,.16,pants,leg);
+ellipsoid(0,-.89,.10,.18,.14,.29,dark,leg);
+box(.35,.045,.52,0x171c1d,0,-.995,.11,leg);
 legs.push(leg);
 }
 if(!civilian){
-// Backpack, radio, ammunition pouches, belt and shoulder straps
-box(.65,.70,.22,0x344439,0,.01,-.36,torso);
-box(.70,.14,.42,0x29342f,0,-.47,0,torso);
-for(const side of [-1,1]){
-box(.12,.65,.09,0x29372e,side*.31,.04,.29,torso);
-box(.18,.28,.14,0x394b3b,side*.23,-.16,.36,torso);
+box(.66,.60,.23,0x384538,0,.04,-.37,torso);
+box(.62,.11,.42,0x28332e,0,-.42,0,torso);
+box(.16,.28,.14,dark,.40,-.34,.11,torso);
+// Sling, stock, receiver, barrel, handguard, magazine and sight.
+box(.12,.11,.48,0x1b2223,0,-.02,.53,torso);
+box(.21,.16,.37,0x2c3636,0,-.01,.76,torso);
+box(.075,.075,.65,0x171d1e,0,.005,1.14,torso);
+box(.15,.24,.12,0x20292b,0,-.22,.79,torso);
+box(.10,.09,.11,0x1a2021,0,.14,.68,torso);
 }
-box(.12,.27,.12,0x252d2c,.46,-.31,.11,torso);
-box(.12,.12,1.1,metal,0,-.07,.63,torso);
-box(.22,.15,.34,0x435150,0,-.01,.70,torso);
-if(commander)box(.27,.09,.08,0xd2b44c,0,.32,.37,torso);
-if(sniper)box(.22,.18,.47,0x171d1f,0,.06,.78,torso);
-}
-const hpbar=box(.9,.09,.08,team?0x44cfff:0x4bf268,0,3.08,0,g);
+const hpbar=box(.9,.09,.08,team?0x44cfff:0x4bf268,0,3.12,0,g);
 g.position.set(x,0,z);scene.add(g);
 const hp=commander?330:sniper?80:95;
-return {g,torso,head,arms,legs,hpbar,x,z,y:0,hp,max:hp,
+return{g,torso,head,arms,legs,hpbar,x,z,y:0,hp,max:hp,
 team,commander,sniper,civilian,dead:false,fall:0,walk:0,
 fire:rand(.4,1.5),alert:0,blind:0,strafe:Math.random()<.5?-1:1,
 holdX:x,holdZ:z};
@@ -626,13 +648,13 @@ clearZone();
 const g=new THREE.Group();
 const disk=mesh(
 new THREE.CylinderGeometry(2.4,2.4,.12,28),
-new THREE.MeshBasicMaterial({color:0x37ff72}),g
+new THREE.MeshBasicMaterial({color:0x35ba80,transparent:true,opacity:.75}),g
 );
 disk.position.y=.12;
 const beam=mesh(
 new THREE.CylinderGeometry(1.5,1.5,7,24,1,true),
 new THREE.MeshBasicMaterial({
-color:0x38ff72,transparent:true,opacity:.17,
+color:0x36d79a,transparent:true,opacity:.09,
 side:THREE.DoubleSide,depthWrite:false
 }),g
 );
@@ -670,6 +692,14 @@ box(.18,.18,.7,0x151a1e,0,.04,-1.8,g);
 for(const s of [-1,1]){
 ellipsoid(s*.32,-.43,-.55,.23,.38,.25,0x3e5948,g);
 ellipsoid(s*.22,-.18,-.85,.16,.16,.18,0x8b654c,g);
+}
+// Compact view model keeps more of the battlefield visible on iPhone.
+g.scale.setScalar(.78);
+g.position.set(.14,-.12,-.18);
+if(!rpg){
+box(.07,.06,.16,0x12191c,0,.24,-.87,g);
+box(.09,.06,.22,0x181f23,0,-.07,-1.49,g);
+for(let j=0;j<4;j++)box(.31,.014,.035,0x7e8580,0,.15,-.98-j*.13,g);
 }
 gunModel=g;gunScene.add(g);
 }
@@ -1035,11 +1065,13 @@ function animateHuman(e,dt){
 if(e.dead){
 e.fall=Math.min(1.5,e.fall+dt*2);
 e.g.rotation.z=e.fall;
+e.arms[0].rotation.z=-.5;e.arms[1].rotation.z=.5;
+e.legs[0].rotation.x=.3;e.legs[1].rotation.x=-.35;
 return;
 }
 for(let i=0;i<2;i++){
-e.legs[i].rotation.x=Math.sin(e.walk)*.45*(i?1:-1);
-e.arms[i].rotation.x=Math.sin(e.walk)*.12*(i?-1:1);
+e.legs[i].rotation.x=Math.sin(e.walk)*.58*(i?1:-1);
+e.arms[i].rotation.x=Math.sin(e.walk)*.20*(i?-1:1);
 }
 e.head.rotation.y=Math.sin(performance.now()*.001+e.x)*.08;
 e.torso.rotation.z=Math.sin(e.walk)*.025;
@@ -1253,6 +1285,7 @@ b.classList.toggle("selected",Number(b.dataset.mission)===n));
 $("brief").textContent=briefs[n];
 }
 function menu(){
+$("cityStart").style.display="none";
 playing=false;firing=false;
 $("resultScreen").style.display="none";
 $("menu").style.display="flex";
@@ -1390,6 +1423,7 @@ night=true;
 $("night").classList.add("selected");
 $("day").classList.remove("selected");
 };
+$("cityPlay").onclick=()=>{$("cityStart").style.display="none";menu();};
 $("start").onclick=briefing;
 $("deploy").onclick=()=>reset();
 $("continue").onclick=()=>reset(saved());
@@ -1493,7 +1527,7 @@ gunBuild();
 window.addEventListener("resize",resize);
 window.addEventListener("orientationchange",
 ()=>setTimeout(resize,200));
-choose(1);menu();frame();
+choose(1);menu();$("cityStart").style.display="flex";frame();
 }
 setup();
 </script>
