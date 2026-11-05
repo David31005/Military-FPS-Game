@@ -3,43 +3,49 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalab
+le=no">
 <title>Pittsburgh Streets — HD Edition</title>
 <style>
 *{box-sizing:border-box;touch-action:none;user-select:none}
-html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#09121c;color:white;font-family:Arial,san
-s-serif}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#09121c;color:white;font
+-family:Arial,sans-serif}
 #game{position:fixed;inset:0}
 #hud{position:fixed;inset:0;pointer-events:none;text-shadow:1px 2px 4px black}
-#top{position:absolute;top:5px;left:50%;transform:translateX(-50%);width:75%;text-align:center;font-size:13px;
-font-weight:bold}
+#top{position:absolute;top:5px;left:50%;transform:translateX(-50%);width:75%;text-align:cente
+r;font-size:13px;font-weight:bold}
 #objective{font-size:10px;color:#9affb4;margin-top:3px}
-#stats{position:absolute;left:5px;top:43px;padding:7px;background:#071520dc;border:1px solid #ffffff66;border-
-radius:5px;font-size:10px;line-height:1.6}
-#map{position:absolute;right:5px;top:42px;width:85px;height:85px;background:#152731;border:1px solid white}
+#stats{position:absolute;left:5px;top:43px;padding:7px;background:#071520dc;border:1px solid
+#ffffff66;border-radius:5px;font-size:10px;line-height:1.6}
+#map{position:absolute;right:5px;top:42px;width:85px;height:85px;background:#152731;border:1p
+x solid white}
 #cross{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:26px}
-#scope{position:absolute;inset:0;display:none;align-items:center;justify-content:center;font-size:35px;backgro
-und:radial-gradient(circle,transparent 0 24%,black 25%)}
-#notice{position:absolute;top:29%;width:100%;text-align:center;color:#ffe09a;font-size:14px;font-weight:bold}
+#scope{position:absolute;inset:0;display:none;align-items:center;justify-content:center;font-
+size:35px;background:radial-gradient(circle,transparent 0 24%,black 25%)}
+#notice{position:absolute;top:29%;width:100%;text-align:center;color:#ffe09a;font-size:14px;f
+ont-weight:bold}
 #damage{position:absolute;inset:0;background:red;opacity:0}
 #thermal{position:absolute;inset:0;background:#00ff3320;display:none}
-#boss{position:absolute;left:50%;top:78px;transform:translateX(-50%);width:160px;height:9px;background:#451414
-;border:1px solid white;display:none}
+#boss{position:absolute;left:50%;top:78px;transform:translateX(-50%);width:160px;height:9px;b
+ackground:#451414;border:1px solid white;display:none}
 #bossFill{height:100%;background:#ff4545}
-button{border:1px solid #ffffff99;border-radius:6px;background:#254a60;color:white;font-size:9px;font-weight:b
-old;padding:7px}
+button{border:1px solid #ffffff99;border-radius:6px;background:#254a60;color:white;font-size:
+9px;font-weight:bold;padding:7px}
 button.active{background:#23844c}
-#joy{position:fixed;left:10px;bottom:13px;width:95px;height:95px;border-radius:50%;border:2px solid #ffffff99;
-background:#ffffff22}
-#knob{position:absolute;left:28px;top:28px;width:35px;height:35px;border-radius:50%;background:#ffffffcc}
-#tools,#squad,#movement{position:fixed;bottom:10px;display:flex;flex-direction:column;gap:3px}
+#joy{position:fixed;left:10px;bottom:13px;width:95px;height:95px;border-radius:50%;border:2px
+solid #ffffff99;background:#ffffff22}
+#knob{position:absolute;left:28px;top:28px;width:35px;height:35px;border-radius:50%;backgroun
+d:#ffffffcc}
+#tools,#squad,#movement{position:fixed;bottom:10px;display:flex;flex-direction:column;gap:3px
+}
 #tools{left:112px}#squad{left:182px}#movement{left:252px}
 #tools button,#squad button,#movement button{font-size:8px;min-height:24px}
 #weapons{position:fixed;right:5px;top:5px;display:flex;gap:3px}
-#actions{position:fixed;right:7px;bottom:10px;display:grid;grid-template-columns:54px 70px;gap:4px}
+#actions{position:fixed;right:7px;bottom:10px;display:grid;grid-template-columns:54px 70px;ga
+p:4px}
 #fire{grid-row:span 2;background:#b62e35;font-size:15px;border-radius:32%}
-.overlay{position:fixed;inset:0;z-index:20;background:#07111bf2;display:flex;align-items:center;justify-conten
-t:center;text-align:center;padding:12px}
+.overlay{position:fixed;inset:0;z-index:20;background:#07111bf2;display:flex;align-items:cent
+er;justify-content:center;text-align:center;padding:12px}
 .panel{width:100%;max-width:650px;max-height:96vh;overflow:auto;position:relative;z-index:2}
 .panel h1{font-size:clamp(28px,7vw,54px);margin:10px;text-shadow:0 4px 10px black}
 .panel p{font-size:12px;line-height:1.5}
@@ -60,27 +66,30 @@ t:center;text-align:center;padding:12px}
 #joy{bottom:23px}
 }
 /* STEP 13: DOWNTOWN PITTSBURGH CINEMATIC START SCREEN */
-#cityStart{position:fixed;inset:0;z-index:80;display:flex;flex-direction:column;justify-content:flex-end;align
--items:center;padding:22px 16px 9vh;background:linear-gradient(180deg,rgba(3,8,18,.02) 0%,rgba(3,8,18,.1) 48%,
-rgba(3,8,18,.9) 100%),url("pittsburgh-downtown-start.jpg") center center/cover no-repeat;text-align:center}
-#cityStart h1{font-size:clamp(30px,8vw,65px);margin:0 0 6px;color:#fff;text-shadow:0 4px 14px #000;letter-spac
-ing:2px}
-#cityStart p{margin:0 0 14px;color:#f6d278;letter-spacing:2px;font-weight:bold;font-size:12px;text-shadow:0 2p
-x 5px #000}
-#cityPlay{font-size:17px;min-width:215px;padding:15px 25px;background:linear-gradient(#f9d267,#d99820);color:#
-111;border:2px solid #ffedac;box-shadow:0 0 22px #e3ac4188}
-#menu{background:linear-gradient(180deg,rgba(3,10,20,.68),rgba(3,10,20,.94)),url("pittsburgh-downtown-start.jp
-g") center/cover no-repeat}
-#menu .panel{background:rgba(4,13,25,.48);border:1px solid #b1b9c04d;border-radius:14px;padding:16px;backdrop-
-filter:blur(3px)}
+#cityStart{position:fixed;inset:0;z-index:80;display:flex;flex-direction:column;justify-conte
+nt:flex-end;align-items:center;padding:22px 16px 9vh;background:linear-gradient(180deg,rgba(3
+,8,18,.02) 0%,rgba(3,8,18,.1) 48%,rgba(3,8,18,.9) 100%),url("pittsburgh-downtown-start.jpg")
+center center/cover no-repeat;text-align:center}
+#cityStart h1{font-size:clamp(30px,8vw,65px);margin:0 0 6px;color:#fff;text-shadow:0 4px 14px
+#000;letter-spacing:2px}
+#cityStart p{margin:0 0 14px;color:#f6d278;letter-spacing:2px;font-weight:bold;font-size:12px
+;text-shadow:0 2px 5px #000}
+#cityPlay{font-size:17px;min-width:215px;padding:15px 25px;background:linear-gradient(#f9d267
+,#d99820);color:#111;border:2px solid #ffedac;box-shadow:0 0 22px #e3ac4188}
+#menu{background:linear-gradient(180deg,rgba(3,10,20,.68),rgba(3,10,20,.94)),url("pittsburgh-
+downtown-start.jpg") center/cover no-repeat}
+#menu .panel{background:rgba(4,13,25,.48);border:1px solid #b1b9c04d;border-radius:14px;paddi
+ng:16px;backdrop-filter:blur(3px)}
 #menu .panel button{border-color:#d5ba7c;background:linear-gradient(#3b5260,#1d3440)}
-#menu .panel button.selected,#menu #start{background:linear-gradient(#e3b14b,#a96c1b);color:#13171b}
+#menu .panel button.selected,#menu #start{background:linear-gradient(#e3b14b,#a96c1b);color:#
+13171b}
 #cross{color:#fff;text-shadow:0 0 3px black,0 0 8px black}
-#stats{background:#071520e8;border:1px solid #b5cad0a8;box-shadow:0 4px 15px #0005;backdrop-filter:blur(4px)}
+#stats{background:#071520e8;border:1px solid #b5cad0a8;box-shadow:0 4px 15px #0005;backdrop-f
+ilter:blur(4px)}
 #map{border-radius:8px;box-shadow:0 3px 12px #0008}
 #fire{background:linear-gradient(#cb4046,#84212c);border:2px solid #f3a8aa}
-@media(max-width:450px){#cityStart{background-position:60% center}#cityStart h1{font-size:36px}#cityStart{padd
-ing-bottom:13vh}}
+@media(max-width:450px){#cityStart{background-position:60% center}#cityStart h1{font-size:36p
+x}#cityStart{padding-bottom:13vh}}
 </style>
 </head>
 <body>
@@ -169,7 +178,8 @@ WAVE <span id="wave">1</span>/3<br>
 <p style="color:#ffcc70">MISSION BRIEFING</p>
 <h2 id="introTitle"></h2>
 <p id="introText"></p>
-<p>Defeat three waves, eliminate the commander, complete the objective and reach extraction.</p>
+<p>Defeat three waves, eliminate the commander, complete the objective and reach extraction.<
+/p>
 <button id="deploy">DEPLOY</button>
 </div></div>
 <div id="settings" class="overlay"><div class="panel">
@@ -190,11 +200,14 @@ WAVE <span id="wave">1</span>/3<br>
 <input id="sensitivity" type="range" min="1" max="10" value="5"></label>
 <p>XP unlocks: Red Dot 300 • Suppressor 500 • Extended Magazine 800</p>
 <label>Red Dot Sight
-<select id="sight"><option value="off">OFF</option><option value="on">ON</option></select></label>
+<select id="sight"><option value="off">OFF</option><option value="on">ON</option></select></l
+abel>
 <label>Suppressor
-<select id="suppressor"><option value="off">OFF</option><option value="on">ON</option></select></label>
+<select id="suppressor"><option value="off">OFF</option><option value="on">ON</option></selec
+t></label>
 <label>Extended Magazine
-<select id="extended"><option value="off">OFF</option><option value="on">ON</option></select></label>
+<select id="extended"><option value="off">OFF</option><option value="on">ON</option></select>
+</label>
 <button id="saveSettings">SAVE SETTINGS</button>
 <button id="backSettings">BACK</button>
 </div></div>
@@ -226,7 +239,8 @@ const titles=[
 ];
 const briefs=[
 "",
-"Clear the city streets, defeat the enemy commander, rescue a civilian and reach extraction.",
+"Clear the city streets, defeat the enemy commander, rescue a civilian and reach extraction."
+,
 "Fight across the bridge, secure the checkpoint, defeat the commander and rescue a hostage.",
 "Eliminate rooftop snipers, clear downtown, defeat the commander and rescue a civilian.",
 "Secure the airport, defeat hostile forces and destroy two enemy devices.",
@@ -607,7 +621,8 @@ ellipsoid(0,-.20,0,.17,.28,.18,uniform,arm);
 ellipsoid(side*.025,-.47,.075,.135,.15,.14,0x495347,arm);
 ellipsoid(side*.045,-.65,.13,.13,.23,.14,uniform,arm);
 ellipsoid(side*.06,-.85,.16,.115,.13,.11,civilian?skin:dark,arm);
-for(let f=0;f<3;f++)ellipsoid(side*.06+(f-1)*.065,-.94,.20,.035,.085,.047,civilian?skin:dark,arm);
+for(let f=0;f<3;f++)ellipsoid(side*.06+(f-1)*.065,-.94,.20,.035,.085,.047,civilian?skin:dark,
+arm);
 arms.push(arm);
 }
 const legs=[];
@@ -1529,6 +1544,94 @@ window.addEventListener("orientationchange",
 ()=>setTimeout(resize,200));
 choose(1);menu();$("cityStart").style.display="flex";frame();
 }
+/* STEP 14 — STREET DETAIL AND SQUAD DIRECTION UPGRADE */
+const step14OldAllyAI = allyAI;
+allyAI = function(a,dt,i){
+step14OldAllyAI(a,dt,i);
+if(a.dead)return;
+// The character model's face points toward local +Z.
+// Turn squadmates toward threats, or face the direction of travel.
+let nearest=null,dist=30;
+for(const e of enemies){
+if(e.dead)continue;
+const d=Math.hypot(e.x-a.x,e.z-a.z);
+if(d<dist){nearest=e;dist=d;}
+}
+let desired;
+if(nearest)desired=Math.atan2(nearest.x-a.x,nearest.z-a.z);
+else if(squadMode==="attack")desired=yaw+Math.PI;
+else if(squadMode==="follow")desired=yaw+Math.PI;
+else desired=a.g.rotation.y;
+let delta=Math.atan2(Math.sin(desired-a.g.rotation.y),Math.cos(desired-a.g.rotation.y));
+a.g.rotation.y+=delta*Math.min(1,dt*7);
+};
+function step14StreetDetails(){
+// Extra city detail, deliberately modest for iPhone performance.
+const roadMat=new THREE.MeshStandardMaterial({color:0x29333a,roughness:.28,metalness:.1});
+const stripeMat=new THREE.MeshStandardMaterial({color:0xe4d7b0,roughness:.82});
+const puddleMat=new THREE.MeshStandardMaterial({color:0x526d80,roughness:.08,metalness:.38,
+transparent:true,opacity:.62,depthWrite:false});
+const concrete=mat(0x929b9a),iron=mat(0x333b41);
+// Patches and reflective puddles on the playable roadway.
+for(let j=0;j<24;j++){
+const z=40-j*8.1;
+const x=(j%2===0?-1:1)*(2.3+(j%3));
+const patch=mesh(new THREE.PlaneGeometry(1.2+j%3,2.8+j%4),j%3===0?puddleMat:roadMat);
+patch.rotation.x=-Math.PI/2;patch.position.set(x,.105,z);
+if(j%3===0)patch.rotation.z=.3;
+}
+// Sidewalk cracks and shop-front awnings.
+if(mission!==4){
+for(let z=-145;z<75;z+=20){
+for(const side of [-1,1]){
+box(2.8,.025,.065,0x656f73,side*11,.145,z);
+if(mission!==2){
+box(3.6,.18,1.5,side===1?0x284e64:0x6a3831,side*12.3,3.6,z+4);
+box(.1,1.3,.1,0x4e575d,side*10.8,2.9,z+4);
+}
+}
+}
+}
+// Construction barricades, cones, and small roadway obstacles.
+for(const z of [-30,-88,-125]){
+for(const x of [-7,7]){
+box(1.8,.8,.18,concrete,x,.7,z);
+box(1.65,.15,.2,0xe2a236,x,.8,z+.11);
+for(const offset of [-.7,.7]){
+const cone=mesh(new THREE.ConeGeometry(.18,.65,7),mat(0xe46c22));
+cone.position.set(x+offset,.36,z+1.5);
+box(.42,.09,.42,iron,x+offset,.05,z+1.5);
+}
+}
+}
+// Traffic lights and street fixtures.
+if(mission===1||mission===3||mission===5){
+for(const z of [-42,-110]){
+for(const side of [-1,1]){
+cyl(.085,.11,7,iron,side*10.8,3.5,z);
+box(4.8,.14,.15,iron,side*8.5,6.8,z);
+box(.55,1.6,.45,0x202b30,side*6.2,6.0,z);
+for(let k=0;k<3;k++){
+const bulb=sphere(.17,[0xd63e32,0xd5aa36,0x3db46d][k],side*6.2,6.47-k*.48,z+.26);
+bulb.material.emissive=new THREE.Color([0x551000,0x442800,0x084418][k]);
+bulb.material.emissiveIntensity=.4;
+}
+}
+}
+}
+// Atmospheric illumination without excessive point lights.
+if(night){
+const fill=new THREE.DirectionalLight(0x89b8ff,.65);
+fill.position.set(12,18,-30);scene.add(fill);
+}
+}
+const step14OldReset=reset;
+reset=function(data=null){
+step14OldReset(data);
+step14StreetDetails();
+// The two squadmates begin oriented toward the mission route.
+for(const a of allies)a.g.rotation.y=Math.PI;
+};
 setup();
 </script>
 </body>
