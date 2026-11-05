@@ -1,51 +1,687 @@
-PITTSBURGH STREETS
-Pittsburgh City
-START
-EXIT
-HD TACTICAL FPS
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Pittsburgh Streets</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#07111b;color:white;font-family:Arial,sans-serif;touch-action:none}
+button{background:#24475b;color:white;border:1px solid #8da9b5;border-radius:8px;padding:9px;font-weight:bold;touch-action:manipulation}
+button:active,.active{background:#2c9860}
+#game{position:fixed;inset:0}
+.screen{position:fixed;inset:0;z-index:50;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:18px;background:#091522ed}
+#startup{z-index:100;background:linear-gradient(#0003,#0009),url("pittsburgh-start.png") center/cover no-repeat}
+#startup h1{font-size:clamp(36px,9vw,72px);text-shadow:0 4px 12px black;margin:10px}
+#startup p{color:#ffd24d;letter-spacing:3px;font-weight:bold}
+.gold{background:#ffcb20!important;color:#111!important}
+.big{width:210px;font-size:17px;margin:7px}
+#menu,#briefing,#result{display:none}
+#menu h1{color:#ffd34d}
+#missions{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;max-width:360px}
+#missions button{font-size:11px}
+#hud{position:fixed;inset:0;pointer-events:none;display:none;text-shadow:1px 2px 3px black}
+#stats{position:absolute;top:48px;left:6px;background:#081622dc;border:1px solid #ffffff77;border-radius:8px;padding:8px;font-size:11px;line-height:1.7}
+#objective{position:absolute;top:7px;left:12%;width:76%;text-align:center;font-size:12px;font-weight:bold;color:#aaffb9}
+#cross{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:29px}
+#notice{position:absolute;top:30%;width:100%;text-align:center;color:#ffdd75;font-weight:bold}
+#map{position:absolute;top:45px;right:7px;width:85px;height:85px;border:1px solid white;background:#14232b}
+#scope{position:absolute;inset:0;display:none;align-items:center;justify-content:center;font-size:40px;background:radial-gradient(circle,transparent 0 23%,#000 24%)}
+#damage{position:absolute;inset:0;background:red;opacity:0}
+#controls{position:fixed;inset:0;display:none;pointer-events:none}
+#controls button,#joy{pointer-events:auto}
+#joy{position:absolute;bottom:24px;left:12px;width:105px;height:105px;border:2px solid #ffffff88;background:#ffffff22;border-radius:50%;touch-action:none}
+#knob{position:absolute;left:34px;top:34px;width:35px;height:35px;border-radius:50%;background:#ffffffcc}
+#tools{position:absolute;left:123px;bottom:18px;display:flex;flex-direction:column;gap:5px}
+#tools button{font-size:9px;padding:8px}
+#actions{position:absolute;right:8px;bottom:18px;display:grid;grid-template-columns:55px 72px;gap:5px}
+#fire{grid-row:span 2;background:#b42b35;font-size:16px}
+#weapons{position:absolute;right:6px;top:6px;display:flex;gap:3px}
+#weapons button{font-size:9px;padding:7px}
+#settings{position:absolute;left:7px;top:160px;display:flex;flex-direction:column;gap:4px}
+#settings button{font-size:9px}
+#result h1{color:#ffd34d}
+@media(orientation:portrait){
+#weapons{top:150px;flex-direction:column}
+#settings{left:6px;top:185px}
+#tools{left:121px}
+}
+</style>
+</head>
+<body>
 
-PITTSBURGH STREETS — HD EDITION
-SELECT A MISSION
-HP 100 | M4 30/180
-KILLS 0 | ENEMIES 0
-GRENADES 3 | FLASH 2
-SQUAD 2 | XP 0
-MISSION 1 | WAVE 1/3
-STANDING
+<div id="game"></div>
 
-+
+<div id="startup" class="screen">
+<p>PITTSBURGH, PENNSYLVANIA</p>
+<h1>PITTSBURGH<br>STREETS</h1>
+<p>HD TACTICAL FPS</p>
+<button class="big gold" id="startGame">START</button>
+<button class="big" id="exitGame">EXIT</button>
+</div>
 
+<div id="menu" class="screen">
+<h1>PITTSBURGH STREETS</h1>
+<p>SELECT YOUR MISSION</p>
+<div id="missions"></div>
+<p id="description"></p>
+<button class="big gold" id="begin">START MISSION</button>
+<button id="backTitle">BACK</button>
+</div>
 
-GRENADE
-FLASH
-THERMAL
-MENU
-FOLLOW
-HOLD
-ATTACK
-SPRINT
-CROUCH
-RELOAD
-M4
-AK-47
-SNIPER
-RPG
-AIM
-FIRE
-SOUND ON
-PITTSBURGH, PENNSYLVANIA
-PITTSBURGH STREETS
-HD TACTICAL FPS • STEP 10B
-SELECT MISSION
-1 STREETS
-2 BRIDGE
-3 DOWNTOWN
-4 AIRPORT
-5 NIGHT RAID
-6 INDUSTRIAL
+<div id="briefing" class="screen">
+<h2 id="briefTitle"></h2>
+<p id="briefText"></p>
+<p>Clear three enemy waves and reach extraction.</p>
+<button class="big gold" id="deploy">DEPLOY</button>
+</div>
 
+<div id="result" class="screen">
+<h1 id="resultTitle"></h1>
+<p id="resultText"></p>
+<button class="big gold" id="nextMission">NEXT MISSION</button>
+<button id="retry">RETRY</button>
+<button id="returnMenu">MAIN MENU</button>
+</div>
 
-DAY NIGHT
-START MISSION
-GRAPHICS & SETTINGS
+<div id="hud">
+<div id="damage"></div>
+<div id="objective">PITTSBURGH STREETS</div>
+<div id="stats">
+HP: <span id="hp">100</span><br>
+WEAPON: <span id="gun">M4</span><br>
+AMMO: <span id="ammo">30/180</span><br>
+KILLS: <span id="kills">0</span><br>
+ENEMIES: <span id="enemyCount">0</span><br>
+WAVE: <span id="wave">1</span>/3<br>
+GRENADES: <span id="grenades">3</span><br>
+XP: <span id="xp">0</span>
+</div>
+<canvas id="map" width="180" height="180"></canvas>
+<div id="cross">+</div>
+<div id="scope">+</div>
+<div id="notice"></div>
+</div>
+
+<div id="controls">
+<div id="joy"><div id="knob"></div></div>
+<div id="tools">
+<button id="grenade">GRENADE</button>
+<button id="reload">RELOAD</button>
+<button id="sprint">SPRINT</button>
+<button id="crouch">CROUCH</button>
+<button id="pause">MENU</button>
+</div>
+<div id="actions">
+<button id="aim">AIM</button>
+<button id="fire">FIRE</button>
+<button id="sound">SOUND ON</button>
+</div>
+<div id="weapons">
+<button data-gun="m4">M4</button>
+<button data-gun="ak">AK-47</button>
+<button data-gun="sniper">SNIPER</button>
+<button data-gun="rpg">RPG</button>
+</div>
+<div id="settings">
+<button id="quality">HD ON</button>
+<button id="night">NIGHT OFF</button>
+</div>
+</div>
+
+<script type="module">
+import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js";
+
+const $=id=>document.getElementById(id);
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const V=(x,y,z)=>new THREE.Vector3(x,y,z);
+
+const names=[
+"PITTSBURGH STREETS",
+"PITTSBURGH BRIDGE",
+"DOWNTOWN PITTSBURGH",
+"PITTSBURGH AIRPORT",
+"PITTSBURGH NIGHT RAID",
+"INDUSTRIAL DISTRICT"
+];
+
+const descriptions=[
+"Clear the streets and rescue the city.",
+"Secure Pittsburgh's bridge.",
+"Eliminate hostile forces downtown.",
+"Retake the airport.",
+"Complete a nighttime tactical raid.",
+"Secure the industrial district."
+];
+
+const specs={
+m4:{name:"M4",mag:30,res:180,damage:35,rate:130},
+ak:{name:"AK-47",mag:30,res:150,damage:45,rate:160},
+sniper:{name:"SNIPER",mag:5,res:30,damage:150,rate:850},
+rpg:{name:"RPG",mag:1,res:10,damage:300,rate:1500}
+};
+
+let renderer,scene,camera,clock,gunModel;
+let player={x:0,z:25,hp:100};
+let yaw=0,pitch=0;
+let enemies=[],pickups=[],effects=[],objects=[];
+let playing=false,aiming=false,firing=false;
+let sprint=false,crouch=false,nightMode=false,hd=true;
+let selected=0,mission=0,wave=0,kills=0,xp=0;
+let gun="m4",ammo={},grenades=3;
+let lastShot=0,reloading=0;
+let joy={x:0,y:0},lookId=null,lx=0,ly=0;
+let keys={},audio,soundOn=true;
+let checkpoint=null,objective="clear";
+let waveTimer=0,session=0;
+
+function beep(freq=150,duration=.1,volume=.04){
+if(!soundOn)return;
+try{
+audio??=new(window.AudioContext||window.webkitAudioContext)();
+audio.resume();
+let o=audio.createOscillator(),g=audio.createGain();
+o.type="sawtooth";
+o.frequency.setValueAtTime(freq,audio.currentTime);
+o.frequency.exponentialRampToValueAtTime(Math.max(40,freq*.4),audio.currentTime+duration);
+g.gain.setValueAtTime(volume,audio.currentTime);
+g.gain.exponentialRampToValueAtTime(.001,audio.currentTime+duration);
+o.connect(g);g.connect(audio.destination);
+o.start();o.stop(audio.currentTime+duration);
+}catch(e){}
+}
+
+function material(color){
+return new THREE.MeshStandardMaterial({color,roughness:.8});
+}
+function cube(w,h,d,color,x,y,z,parent=scene){
+let m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),material(color));
+m.position.set(x,y,z);parent.add(m);return m;
+}
+function ball(r,color,x,y,z,parent=scene){
+let m=new THREE.Mesh(new THREE.SphereGeometry(r,12,10),material(color));
+m.position.set(x,y,z);parent.add(m);return m;
+}
+function notice(s){
+$("notice").textContent=s;
+clearTimeout(notice.timer);
+notice.timer=setTimeout(()=>$("notice").textContent="",2200);
+}
+function show(id){
+for(let s of ["startup","menu","briefing","result"])
+$(s).style.display=s===id?"flex":"none";
+$("hud").style.display=playing?"block":"none";
+$("controls").style.display=playing?"block":"none";
+}
+function updateHUD(){
+$("hp").textContent=Math.ceil(player.hp);
+$("gun").textContent=specs[gun].name;
+$("ammo").textContent=ammo[gun].mag+"/"+ammo[gun].res;
+$("kills").textContent=kills;
+$("enemyCount").textContent=enemies.filter(e=>!e.dead).length;
+$("wave").textContent=wave;
+$("grenades").textContent=grenades;
+$("xp").textContent=xp;
+}
+function makeBuilding(x,z,h){
+let g=new THREE.Group();
+cube(12,h,13,0x786e6a,0,h/2,0,g);
+cube(13,.5,14,0x343d43,0,h+.2,0,g);
+for(let y=3;y<h-1;y+=3.4)
+for(let q=-5;q<=5;q+=2.5){
+cube(.12,1.5,1.3,nightMode?0xc4a675:0x314b60,x<0?6.1:-6.1,y,q,g);
+}
+g.position.set(x,0,z);scene.add(g);
+}
+function street(){
+cube(180,.2,290,0x4d6549,0,-.2,-40);
+cube(20,.1,270,0x484a4d,0,0,-40);
+for(let side of [-1,1]){
+cube(3,.15,270,0x999d9c,side*11,.04,-40);
+for(let z=-150;z<85;z+=16){
+if(mission===1)continue;
+makeBuilding(side*19,z,mission===2?25+Math.abs(z)%35:15+Math.abs(z)%23);
+}
+}
+for(let z=-150;z<85;z+=10)
+cube(.22,.03,3,0xe5c15d,0,.08,z);
+if(mission===1){
+for(let side of [-1,1]){
+cube(.7,2,235,0xd6a83d,side*10,1,-40);
+for(let z=-150;z<85;z+=20){
+cube(.8,12,.8,0xe2b545,side*10,6,z);
+}
+}
+}
+if(mission===3){
+for(let x of [-30,30]){
+cube(24,12,35,0x77838b,x,6,-80);
+cube(25,1,36,0x343d46,x,12,-80);
+}
+}
+if(mission===5){
+for(let x of [-28,28])
+for(let z of [-50,-110])
+cube(22,12,30,0x646e72,x,6,z);
+}
+for(let z of [-40,-80,-115]){
+cube(3,1.5,1.2,0x8a8f8b,-4,.75,z);
+cube(3,1.5,1.2,0x8a8f8b,4,.75,z-5);
+}
+}
+function makeEnemy(x,z,boss=false){
+let g=new THREE.Group();
+cube(.75,1.1,.45,boss?0x874839:0x586c4b,0,1.45,0,g);
+ball(.3,0xb68c69,0,2.28,0,g);
+cube(.6,.25,.6,0x303b30,0,2.55,0,g);
+for(let s of [-1,1]){
+cube(.22,.85,.23,0x485c40,s*.52,1.5,0,g);
+cube(.25,.85,.28,0x3b4739,s*.23,.48,0,g);
+}
+cube(.15,.15,1.1,0x22282b,0,1.5,.55,g);
+let bar=cube(.9,.1,.1,0x35f76c,0,3.05,0,g);
+g.position.set(x,0,z);scene.add(g);
+let hp=boss?350:100;
+enemies.push({g,bar,x,z,hp,max:hp,boss,dead:false,fire:Math.random()+.7,walk:0});
+}
+function buildGun(){
+if(gunModel)camera.remove(gunModel);
+let g=new THREE.Group();
+let long=gun==="sniper",rocket=gun==="rpg";
+cube(rocket?.45:.3,.28,rocket?2:long?1.6:1,gun==="ak"?0x7b5235:0x3b4850,0,-.3,-.85,g);
+cube(.14,.14,rocket?1.9:long?2:1.4,0x161d22,0,-.23,-1.3,g);
+cube(.22,.45,.25,0x252d31,0,-.55,-.55,g);
+cube(.3,.25,.6,0x26343c,0,-.08,-.8,g);
+for(let s of [-1,1])
+ball(.22,0x986f54,s*.28,-.5,-.6,g);
+g.position.set(.38,-.35,-.5);
+gunModel=g;camera.add(g);
+}
+function spawnWave(){
+wave++;
+objective="clear";
+checkpoint=null;
+let n=wave===1?3:wave===2?5:7;
+for(let i=0;i<n;i++){
+let x=(i%4-1.5)*4;
+let z=clamp(player.z-24-Math.floor(i/4)*10-Math.random()*5,-135,65);
+makeEnemy(x,z,wave===3&&i===n-1);
+}
+notice("WAVE "+wave+" — ENEMIES INCOMING");
+$("objective").textContent=names[mission]+" — WAVE "+wave+"/3";
+updateHUD();
+}
+function makeCheckpoint(){
+objective="checkpoint";
+let z=clamp(player.z-13,-135,65);
+let g=new THREE.Group();
+let disk=new THREE.Mesh(new THREE.CylinderGeometry(2.4,2.4,.15,24),new THREE.MeshBasicMaterial({color:0x32ff72}));
+disk.position.y=.12;g.add(disk);
+let beam=new THREE.Mesh(new THREE.CylinderGeometry(1.5,1.5,7,24,1,true),new THREE.MeshBasicMaterial({color:0x3cff75,transparent:true,opacity:.18,side:THREE.DoubleSide}));
+beam.position.y=3.5;g.add(beam);
+g.position.set(0,0,z);scene.add(g);
+checkpoint={g,x:0,z};
+notice(wave===3?"REACH EXTRACTION":"REACH GREEN CHECKPOINT");
+$("objective").textContent=wave===3?"REACH EXTRACTION":"SECURE CHECKPOINT";
+}
+function enemyDamage(e,n,head=false){
+if(e.dead)return;
+e.hp-=n;
+e.bar.scale.x=Math.max(.01,e.hp/e.max);
+if(e.hp<=0){
+e.dead=true;
+e.g.rotation.z=1.4;
+e.g.remove(e.bar);
+kills++;
+xp+=e.boss?500:head?150:100;
+if(kills%3===0)makePickup(e.x,e.z);
+if(e.boss)notice("COMMANDER ELIMINATED");
+if(enemies.every(q=>q.dead)&&objective==="clear")makeCheckpoint();
+}
+updateHUD();
+}
+function makePickup(x,z){
+let health=Math.random()<.5;
+let g=cube(.8,.45,.8,health?0x39ef6c:0xf3c64c,x,.4,z);
+pickups.push({g,x,z,health});
+}
+function explosion(x,z,power=190){
+beep(75,.45,.14);
+let m=ball(.5,0xffa32b,x,1,z);
+effects.push({m,time:0,life:.4});
+for(let e of enemies){
+let d=Math.hypot(e.x-x,e.z-z);
+if(!e.dead&&d<9)enemyDamage(e,Math.max(25,power-d*15));
+}
+}
+function fireShot(){
+if(!playing||reloading||sprint)return;
+let now=performance.now(),s=specs[gun],a=ammo[gun];
+if(now-lastShot<s.rate)return;
+lastShot=now;
+if(a.mag<=0){reloadGun();return;}
+a.mag--;
+beep(gun==="rpg"?75:gun==="sniper"?100:gun==="ak"?125:165,.16,.09);
+let direction=V(0,0,-1);
+camera.getWorldDirection(direction);
+let spread=gun==="sniper"?.003:aiming?.006:.02;
+direction.x+=(Math.random()-.5)*spread;
+direction.y+=(Math.random()-.5)*spread;
+direction.normalize();
+let ray=new THREE.Ray(camera.position.clone(),direction);
+let best=null,distance=150,headshot=false;
+for(let e of enemies){
+if(e.dead)continue;
+let t=V(e.x,1.6,e.z).sub(camera.position).dot(direction);
+if(t<=0||t>=distance)continue;
+let p=ray.at(t,V(0,0,0));
+if(Math.abs(p.x-e.x)<.65&&Math.abs(p.z-e.z)<.8&&p.y>.5&&p.y<2.7){
+best=e;distance=t;headshot=p.y>2.05;
+}
+}
+let end=ray.at(best?distance:100,V(0,0,0));
+let start=camera.position.clone();
+let line=new THREE.Line(
+new THREE.BufferGeometry().setFromPoints([start,end]),
+new THREE.LineBasicMaterial({color:gun==="rpg"?0xff6622:0xffdf55})
+);
+scene.add(line);
+effects.push({m:line,time:0,life:.12});
+if(gun==="rpg"){
+let token=session;
+setTimeout(()=>{
+if(playing&&token===session)explosion(end.x,end.z,350);
+},350);
+}else if(best){
+enemyDamage(best,s.damage*(headshot?2.3:1),headshot);
+}
+updateHUD();
+}
+function reloadGun(){
+if(!playing||reloading)return;
+let a=ammo[gun],s=specs[gun];
+if(a.mag>=s.mag||a.res<=0)return;
+reloading=performance.now()+(gun==="rpg"?2200:gun==="sniper"?1900:1400);
+notice("RELOADING");
+beep(420,.12);
+}
+function switchGun(k){
+if(!playing)return;
+gun=k;reloading=0;aim(false);buildGun();
+document.querySelectorAll("[data-gun]").forEach(b=>b.classList.toggle("active",b.dataset.gun===k));
+updateHUD();
+}
+function aim(on){
+aiming=on;
+camera.fov=on?(gun==="sniper"?23:50):75;
+camera.updateProjectionMatrix();
+$("scope").style.display=on&&gun==="sniper"?"flex":"none";
+$("cross").style.display=on&&gun==="sniper"?"none":"block";
+}
+function throwGrenade(){
+if(!playing||grenades<=0)return;
+grenades--;
+let d=V(0,0,-1);
+camera.getWorldDirection(d);
+let x=clamp(player.x+d.x*14,-8,8);
+let z=clamp(player.z+d.z*14,-135,65);
+let token=session;
+notice("GRENADE OUT");
+setTimeout(()=>{
+if(playing&&session===token)explosion(x,z);
+},700);
+updateHUD();
+}
+function hurt(n){
+if(!playing)return;
+player.hp=Math.max(0,player.hp-n);
+$("damage").style.opacity=.25;
+setTimeout(()=>$("damage").style.opacity=0,150);
+updateHUD();
+if(player.hp<=0)finish(false);
+}
+function finish(win){
+playing=false;firing=false;session++;
+$("hud").style.display="none";
+$("controls").style.display="none";
+$("resultTitle").textContent=win?"MISSION COMPLETE":"MISSION FAILED";
+$("resultText").textContent="KILLS: "+kills+" | XP: "+xp;
+$("nextMission").style.display=win&&mission<5?"block":"none";
+show("result");
+}
+function reset(){
+session++;
+scene.clear();
+scene.add(camera);
+let amb=new THREE.HemisphereLight(0xffffff,0x586070,nightMode||mission===4?1.1:2);
+scene.add(amb);
+let sun=new THREE.DirectionalLight(0xffffff,nightMode||mission===4?.65:2);
+sun.position.set(25,60,30);scene.add(sun);
+scene.background=new THREE.Color(nightMode||mission===4?0x111c30:0x91b4d0);
+scene.fog=new THREE.Fog(scene.background,40,155);
+player={x:0,z:25,hp:100};
+yaw=0;pitch=0;wave=0;kills=0;xp=0;
+grenades=3;gun="m4";lastShot=0;reloading=0;
+enemies=[];pickups=[];effects=[];checkpoint=null;
+sprint=false;crouch=false;
+ammo={};
+for(let k in specs)ammo[k]={mag:specs[k].mag,res:specs[k].res};
+street();buildGun();aim(false);
+playing=true;firing=false;
+show(null);
+spawnWave();updateHUD();
+}
+function drawMap(){
+let c=$("map").getContext("2d");
+c.fillStyle="#142832";c.fillRect(0,0,180,180);
+c.fillStyle="#59646b";c.fillRect(65,0,50,180);
+function dot(x,z,color,r=5){
+let px=90+(x-player.x)*4,py=90+(z-player.z)*4;
+if(px<0||px>180||py<0||py>180)return;
+c.fillStyle=color;c.beginPath();c.arc(px,py,r,0,Math.PI*2);c.fill();
+}
+for(let e of enemies)if(!e.dead)dot(e.x,e.z,"#ff4444");
+for(let p of pickups)dot(p.x,p.z,"#ffdf55");
+if(checkpoint)dot(checkpoint.x,checkpoint.z,"#32ff75",8);
+c.save();c.translate(90,90);c.rotate(-yaw);
+c.fillStyle="white";c.beginPath();
+c.moveTo(0,-9);c.lineTo(-6,7);c.lineTo(6,7);c.fill();c.restore();
+}
+function animate(){
+requestAnimationFrame(animate);
+let dt=Math.min(clock.getDelta(),.05);
+if(playing){
+if(reloading&&performance.now()>=reloading){
+let a=ammo[gun],n=Math.min(specs[gun].mag-a.mag,a.res);
+a.mag+=n;a.res-=n;reloading=0;updateHUD();
+}
+if(firing)fireShot();
+let mx=joy.x+(keys.KeyD?1:0)-(keys.KeyA?1:0);
+let my=-joy.y+(keys.KeyW?1:0)-(keys.KeyS?1:0);
+let len=Math.max(1,Math.hypot(mx,my));
+mx/=len;my/=len;
+let speed=crouch?2.7:sprint?9:aiming?3.5:6;
+player.x=clamp(player.x+(Math.cos(yaw)*mx-Math.sin(yaw)*my)*speed*dt,-8,8);
+player.z=clamp(player.z+(-Math.sin(yaw)*mx-Math.cos(yaw)*my)*speed*dt,-135,70);
+camera.position.set(player.x,crouch?1.2:1.75,player.z);
+camera.rotation.set(pitch,yaw,0);
+for(let e of enemies){
+if(e.dead)continue;
+let dx=player.x-e.x,dz=player.z-e.z;
+let dist=Math.max(.1,Math.hypot(dx,dz));
+e.g.rotation.y=Math.atan2(dx,dz);
+if(dist<36){
+if(dist>8){
+e.x=clamp(e.x+dx/dist*1.6*dt,-8,8);
+e.z=clamp(e.z+dz/dist*1.6*dt,-135,70);
+e.g.position.set(e.x,0,e.z);
+}
+e.fire-=dt;
+if(e.fire<=0&&dist<45){
+e.fire=e.boss?.75:1.3+Math.random()*.6;
+beep(100,.08,.012);
+if(Math.random()<Math.max(.08,.55-dist*.01))hurt(e.boss?11:6);
+}
+}
+}
+for(let i=pickups.length-1;i>=0;i--){
+let p=pickups[i];
+if(Math.hypot(player.x-p.x,player.z-p.z)<2){
+if(p.health)player.hp=Math.min(100,player.hp+35);
+else ammo[gun].res+=specs[gun].mag*2;
+scene.remove(p.g);pickups.splice(i,1);
+notice(p.health?"HEALTH +35":"AMMO PICKUP");
+updateHUD();
+}
+}
+if(checkpoint&&Math.hypot(player.x-checkpoint.x,player.z-checkpoint.z)<2.8){
+scene.remove(checkpoint.g);checkpoint=null;
+if(wave<3)spawnWave();
+else finish(true);
+}
+for(let i=effects.length-1;i>=0;i--){
+let e=effects[i];e.time+=dt;
+if(e.time>=e.life){scene.remove(e.m);effects.splice(i,1);}
+else if(e.m.isMesh)e.m.scale.setScalar(1+e.time*8);
+}
+drawMap();
+}
+renderer.render(scene,camera);
+}
+
+function init(){
+scene=new THREE.Scene();
+camera=new THREE.PerspectiveCamera(75,innerWidth/innerHeight,.1,300);
+renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:"high-performance"});
+renderer.setPixelRatio(Math.min(devicePixelRatio,1.6));
+renderer.setSize(innerWidth,innerHeight);
+$("game").appendChild(renderer.domElement);
+clock=new THREE.Clock();
+scene.add(camera);
+requestAnimationFrame(animate);
+}
+window.addEventListener("resize",()=>{
+camera.aspect=innerWidth/innerHeight;
+camera.updateProjectionMatrix();
+renderer.setSize(innerWidth,innerHeight);
+});
+
+function menu(){
+playing=false;firing=false;
+$("description").textContent=descriptions[selected];
+document.querySelectorAll("[data-mission]").forEach(b=>b.classList.toggle("active",Number(b.dataset.mission)===selected));
+show("menu");
+}
+names.forEach((n,i)=>{
+let b=document.createElement("button");
+b.textContent=(i+1)+" "+n.replace("PITTSBURGH ","");
+b.dataset.mission=i;
+b.onclick=()=>{selected=i;menu();};
+$("missions").appendChild(b);
+});
+$("startGame").onclick=menu;
+$("exitGame").onclick=()=>{
+$("startup").innerHTML="<h1>PITTSBURGH STREETS</h1><p>GAME CLOSED</p><button class='big gold' onclick='location.reload()'>RESTART</button>";
+};
+$("backTitle").onclick=()=>show("startup");
+$("begin").onclick=()=>{
+mission=selected;
+$("briefTitle").textContent=names[mission];
+$("briefText").textContent=descriptions[mission];
+show("briefing");
+};
+$("deploy").onclick=reset;
+$("retry").onclick=reset;
+$("returnMenu").onclick=menu;
+$("nextMission").onclick=()=>{
+selected=Math.min(5,mission+1);menu();
+};
+$("pause").onclick=menu;
+$("grenade").onclick=throwGrenade;
+$("reload").onclick=reloadGun;
+$("sprint").onclick=()=>{sprint=!sprint;$("sprint").classList.toggle("active",sprint);};
+$("crouch").onclick=()=>{crouch=!crouch;$("crouch").classList.toggle("active",crouch);};
+$("aim").onclick=()=>aim(!aiming);
+$("sound").onclick=()=>{
+soundOn=!soundOn;
+$("sound").textContent=soundOn?"SOUND ON":"SOUND OFF";
+};
+$("quality").onclick=()=>{
+hd=!hd;
+renderer.setPixelRatio(hd?Math.min(devicePixelRatio,1.6):1);
+renderer.setSize(innerWidth,innerHeight);
+$("quality").textContent=hd?"HD ON":"HD OFF";
+};
+$("night").onclick=()=>{
+nightMode=!nightMode;
+$("night").textContent=nightMode?"NIGHT ON":"NIGHT OFF";
+notice("NIGHT MODE APPLIES NEXT MISSION");
+};
+document.querySelectorAll("[data-gun]").forEach(b=>b.onclick=()=>switchGun(b.dataset.gun));
+
+function holdButton(id,down,up){
+let b=$(id);
+b.addEventListener("pointerdown",e=>{e.preventDefault();b.setPointerCapture(e.pointerId);down();});
+b.addEventListener("pointerup",e=>{e.preventDefault();up();});
+b.addEventListener("pointercancel",up);
+}
+holdButton("fire",()=>{firing=true;fireShot();},()=>firing=false);
+
+const joystick=$("joy"),knob=$("knob");
+function moveJoy(e){
+let r=joystick.getBoundingClientRect();
+let x=e.clientX-(r.left+r.width/2);
+let y=e.clientY-(r.top+r.height/2);
+let l=Math.max(1,Math.hypot(x,y)),radius=35;
+x=x/l*Math.min(l,radius);
+y=y/l*Math.min(l,radius);
+joy.x=x/radius;joy.y=y/radius;
+knob.style.transform=`translate(${x}px,${y}px)`;
+}
+joystick.addEventListener("pointerdown",e=>{
+e.preventDefault();joystick.setPointerCapture(e.pointerId);moveJoy(e);
+});
+joystick.addEventListener("pointermove",e=>{
+if(e.buttons||e.pointerType==="touch")moveJoy(e);
+});
+function stopJoy(){
+joy.x=joy.y=0;knob.style.transform="translate(0,0)";
+}
+joystick.addEventListener("pointerup",stopJoy);
+joystick.addEventListener("pointercancel",stopJoy);
+
+rendererLookSetup();
+function rendererLookSetup(){
+$("game").addEventListener("pointerdown",e=>{
+if(!playing||e.target!==renderer.domElement)return;
+lookId=e.pointerId;lx=e.clientX;ly=e.clientY;
+renderer.domElement.setPointerCapture(e.pointerId);
+});
+$("game").addEventListener("pointermove",e=>{
+if(!playing||e.pointerId!==lookId)return;
+let dx=e.clientX-lx,dy=e.clientY-ly;
+yaw-=dx*.004;
+pitch=clamp(pitch-dy*.004,-1.25,1.25);
+lx=e.clientX;ly=e.clientY;
+});
+$("game").addEventListener("pointerup",()=>lookId=null);
+$("game").addEventListener("pointercancel",()=>lookId=null);
+}
+window.addEventListener("keydown",e=>{
+keys[e.code]=true;
+if(e.code==="Space")fireShot();
+if(e.code==="KeyR")reloadGun();
+if(e.code==="Digit1")switchGun("m4");
+if(e.code==="Digit2")switchGun("ak");
+if(e.code==="Digit3")switchGun("sniper");
+if(e.code==="Digit4")switchGun("rpg");
+});
+window.addEventListener("keyup",e=>keys[e.code]=false);
+document.addEventListener("contextmenu",e=>e.preventDefault());
+
+init();
+show("startup");
+</script>
+</body>
+</html>
