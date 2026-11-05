@@ -12,14 +12,17 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#09121c;col
 #hud{position:fixed;inset:0;pointer-events:none;text-shadow:1px 2px 4px black}
 #top{position:absolute;top:5px;left:50%;transform:translateX(-50%);width:75%;text-align:center;font-size:13px;font-weight:bold}
 #objective{font-size:10px;color:#9affb4;margin-top:3px}
-#stats{position:absolute;left:5px;top:43px;padding:7px;background:#071520dc;border:1px solid #ffffff66;border-radius:5px;font-size:10px;line-height:1.6}
+#stats{position:absolute;left:5px;top:43px;padding:7px;background:#071520dc;border:1px solid #ffffff66;border-radius:5px;font-size:10px;line-h
+eight:1.6}
 #map{position:absolute;right:5px;top:42px;width:85px;height:85px;background:#152731;border:1px solid white}
 #cross{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:26px}
-#scope{position:absolute;inset:0;display:none;align-items:center;justify-content:center;font-size:35px;background:radial-gradient(circle,transparent 0 24%,black 25%)}
+#scope{position:absolute;inset:0;display:none;align-items:center;justify-content:center;font-size:35px;background:radial-gradient(circle,trans
+parent 0 24%,black 25%)}
 #notice{position:absolute;top:29%;width:100%;text-align:center;color:#ffe09a;font-size:14px;font-weight:bold}
 #damage{position:absolute;inset:0;background:red;opacity:0}
 #thermal{position:absolute;inset:0;background:#00ff3320;display:none}
-#boss{position:absolute;left:50%;top:78px;transform:translateX(-50%);width:160px;height:9px;background:#451414;border:1px solid white;display:none}
+#boss{position:absolute;left:50%;top:78px;transform:translateX(-50%);width:160px;height:9px;background:#451414;border:1px solid white;display:
+none}
 #bossFill{height:100%;background:#ff4545}
 button{border:1px solid #ffffff99;border-radius:6px;background:#254a60;color:white;font-size:9px;font-weight:bold;padding:7px}
 button.active{background:#23844c}
@@ -31,7 +34,8 @@ button.active{background:#23844c}
 #weapons{position:fixed;right:5px;top:5px;display:flex;gap:3px}
 #actions{position:fixed;right:7px;bottom:10px;display:grid;grid-template-columns:54px 70px;gap:4px}
 #fire{grid-row:span 2;background:#b62e35;font-size:15px;border-radius:32%}
-.overlay{position:fixed;inset:0;z-index:20;background:#07111bf2;display:flex;align-items:center;justify-content:center;text-align:center;padding:12px}
+.overlay{position:fixed;inset:0;z-index:20;background:#07111bf2;display:flex;align-items:center;justify-content:center;text-align:center;paddi
+ng:12px}
 .panel{width:100%;max-width:650px;max-height:96vh;overflow:auto;position:relative;z-index:2}
 .panel h1{font-size:clamp(28px,7vw,54px);margin:10px;text-shadow:0 4px 10px black}
 .panel p{font-size:12px;line-height:1.5}
@@ -52,18 +56,19 @@ button.active{background:#23844c}
 #joy{bottom:23px}
 }
 /* STEP 13: DOWNTOWN PITTSBURGH CINEMATIC START SCREEN */
-#cityStart{position:fixed;inset:0;z-index:80;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;padding:22px 16px 9vh;background:linear-gradient(180deg,rgba(3,8,18,.02)
-0%,rgba(3,8,18,.1) 48%,rgba(3,8,18,.9) 100%),url("pittsburgh-downtown-start.jpg") center center/cover no-repeat;text-align:center}
+#cityStart{position:fixed;inset:0;z-index:80;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;padding:22px 16px
+9vh;background:linear-gradient(180deg,rgba(3,8,18,.02) 0%,rgba(3,8,18,.1) 48%,rgba(3,8,18,.9) 100%),url("pittsburgh-downtown-start.jpg") cente
+r center/cover no-repeat;text-align:center}
 #cityStart h1{font-size:clamp(30px,8vw,65px);margin:0 0 6px;color:#fff;text-shadow:0 4px 14px #000;letter-spacing:2px}
 #cityStart p{margin:0 0 14px;color:#f6d278;letter-spacing:2px;font-weight:bold;font-size:12px;text-shadow:0 2px 5px #000}
-#cityPlay{font-size:17px;min-width:215px;padding:15px 25px;background:linear-gradient(#f9d267,#d99820);color:#111;border:2px solid #ffedac;box-shadow:0 0 22px #e3ac4188}
+#cityPlay{font-size:17px;min-width:215px;padding:15px 25px;background:linear-gradient(#f9d267,#d99820);color:#111;border:2px solid #ffedac;box
+-shadow:0 0 22px #e3ac4188}
 #menu{background:linear-gradient(180deg,rgba(3,10,20,.68),rgba(3,10,20,.94)),url("pittsburgh-downtown-start.jpg") center/cover no-repeat}
 #menu .panel{background:rgba(4,13,25,.48);border:1px solid #b1b9c04d;border-radius:14px;padding:16px;backdrop-filter:blur(3px)}
 #menu .panel button{border-color:#d5ba7c;background:linear-gradient(#3b5260,#1d3440)}
 #menu .panel button.selected,#menu #start{background:linear-gradient(#e3b14b,#a96c1b);color:#13171b}
 #cross{color:#fff;text-shadow:0 0 3px black,0 0 8px black}
 #stats{background:#071520e8;border:1px solid #b5cad0a8;box-shadow:0 4px 15px #0005;backdrop-filter:blur(4px)}
-Page 1
 #map{border-radius:8px;box-shadow:0 3px 12px #0008}
 #fire{background:linear-gradient(#cb4046,#84212c);border:2px solid #f3a8aa}
 @media(max-width:450px){#cityStart{background-position:60% center}#cityStart h1{font-size:36px}#cityStart{padding-bottom:13vh}}
@@ -127,7 +132,6 @@ WAVE <span id="wave">1</span>/3<br>
 <button id="sound">SOUND ON</button>
 </div>
 <div id="menu" class="overlay">
-Page 2
 <div class="panel">
 <p style="color:#ffd890;letter-spacing:3px">PITTSBURGH, PENNSYLVANIA</p>
 <h1>PITTSBURGH<br>STREETS</h1>
@@ -191,7 +195,6 @@ Page 2
 <button id="next">NEXT MISSION</button>
 <button id="retry">RETRY</button>
 <button id="mainMenu">MAIN MENU</button>
-Page 3
 </div></div>
 <script type="module">
 import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js";
@@ -250,7 +253,6 @@ let textures={};
 function mat(color,metal=.05,rough=.82){
 return new THREE.MeshStandardMaterial({
 color,metalness:metal,roughness:rough
-Page 4
 });
 }
 function mesh(geo,material,parent=scene){
@@ -310,7 +312,6 @@ a.strokeStyle="#777c7a";
 for(let n=0;n<512;n+=100){
 a.beginPath();a.moveTo(n,0);a.lineTo(n,512);a.stroke();
 a.beginPath();a.moveTo(0,n);a.lineTo(512,n);a.stroke();
-Page 5
 }
 }
 for(let i=0;i<7000;i++){
@@ -371,7 +372,6 @@ m.material.opacity=.65*(1-t);
 function tracer(a,b,color=0xffd447){
 const d=b.clone().sub(a),len=d.length();
 if(len<.01)return;
-Page 6
 const m=mesh(
 new THREE.CylinderGeometry(.025,.035,len,5),
 new THREE.MeshBasicMaterial({color,transparent:true,opacity:1})
@@ -432,7 +432,6 @@ cyl(.12,.15,8,0x465055,x,4,z);
 box(1.5,.15,.2,0x455055,x+.7,8,z);
 box(.8,.17,.55,0xffdf9e,x+1.4,7.9,z);
 if(night&&settings.quality!=="performance"){
-Page 7
 const l=new THREE.PointLight(0xffd08b,1.6,19);
 l.position.set(x+1.4,7.7,z);scene.add(l);
 }
@@ -494,7 +493,6 @@ box(26,1,35,0x44505b,x,12.5,-75);
 box(10,7,.2,0x314553,x,4,-57.9);
 }
 box(10,24,10,0x84949d,33,12,-120);
-Page 8
 box(14,3,14,0x334b59,33,25,-120);
 sign(-15,-25,"AIRPORT");
 }
@@ -555,7 +553,6 @@ Uses built-in meshes only: no downloads or paid models. */
 function human(x,z,team=false,commander=false,sniper=false,civilian=false){
 const g=new THREE.Group();
 const skins=[0xd6aa8b,0x9b694e,0x67412f,0xe1b99a,0xb98361];
-Page 9
 const skin=skins[Math.floor(Math.random()*skins.length)];
 const uniform=civilian?0xc4a35b:team?0x526c75:commander?0x5a5144:sniper?0x696c5b:0x58634b;
 const vest=team?0x293e43:commander?0x403b30:0x303c32;
@@ -622,7 +619,6 @@ box(.35,.045,.52,0x171c1d,0,-.995,.11,leg);
 legs.push(leg);
 }
 if(!civilian){
-Page 10
 box(.66,.60,.23,0x384538,0,.04,-.37,torso);
 box(.62,.11,.42,0x28332e,0,-.42,0,torso);
 box(.16,.28,.14,dark,.40,-.34,.11,torso);
@@ -685,7 +681,6 @@ box(.23,.42,.22,0x292f32,0,-.42,-.85,g);
 if(sn)box(.22,.22,.75,0x11181e,0,.36,-.8,g);
 if(settings.sight==="on"&&totalXP>=300){
 box(.25,.22,.15,0x171d20,0,.37,-.9,g);
-Page 11
 sphere(.045,0xff3333,0,.39,-.98,g);
 }
 if(settings.suppressor==="on"&&totalXP>=500)
@@ -747,7 +742,6 @@ const x=(i%4-1.5)*4;
 const z=clamp(
 player.z-23-Math.floor(i/4)*10-rand(0,5),
 -137,65
-Page 12
 );
 const commander=wave===3&&i===count-1;
 const e=human(x,z,false,commander,mission===3&&i===0);
@@ -810,7 +804,6 @@ if(d.dead)return;
 d.hp-=n;
 if(d.hp<=0){
 d.dead=true;scene.remove(d.g);
-Page 13
 smoke(d.x,1,d.z);award(250);
 if(objective==="equipment"&&devices.every(q=>q.dead))
 extraction();
@@ -871,7 +864,6 @@ if(g.mag>=magSize(weapon)||g.reserve<=0)return;
 reloading=performance.now()+
 (weapon==="rpg"?2200:weapon==="sniper"?1900:1400);
 message("RELOADING");beep(420,.14);
-Page 14
 }
 function fire(){
 if(!playing||sprinting||reloading)return;
@@ -930,7 +922,6 @@ blast(end.x,end.y,end.z,9,360);
 const {obj,type,p}=hit;
 if(type==="enemy"){
 const head=p.y>obj.y+2;
-Page 15
 damageEnemy(obj,s.damage*(head?2.2:1),head);
 }
 if(type==="vehicle")damageVehicle(obj,s.damage);
@@ -979,8 +970,8 @@ player.hp=Math.max(0,player.hp-n*mult);
 $("damage").style.opacity=.22;
 setTimeout(()=>$("damage").style.opacity=0,130);
 hud();
-if(player.hp<=0)finish(false);
 }
+if(player.hp<=0)finish(false);
 function finish(win){
 playing=false;firing=false;
 if(win){
@@ -993,7 +984,6 @@ $("resultScreen").style.display="flex";
 $("resultTitle").textContent=win?
 (mission===6?"CAMPAIGN COMPLETE":"MISSION COMPLETE"):
 "MISSION FAILED";
-Page 16
 $("score").textContent=
 "MISSION "+mission+" | KILLS "+kills+
 " | XP EARNED "+earned+" | TOTAL XP "+totalXP+
@@ -1053,7 +1043,6 @@ weapon=weaponSpecs[data.weapon]?data.weapon:"m4";
 }
 aim(false);gunBuild();
 $("menu").style.display="none";
-Page 17
 $("intro").style.display="none";
 $("resultScreen").style.display="none";
 playing=true;firing=false;
@@ -1115,7 +1104,6 @@ e.fire-=dt;
 if(e.alert>60&&distance<48&&e.fire<=0){
 e.fire=e.commander?.7:1.35+Math.random()*.5;
 tracer(vec(e.x,e.y+1.6,e.z),
-Page 18
 camera.position.clone(),0xff4545);
 beep(90,.08,.012);
 const accuracy=e.commander?.65:.48;
@@ -1178,7 +1166,6 @@ if(playing){
 if(reloading&&now>=reloading){
 const g=guns[weapon];
 const n=Math.min(magSize(weapon)-g.mag,g.reserve);
-Page 19
 g.mag+=n;g.reserve-=n;reloading=0;hud();
 }
 if(firing)fire();
@@ -1235,7 +1222,6 @@ checkpoint.x-player.x,checkpoint.z-player.z)<3;
 if(objective==="capture"){
 capture=clamp(capture+(inside?dt:-dt*.2),0,3);
 $("objective").textContent=
-Page 20
 "CAPTURE CHECKPOINT "+Math.floor(capture/3*100)+"%";
 if(capture>=3){
 objective="defend";defend=5;
@@ -1296,7 +1282,6 @@ document.querySelectorAll("[data-mission]").forEach(b=>
 b.classList.toggle("selected",Number(b.dataset.mission)===n));
 $("brief").textContent=briefs[n];
 }
-Page 21
 function menu(){
 $("cityStart").style.display="none";
 playing=false;firing=false;
@@ -1357,7 +1342,6 @@ stick.setPointerCapture(e.pointerId);stickMove(e);
 });
 stick.addEventListener("pointermove",e=>{
 if(e.pointerId===stickId)stickMove(e);
-Page 22
 });
 for(const t of ["pointerup","pointercancel"])
 stick.addEventListener(t,e=>{
@@ -1419,7 +1403,6 @@ b.onclick=()=>switchWeapon(b.dataset.weapon));
 $("sound").onclick=()=>{
 soundOn=!soundOn;
 $("sound").textContent=soundOn?"SOUND ON":"SOUND OFF";
-Page 23
 };
 $("vision").onclick=()=>{
 thermal=!thermal;
@@ -1481,7 +1464,6 @@ switchWeapon(["m4","ak","sniper","rpg"][n-1]);
 window.addEventListener("keyup",e=>keys[e.code]=false);
 document.addEventListener("contextmenu",e=>e.preventDefault());
 function resize(){
-Page 24
 camera.aspect=innerWidth/innerHeight;
 camera.updateProjectionMatrix();
 gunCamera.aspect=innerWidth/innerHeight;
@@ -1537,7 +1519,6 @@ sniper:{mag:5,reserve:30},
 rpg:{mag:1,reserve:10}
 };
 for(const k of Object.keys(settings))
-Page 25
 $(k).value=settings[k];
 applyGraphics();
 gunBuild();
@@ -1601,7 +1582,6 @@ for(let z=-150;z<75;z+=12){
 box(.12,.018,3.5,line,-4.7,.111,z);
 box(.12,.018,3.5,line,4.7,.111,z);
 }
-Page 26
 for(const z of [-45,-105])for(let x=-7;x<=7;x+=2.1)
 box(1.1,.022,1.65,line,x,.113,z);
 if(mission!==4){
@@ -1667,7 +1647,6 @@ box(.035,.15,.035,steel,-.28,.53,.34,torso);
 for(const side of [-1,1]){
 box(.19,.15,.08,armor,side*.42,.32,.05,torso);
 box(.23,.17,.10,armor,side*.05,-.08,.35,torso);
-Page 27
 box(.17,.15,.10,armor,side*.25,-.09,.35,torso);
 // Knee pads move with the legs.
 box(.27,.18,.09,rubber,0,-.51,.19,unit.legs[side===-1?0:1]);
@@ -1731,10 +1710,9 @@ box(.48,.11,.14,0x9d3c2b,x,.39,z+4);
 }
 }
 // Window reflections as subtle light accents, avoid dozens of lights on iPhone.
-if(night&&qualityy in!=="performance"){
+if(night&&quality!=="performance"){
 const moon=new THREE.DirectionalLight(0x7896c3,.35);
 moon.position.set(25,22,-35);scene.add(moon);
-Page 28
 }
 }
 const step17ResetBase=reset;
@@ -1755,4 +1733,3 @@ setup();
 </script>
 </body>
 </html>
-Page 29
