@@ -3,49 +3,44 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalab
-le=no">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>Pittsburgh Streets — HD Edition</title>
 <style>
 *{box-sizing:border-box;touch-action:none;user-select:none}
-html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#09121c;color:white;font
--family:Arial,sans-serif}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#09121c;color:white;font-family:Arial,s
+ans-serif}
 #game{position:fixed;inset:0}
 #hud{position:fixed;inset:0;pointer-events:none;text-shadow:1px 2px 4px black}
-#top{position:absolute;top:5px;left:50%;transform:translateX(-50%);width:75%;text-align:cente
-r;font-size:13px;font-weight:bold}
+#top{position:absolute;top:5px;left:50%;transform:translateX(-50%);width:75%;text-align:center;font-size:13p
+x;font-weight:bold}
 #objective{font-size:10px;color:#9affb4;margin-top:3px}
-#stats{position:absolute;left:5px;top:43px;padding:7px;background:#071520dc;border:1px solid
-#ffffff66;border-radius:5px;font-size:10px;line-height:1.6}
-#map{position:absolute;right:5px;top:42px;width:85px;height:85px;background:#152731;border:1p
-x solid white}
+#stats{position:absolute;left:5px;top:43px;padding:7px;background:#071520dc;border:1px solid #ffffff66;borde
+r-radius:5px;font-size:10px;line-height:1.6}
+#map{position:absolute;right:5px;top:42px;width:85px;height:85px;background:#152731;border:1px solid white}
 #cross{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:26px}
-#scope{position:absolute;inset:0;display:none;align-items:center;justify-content:center;font-
-size:35px;background:radial-gradient(circle,transparent 0 24%,black 25%)}
-#notice{position:absolute;top:29%;width:100%;text-align:center;color:#ffe09a;font-size:14px;f
-ont-weight:bold}
+#scope{position:absolute;inset:0;display:none;align-items:center;justify-content:center;font-size:35px;backg
+round:radial-gradient(circle,transparent 0 24%,black 25%)}
+#notice{position:absolute;top:29%;width:100%;text-align:center;color:#ffe09a;font-size:14px;font-weight:bold
+}
 #damage{position:absolute;inset:0;background:red;opacity:0}
 #thermal{position:absolute;inset:0;background:#00ff3320;display:none}
-#boss{position:absolute;left:50%;top:78px;transform:translateX(-50%);width:160px;height:9px;b
-ackground:#451414;border:1px solid white;display:none}
+#boss{position:absolute;left:50%;top:78px;transform:translateX(-50%);width:160px;height:9px;background:#4514
+14;border:1px solid white;display:none}
 #bossFill{height:100%;background:#ff4545}
-button{border:1px solid #ffffff99;border-radius:6px;background:#254a60;color:white;font-size:
-9px;font-weight:bold;padding:7px}
+button{border:1px solid #ffffff99;border-radius:6px;background:#254a60;color:white;font-size:9px;font-weight
+:bold;padding:7px}
 button.active{background:#23844c}
-#joy{position:fixed;left:10px;bottom:13px;width:95px;height:95px;border-radius:50%;border:2px
-solid #ffffff99;background:#ffffff22}
-#knob{position:absolute;left:28px;top:28px;width:35px;height:35px;border-radius:50%;backgroun
-d:#ffffffcc}
-#tools,#squad,#movement{position:fixed;bottom:10px;display:flex;flex-direction:column;gap:3px
-}
+#joy{position:fixed;left:10px;bottom:13px;width:95px;height:95px;border-radius:50%;border:2px solid #ffffff9
+9;background:#ffffff22}
+#knob{position:absolute;left:28px;top:28px;width:35px;height:35px;border-radius:50%;background:#ffffffcc}
+#tools,#squad,#movement{position:fixed;bottom:10px;display:flex;flex-direction:column;gap:3px}
 #tools{left:112px}#squad{left:182px}#movement{left:252px}
 #tools button,#squad button,#movement button{font-size:8px;min-height:24px}
 #weapons{position:fixed;right:5px;top:5px;display:flex;gap:3px}
-#actions{position:fixed;right:7px;bottom:10px;display:grid;grid-template-columns:54px 70px;ga
-p:4px}
+#actions{position:fixed;right:7px;bottom:10px;display:grid;grid-template-columns:54px 70px;gap:4px}
 #fire{grid-row:span 2;background:#b62e35;font-size:15px;border-radius:32%}
-.overlay{position:fixed;inset:0;z-index:20;background:#07111bf2;display:flex;align-items:cent
-er;justify-content:center;text-align:center;padding:12px}
+.overlay{position:fixed;inset:0;z-index:20;background:#07111bf2;display:flex;align-items:center;justify-cont
+ent:center;text-align:center;padding:12px}
 .panel{width:100%;max-width:650px;max-height:96vh;overflow:auto;position:relative;z-index:2}
 .panel h1{font-size:clamp(28px,7vw,54px);margin:10px;text-shadow:0 4px 10px black}
 .panel p{font-size:12px;line-height:1.5}
@@ -66,30 +61,29 @@ er;justify-content:center;text-align:center;padding:12px}
 #joy{bottom:23px}
 }
 /* STEP 13: DOWNTOWN PITTSBURGH CINEMATIC START SCREEN */
-#cityStart{position:fixed;inset:0;z-index:80;display:flex;flex-direction:column;justify-conte
-nt:flex-end;align-items:center;padding:22px 16px 9vh;background:linear-gradient(180deg,rgba(3
-,8,18,.02) 0%,rgba(3,8,18,.1) 48%,rgba(3,8,18,.9) 100%),url("pittsburgh-downtown-start.jpg")
-center center/cover no-repeat;text-align:center}
-#cityStart h1{font-size:clamp(30px,8vw,65px);margin:0 0 6px;color:#fff;text-shadow:0 4px 14px
-#000;letter-spacing:2px}
-#cityStart p{margin:0 0 14px;color:#f6d278;letter-spacing:2px;font-weight:bold;font-size:12px
-;text-shadow:0 2px 5px #000}
-#cityPlay{font-size:17px;min-width:215px;padding:15px 25px;background:linear-gradient(#f9d267
-,#d99820);color:#111;border:2px solid #ffedac;box-shadow:0 0 22px #e3ac4188}
-#menu{background:linear-gradient(180deg,rgba(3,10,20,.68),rgba(3,10,20,.94)),url("pittsburgh-
-downtown-start.jpg") center/cover no-repeat}
-#menu .panel{background:rgba(4,13,25,.48);border:1px solid #b1b9c04d;border-radius:14px;paddi
-ng:16px;backdrop-filter:blur(3px)}
+#cityStart{position:fixed;inset:0;z-index:80;display:flex;flex-direction:column;justify-content:flex-end;ali
+gn-items:center;padding:22px 16px 9vh;background:linear-gradient(180deg,rgba(3,8,18,.02) 0%,rgba(3,8,18,.1)
+48%,rgba(3,8,18,.9) 100%),url("pittsburgh-downtown-start.jpg") center center/cover no-repeat;text-align:cent
+er}
+#cityStart h1{font-size:clamp(30px,8vw,65px);margin:0 0 6px;color:#fff;text-shadow:0 4px 14px #000;letter-sp
+acing:2px}
+#cityStart p{margin:0 0 14px;color:#f6d278;letter-spacing:2px;font-weight:bold;font-size:12px;text-shadow:0
+2px 5px #000}
+#cityPlay{font-size:17px;min-width:215px;padding:15px 25px;background:linear-gradient(#f9d267,#d99820);color
+:#111;border:2px solid #ffedac;box-shadow:0 0 22px #e3ac4188}
+#menu{background:linear-gradient(180deg,rgba(3,10,20,.68),rgba(3,10,20,.94)),url("pittsburgh-downtown-start.
+jpg") center/cover no-repeat}
+#menu .panel{background:rgba(4,13,25,.48);border:1px solid #b1b9c04d;border-radius:14px;padding:16px;backdro
+p-filter:blur(3px)}
 #menu .panel button{border-color:#d5ba7c;background:linear-gradient(#3b5260,#1d3440)}
-#menu .panel button.selected,#menu #start{background:linear-gradient(#e3b14b,#a96c1b);color:#
-13171b}
+#menu .panel button.selected,#menu #start{background:linear-gradient(#e3b14b,#a96c1b);color:#13171b}
 #cross{color:#fff;text-shadow:0 0 3px black,0 0 8px black}
-#stats{background:#071520e8;border:1px solid #b5cad0a8;box-shadow:0 4px 15px #0005;backdrop-f
-ilter:blur(4px)}
+#stats{background:#071520e8;border:1px solid #b5cad0a8;box-shadow:0 4px 15px #0005;backdrop-filter:blur(4px)
+}
 #map{border-radius:8px;box-shadow:0 3px 12px #0008}
 #fire{background:linear-gradient(#cb4046,#84212c);border:2px solid #f3a8aa}
-@media(max-width:450px){#cityStart{background-position:60% center}#cityStart h1{font-size:36p
-x}#cityStart{padding-bottom:13vh}}
+@media(max-width:450px){#cityStart{background-position:60% center}#cityStart h1{font-size:36px}#cityStart{pa
+dding-bottom:13vh}}
 </style>
 </head>
 <body>
@@ -101,7 +95,7 @@ x}#cityStart{padding-bottom:13vh}}
 <div id="game"></div>
 <div id="hud">
 <div id="damage"></div><div id="thermal"></div>
-<div id="top">PITTSBURGH STREETS — STEP 13 DOWNTOWN EDITION
+<div id="top">PITTSBURGH STREETS — STEP 16 HD EDITION
 <div id="objective">SELECT A MISSION</div></div>
 <div id="stats">
 HP <span id="hp">100</span> |
@@ -153,7 +147,7 @@ WAVE <span id="wave">1</span>/3<br>
 <div class="panel">
 <p style="color:#ffd890;letter-spacing:3px">PITTSBURGH, PENNSYLVANIA</p>
 <h1>PITTSBURGH<br>STREETS</h1>
-<p>CINEMATIC TACTICAL FPS • STEP 12</p>
+<p>CINEMATIC TACTICAL FPS • STEP 16</p>
 <h3>SELECT MISSION</h3>
 <div id="missions">
 <button data-mission="1">1 STREETS</button>
@@ -178,8 +172,7 @@ WAVE <span id="wave">1</span>/3<br>
 <p style="color:#ffcc70">MISSION BRIEFING</p>
 <h2 id="introTitle"></h2>
 <p id="introText"></p>
-<p>Defeat three waves, eliminate the commander, complete the objective and reach extraction.<
-/p>
+<p>Defeat three waves, eliminate the commander, complete the objective and reach extraction.</p>
 <button id="deploy">DEPLOY</button>
 </div></div>
 <div id="settings" class="overlay"><div class="panel">
@@ -200,14 +193,11 @@ WAVE <span id="wave">1</span>/3<br>
 <input id="sensitivity" type="range" min="1" max="10" value="5"></label>
 <p>XP unlocks: Red Dot 300 • Suppressor 500 • Extended Magazine 800</p>
 <label>Red Dot Sight
-<select id="sight"><option value="off">OFF</option><option value="on">ON</option></select></l
-abel>
+<select id="sight"><option value="off">OFF</option><option value="on">ON</option></select></label>
 <label>Suppressor
-<select id="suppressor"><option value="off">OFF</option><option value="on">ON</option></selec
-t></label>
+<select id="suppressor"><option value="off">OFF</option><option value="on">ON</option></select></label>
 <label>Extended Magazine
-<select id="extended"><option value="off">OFF</option><option value="on">ON</option></select>
-</label>
+<select id="extended"><option value="off">OFF</option><option value="on">ON</option></select></label>
 <button id="saveSettings">SAVE SETTINGS</button>
 <button id="backSettings">BACK</button>
 </div></div>
@@ -239,8 +229,7 @@ const titles=[
 ];
 const briefs=[
 "",
-"Clear the city streets, defeat the enemy commander, rescue a civilian and reach extraction."
-,
+"Clear the city streets, defeat the enemy commander, rescue a civilian and reach extraction.",
 "Fight across the bridge, secure the checkpoint, defeat the commander and rescue a hostage.",
 "Eliminate rooftop snipers, clear downtown, defeat the commander and rescue a civilian.",
 "Secure the airport, defeat hostile forces and destroy two enemy devices.",
@@ -605,6 +594,13 @@ box(.14,.028,.03,0x3b3028,side*.112,.20,.267,head);
 }
 ellipsoid(0,-.01,.275,.065,.11,.072,skin,head);
 ellipsoid(0,-.15,.23,.13,.025,.026,0x6e463b,head);
+// Nose bridge, cheeks, chin and subtle helmet hardware.
+ellipsoid(0,-.035,.315,.045,.095,.035,skin,head);
+for(const side of [-1,1]){
+ellipsoid(side*.18,-.055,.235,.085,.075,.038,skin,head);
+box(.07,.035,.045,0x353a37,side*.24,.34,.19,head);
+}
+ellipsoid(0,-.24,.18,.14,.055,.095,skin,head);
 ellipsoid(0,.34,-.025,.28,.11,.27,0x272521,head);
 if(!civilian&&Math.random()>.55)ellipsoid(0,-.19,.16,.19,.065,.10,0x322922,head);
 if(!civilian){
@@ -621,8 +617,7 @@ ellipsoid(0,-.20,0,.17,.28,.18,uniform,arm);
 ellipsoid(side*.025,-.47,.075,.135,.15,.14,0x495347,arm);
 ellipsoid(side*.045,-.65,.13,.13,.23,.14,uniform,arm);
 ellipsoid(side*.06,-.85,.16,.115,.13,.11,civilian?skin:dark,arm);
-for(let f=0;f<3;f++)ellipsoid(side*.06+(f-1)*.065,-.94,.20,.035,.085,.047,civilian?skin:dark,
-arm);
+for(let f=0;f<3;f++)ellipsoid(side*.06+(f-1)*.065,-.94,.20,.035,.085,.047,civilian?skin:dark,arm);
 arms.push(arm);
 }
 const legs=[];
@@ -1544,282 +1539,108 @@ window.addEventListener("orientationchange",
 ()=>setTimeout(resize,200));
 choose(1);menu();$("cityStart").style.display="flex";frame();
 }
-/* STEP 14 — STREET DETAIL AND SQUAD DIRECTION UPGRADE */
-const step14OldAllyAI = allyAI;
+/* STEP 16 — DIRECTION + VISUAL UPGRADE */
+function faceTowards(a,tx,tz,dt){
+// Character face is +Z; negative Z is forward along the mission.
+const target=Math.atan2(tx-a.x,tz-a.z);
+const delta=Math.atan2(Math.sin(target-a.g.rotation.y),Math.cos(target-a.g.rotation.y));
+a.g.rotation.y+=delta*Math.min(1,dt*12);
+}
 allyAI = function(a,dt,i){
-step14OldAllyAI(a,dt,i);
+animateHuman(a,dt);
 if(a.dead)return;
-// The character model's face points toward local +Z.
-// Turn squadmates toward threats, or face the direction of travel.
-let nearest=null,dist=30;
+let target=null,nearest=48;
 for(const e of enemies){
 if(e.dead)continue;
 const d=Math.hypot(e.x-a.x,e.z-a.z);
-if(d<dist){nearest=e;dist=d;}
+if(d<nearest){nearest=d;target=e;}
 }
-let desired;
-if(nearest)desired=Math.atan2(nearest.x-a.x,nearest.z-a.z);
-else if(squadMode==="attack")desired=yaw+Math.PI;
-else if(squadMode==="follow")desired=yaw+Math.PI;
-else desired=a.g.rotation.y;
-let delta=Math.atan2(Math.sin(desired-a.g.rotation.y),Math.cos(desired-a.g.rotation.y));
-a.g.rotation.y+=delta*Math.min(1,dt*7);
-};
-function step14StreetDetails(){
-// Extra city detail, deliberately modest for iPhone performance.
-const roadMat=new THREE.MeshStandardMaterial({color:0x29333a,roughness:.28,metalness:.1});
-const stripeMat=new THREE.MeshStandardMaterial({color:0xe4d7b0,roughness:.82});
-const puddleMat=new THREE.MeshStandardMaterial({color:0x526d80,roughness:.08,metalness:.38,
-transparent:true,opacity:.62,depthWrite:false});
-const concrete=mat(0x929b9a),iron=mat(0x333b41);
-// Patches and reflective puddles on the playable roadway.
-for(let j=0;j<24;j++){
-const z=40-j*8.1;
-const x=(j%2===0?-1:1)*(2.3+(j%3));
-const patch=mesh(new THREE.PlaneGeometry(1.2+j%3,2.8+j%4),j%3===0?puddleMat:roadMat);
-patch.rotation.x=-Math.PI/2;patch.position.set(x,.105,z);
-if(j%3===0)patch.rotation.z=.3;
+const oldX=a.x,oldZ=a.z;
+if(squadMode==="follow")move(a,player.x+(i?3:-3),player.z+3,3.5,dt);
+if(squadMode==="hold")move(a,a.holdX,a.holdZ,3,dt);
+if(squadMode==="attack"&&target)move(a,target.x,target.z+8,3,dt);
+// Never face the player merely because FOLLOW is selected.
+// Face active threats; otherwise face downrange (-Z), or movement heading.
+if(target&&(target.alert>30||squadMode==="attack"||nearest<25)){
+faceTowards(a,target.x,target.z,dt);
+}else if(squadMode==="hold"){
+faceTowards(a,a.x,a.z-10,dt);
+}else{
+const dx=a.x-oldX,dz=a.z-oldZ;
+if(Math.hypot(dx,dz)>.035 && dz<-.01)faceTowards(a,a.x+dx*8,a.z+dz*8,dt);
+else faceTowards(a,a.x,a.z-10,dt);
 }
-// Sidewalk cracks and shop-front awnings.
+if(target&&(target.alert>35||squadMode==="attack")){
+a.fire-=dt;
+if(a.fire<=0){
+a.fire=.75+Math.random()*.4;
+tracer(vec(a.x,1.5,a.z),vec(target.x,target.y+1.5,target.z),0x46bfff);
+damageEnemy(target,14);
+}
+}
+}
+function step16Details(){
+const asphalt=mat(0x2e3539,.04,.94),line=mat(0xdcd5bd,0,.86);
+const concrete=mat(0x9a9f9a),metal=mat(0x303a40,.6,.4);
+const orange=mat(0xd56d22),glass=mat(0x274b61,.35,.23);
+// Road repair seams and water-stained asphalt: subtle and low cost.
+for(let j=0;j<18;j++){
+const z=38-j*11.2,x=(j%2?1:-1)*(2+(j%4));
+const m=mesh(new THREE.PlaneGeometry(1.2+j%3,2.2+j%3),asphalt);
+m.rotation.x=-Math.PI/2;m.position.set(x,.107,z);
+}
+// Lane lines and crosswalks.
+for(let z=-150;z<75;z+=12){
+box(.12,.018,3.5,line,-4.7,.111,z);
+box(.12,.018,3.5,line,4.7,.111,z);
+}
+for(const z of [-45,-105])for(let x=-7;x<=7;x+=2.1)
+box(1.1,.022,1.65,line,x,.113,z);
 if(mission!==4){
-for(let z=-145;z<75;z+=20){
+for(let z=-140;z<75;z+=24){
 for(const side of [-1,1]){
-box(2.8,.025,.065,0x656f73,side*11,.145,z);
-if(mission!==2){
-box(3.6,.18,1.5,side===1?0x284e64:0x6a3831,side*12.3,3.6,z+4);
-box(.1,1.3,.1,0x4e575d,side*10.8,2.9,z+4);
+// Storefronts, signage and overhanging awnings.
+box(3.7,1.8,.10,glass,side*12.2,1.65,z+2);
+box(4.2,.19,1.45,side===1?0x304e63:0x7b3c33,side*12.4,3.45,z+2);
+box(3.6,.34,.14,0xd5b37a,side*12.2,3.9,z+2);
+box(.07,1.5,.07,metal,side*10.7,2.7,z+2);
 }
 }
 }
-}
-// Construction barricades, cones, and small roadway obstacles.
-for(const z of [-30,-88,-125]){
-for(const x of [-7,7]){
-box(1.8,.8,.18,concrete,x,.7,z);
-box(1.65,.15,.2,0xe2a236,x,.8,z+.11);
+// Barriers and cones, kept away from the center route.
+for(const z of [-31,-83,-123])for(const x of [-7.2,7.2]){
+box(1.8,.85,.3,concrete,x,.48,z);
+box(1.65,.15,.32,orange,x,.76,z+.02);
 for(const offset of [-.7,.7]){
-const cone=mesh(new THREE.ConeGeometry(.18,.65,7),mat(0xe46c22));
-cone.position.set(x+offset,.36,z+1.5);
-box(.42,.09,.42,iron,x+offset,.05,z+1.5);
+const cone=mesh(new THREE.ConeGeometry(.19,.65,8),orange);
+cone.position.set(x+offset,.39,z+1.7);
+box(.42,.07,.42,metal,x+offset,.06,z+1.7);
 }
 }
-}
-// Traffic lights and street fixtures.
-if(mission===1||mission===3||mission===5){
-for(const z of [-42,-110]){
-for(const side of [-1,1]){
-cyl(.085,.11,7,iron,side*10.8,3.5,z);
-box(4.8,.14,.15,iron,side*8.5,6.8,z);
-box(.55,1.6,.45,0x202b30,side*6.2,6.0,z);
+if([1,3,5].includes(mission)){
+for(const z of [-42,-110])for(const side of [-1,1]){
+cyl(.09,.11,7,metal,side*10.8,3.5,z);
+box(4.7,.16,.16,metal,side*8.55,6.8,z);
+box(.55,1.65,.5,0x17242b,side*6.2,6.1,z);
 for(let k=0;k<3;k++){
-const bulb=sphere(.17,[0xd63e32,0xd5aa36,0x3db46d][k],side*6.2,6.47-k*.48,z+.26);
-bulb.material.emissive=new THREE.Color([0x551000,0x442800,0x084418][k]);
-bulb.material.emissiveIntensity=.4;
+const b=sphere(.17,[0xb42d25,0xc59b27,0x31854a][k],side*6.2,6.55-k*.47,z+.28);
+b.material.emissive=new THREE.Color([0x4c0804,0x362600,0x073017][k]);
+b.material.emissiveIntensity=.4;
 }
 }
 }
-}
-// Atmospheric illumination without excessive point lights.
 if(night){
-const fill=new THREE.DirectionalLight(0x89b8ff,.65);
-fill.position.set(12,18,-30);scene.add(fill);
+const fill=new THREE.DirectionalLight(0x8dafff,.5);
+fill.position.set(12,20,-25);scene.add(fill);
 }
 }
-const step14OldReset=reset;
+const step16BaseReset=reset;
 reset=function(data=null){
-step14OldReset(data);
-step14StreetDetails();
-// The two squadmates begin oriented toward the mission route.
+step16BaseReset(data);
+step16Details();
 for(const a of allies)a.g.rotation.y=Math.PI;
 };
-
-========================================== */
-
-/* Fix squad facing direction */
-const step15OriginalAllyAI = allyAI;
-
-allyAI = function(a, dt, i) {
-  step15OriginalAllyAI(a, dt, i);
-
-  if (a.dead) return;
-
-  let target = null;
-  let nearest = 45;
-
-  for (const e of enemies) {
-    if (e.dead) continue;
-
-    const d = Math.hypot(
-      e.x - a.x,
-      e.z - a.z
-    );
-
-    if (d < nearest) {
-      nearest = d;
-      target = e;
-    }
-  }
-
-  let direction;
-
-  if (target && (squadMode === "attack" || nearest < 24)) {
-    direction = Math.atan2(
-      target.x - a.x,
-      target.z - a.z
-    );
-  } else {
-    // Face down the street, away from the player
-    direction = Math.PI;
-  }
-
-  let difference = Math.atan2(
-    Math.sin(direction - a.g.rotation.y),
-    Math.cos(direction - a.g.rotation.y)
-  );
-
-  a.g.rotation.y += difference * Math.min(1, dt * 9);
-};
-
-/* Improved street details */
-function step15AddDetails() {
-
-  const detail = new THREE.Group();
-  scene.add(detail);
-
-  const darkMetal = new THREE.MeshStandardMaterial({
-    color: 0x263039,
-    metalness: 0.65,
-    roughness: 0.4
-  });
-
-  const concrete = new THREE.MeshStandardMaterial({
-    color: 0xa3a29a,
-    roughness: 0.92
-  });
-
-  const orange = new THREE.MeshStandardMaterial({
-    color: 0xe87a21,
-    roughness: 0.8
-  });
-
-  const white = new THREE.MeshStandardMaterial({
-    color: 0xece8db,
-    roughness: 0.85
-  });
-
-  function block(w, h, d, material, x, y, z) {
-    const m = new THREE.Mesh(
-      new THREE.BoxGeometry(w, h, d),
-      material
-    );
-
-    m.position.set(x, y, z);
-    m.receiveShadow = true;
-    m.castShadow = true;
-    detail.add(m);
-    return m;
-  }
-
-  // More realistic road lane markings
-  for (let z = -145; z < 70; z += 9) {
-    block(.15, .025, 3.8, white, -4.7, .11, z);
-    block(.15, .025, 3.8, white, 4.7, .11, z);
-  }
-
-  // Street crossing markings
-  for (let z of [-45, -105]) {
-    for (let x = -8; x <= 8; x += 2) {
-      block(1.15, .025, 2.3, white, x, .12, z);
-    }
-  }
-
-  // Construction cones
-  for (let z of [-32, -62, -92, -122]) {
-    for (let x of [-7.8, 7.8]) {
-
-      const cone = new THREE.Mesh(
-        new THREE.ConeGeometry(.3, .85, 8),
-        orange
-      );
-
-      cone.position.set(x, .45, z);
-      detail.add(cone);
-
-      block(.65, .12, .65, darkMetal, x, .08, z);
-      block(.42, .08, .42, white, x, .35, z);
-    }
-  }
-
-  // Concrete construction barriers
-  for (let z of [-55, -115]) {
-    for (let x of [-7.2, 7.2]) {
-      block(
-        1.8, 1.1, .55,
-        concrete, x, .55, z
-      );
-
-      block(
-        1.5, .18, .58,
-        orange, x, .85, z
-      );
-    }
-  }
-
-  // Storefront awnings along buildings
-  for (let z = -145; z < 70; z += 30) {
-    for (let side of [-1, 1]) {
-      const awning = block(
-        2.5, .16, 4,
-        darkMetal,
-        side * 12.8, 3.5, z
-      );
-
-      awning.rotation.z = side * .08;
-    }
-  }
-
-  // Road surface patches
-  const asphalt = new THREE.MeshStandardMaterial({
-    color: 0x333a3e,
-    roughness: .95
-  });
-
-  for (let z = -130; z < 65; z += 22) {
-    block(
-      2.5, .018, 3.5,
-      asphalt,
-      (Math.sin(z) * 4),
-      .105,
-      z
-    );
-  }
-
-  // Improve renderer lighting and tone
-  renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.15;
-  renderer.outputColorSpace = THREE.SRGBColorSpace;
-
-  // Add subtle atmospheric lighting
-  const fillLight = new THREE.DirectionalLight(
-    0xc6dfff, .35
-  );
-
-  fillLight.position.set(-25, 30, 15);
-  scene.add(fillLight);
-}
-
-/* Apply new graphics after every mission reset */
-const step15OriginalReset = reset;
-
-reset = function(data = null) {
-  step15OriginalReset(data);
-  step15AddDetails();
-};
-
-console.log(
-  "Pittsburgh Streets Step 15 upgrade loaded"
-);
-
+setup();
 </script>
 </body>
 </html>
