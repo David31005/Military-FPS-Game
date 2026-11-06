@@ -7,27 +7,26 @@
 <title>Pittsburgh Streets — HD Edition</title>
 <style>
 *{box-sizing:border-box;touch-action:none;user-select:none}
-html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#09121c;color:white;font-family:Arial,san
-s-serif}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#09121c;color:white;font-family:Arial,sans-serif}
 #game{position:fixed;inset:0}
 #hud{position:fixed;inset:0;pointer-events:none;text-shadow:1px 2px 4px black}
 #top{position:absolute;top:5px;left:50%;transform:translateX(-50%);width:75%;text-align:center;font-size:13px;
 font-weight:bold}
 #objective{font-size:10px;color:#9affb4;margin-top:3px}
-#stats{position:absolute;left:5px;top:43px;padding:7px;background:#071520dc;border:1px solid #ffffff66;border-
-radius:5px;font-size:10px;line-height:1.6}
+#stats{position:absolute;left:5px;top:43px;padding:7px;background:#071520dc;border:1px solid #ffffff66;
+border-radius:5px;font-size:10px;line-height:1.6}
 #map{position:absolute;right:5px;top:42px;width:85px;height:85px;background:#152731;border:1px solid white}
 #cross{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:26px}
-#scope{position:absolute;inset:0;display:none;align-items:center;justify-content:center;font-size:35px;backgro
-und:radial-gradient(circle,transparent 0 24%,black 25%)}
+#scope{position:absolute;inset:0;display:none;align-items:center;justify-content:center;font-size:35px;
+background:radial-gradient(circle,transparent 0 24%,black 25%)}
 #notice{position:absolute;top:29%;width:100%;text-align:center;color:#ffe09a;font-size:14px;font-weight:bold}
 #damage{position:absolute;inset:0;background:red;opacity:0}
 #thermal{position:absolute;inset:0;background:#00ff3320;display:none}
-#boss{position:absolute;left:50%;top:78px;transform:translateX(-50%);width:160px;height:9px;background:#451414
-;border:1px solid white;display:none}
+#boss{position:absolute;left:50%;top:78px;transform:translateX(-50%);width:160px;height:9px;background:#451414;
+border:1px solid white;display:none}
 #bossFill{height:100%;background:#ff4545}
-button{border:1px solid #ffffff99;border-radius:6px;background:#254a60;color:white;font-size:9px;font-weight:b
-old;padding:7px}
+button{border:1px solid #ffffff99;border-radius:6px;background:#254a60;color:white;font-size:9px;font-weight:bold;
+padding:7px}
 button.active{background:#23844c}
 #joy{position:fixed;left:10px;bottom:13px;width:95px;height:95px;border-radius:50%;border:2px solid #ffffff99;
 background:#ffffff22}
@@ -38,8 +37,8 @@ background:#ffffff22}
 #weapons{position:fixed;right:5px;top:5px;display:flex;gap:3px}
 #actions{position:fixed;right:7px;bottom:10px;display:grid;grid-template-columns:54px 70px;gap:4px}
 #fire{grid-row:span 2;background:#b62e35;font-size:15px;border-radius:32%}
-.overlay{position:fixed;inset:0;z-index:20;background:#07111bf2;display:flex;align-items:center;justify-conten
-t:center;text-align:center;padding:12px}
+.overlay{position:fixed;inset:0;z-index:20;background:#07111bf2;display:flex;align-items:center;justify-content:center;
+text-align:center;padding:12px}
 .panel{width:100%;max-width:650px;max-height:96vh;overflow:auto;position:relative;z-index:2}
 .panel h1{font-size:clamp(28px,7vw,54px);margin:10px;text-shadow:0 4px 10px black}
 .panel p{font-size:12px;line-height:1.5}
@@ -60,69 +59,63 @@ t:center;text-align:center;padding:12px}
 #joy{bottom:23px}
 }
 /* STEP 13: DOWNTOWN PITTSBURGH CINEMATIC START SCREEN */
-#cityStart{position:fixed;inset:0;z-index:80;display:flex;flex-direction:column;justify-content:flex-end;align
--items:center;padding:22px 16px 9vh;background:linear-gradient(180deg,rgba(3,8,18,.02) 0%,rgba(3,8,18,.1) 48%,
+#cityStart{position:fixed;inset:0;z-index:80;display:flex;flex-direction:column;justify-content:flex-end;
+align-items:center;padding:22px 16px 9vh;background:linear-gradient(180deg,rgba(3,8,18,.02) 0%,rgba(3,8,18,.1) 48%,
 rgba(3,8,18,.9) 100%),url("pittsburgh-downtown-start.jpg") center center/cover no-repeat;text-align:center}
-#cityStart h1{font-size:clamp(30px,8vw,65px);margin:0 0 6px;color:#fff;text-shadow:0 4px 14px #000;letter-spac
-ing:2px}
-#cityStart p{margin:0 0 14px;color:#f6d278;letter-spacing:2px;font-weight:bold;font-size:12px;text-shadow:0 2p
-x 5px #000}
-#cityPlay{font-size:17px;min-width:215px;padding:15px 25px;background:linear-gradient(#f9d267,#d99820);color:#
-111;border:2px solid #ffedac;box-shadow:0 0 22px #e3ac4188}
-#menu{background:linear-gradient(180deg,rgba(3,10,20,.68),rgba(3,10,20,.94)),url("pittsburgh-downtown-start.jp
-g") center/cover no-repeat}
-#menu .panel{background:rgba(4,13,25,.48);border:1px solid #b1b9c04d;border-radius:14px;padding:16px;backdrop-
-filter:blur(3px)}
+#cityStart h1{font-size:clamp(30px,8vw,65px);margin:0 0 6px;color:#fff;text-shadow:0 4px 14px #000;letter-spacing:2px}
+#cityStart p{margin:0 0 14px;color:#f6d278;letter-spacing:2px;font-weight:bold;font-size:12px;text-shadow:0 2px 5px
+#000}
+#cityPlay{font-size:17px;min-width:215px;padding:15px 25px;background:linear-gradient(#f9d267,#d99820);color:#111;
+border:2px solid #ffedac;box-shadow:0 0 22px #e3ac4188}
+#menu{background:linear-gradient(180deg,rgba(3,10,20,.68),rgba(3,10,20,.94)),url("pittsburgh-downtown-start.jpg")
+center/cover no-repeat}
+#menu .panel{background:rgba(4,13,25,.48);border:1px solid #b1b9c04d;border-radius:14px;padding:16px;
+backdrop-filter:blur(3px)}
 #menu .panel button{border-color:#d5ba7c;background:linear-gradient(#3b5260,#1d3440)}
 #menu .panel button.selected,#menu #start{background:linear-gradient(#e3b14b,#a96c1b);color:#13171b}
 #cross{color:#fff;text-shadow:0 0 3px black,0 0 8px black}
 #stats{background:#071520e8;border:1px solid #b5cad0a8;box-shadow:0 4px 15px #0005;backdrop-filter:blur(4px)}
 #map{border-radius:8px;box-shadow:0 3px 12px #0008}
 #fire{background:linear-gradient(#cb4046,#84212c);border:2px solid #f3a8aa}
-@media(max-width:450px){#cityStart{background-position:60% center}#cityStart h1{font-size:36px}#cityStart{padd
-ing-bottom:13vh}}
+@media(max-width:450px){#cityStart{background-position:60% center}#cityStart h1{font-size:36px}
+#cityStart{padding-bottom:13vh}}
 /* STEP 18 — CINEMATIC STARTUP SCREEN (GAMEPLAY UNCHANGED) */
-#cityStart{position:fixed;inset:0;z-index:80;display:flex;align-items:center;justify-content:center;overflow:h
-idden;padding:calc(18px + env(safe-area-inset-top)) 18px calc(18px + env(safe-area-inset-bottom));background:#
-07111b;color:#fff;text-align:center;isolation:isolate}
-#cityStart::before{content:"";position:absolute;inset:-12px;background:url("pittsburgh-downtown-start.jpg") ce
-nter 44%/cover no-repeat;filter:brightness(.57) saturate(.85) contrast(1.12) blur(2px);transform:scale(1.035);
-z-index:-2}
-#cityStart::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(4,11,20,.68),rgb
-a(4,11,20,.28) 32%,rgba(4,11,20,.72) 75%,#030911 100%),linear-gradient(90deg,rgba(3,10,19,.42),transparent 55%
-,rgba(3,10,19,.42));z-index:-1}
-#cityStart .startShell{width:min(560px,100%);display:flex;flex-direction:column;align-items:center;gap:0;paddi
-ng:22px 20px 20px;background:linear-gradient(180deg,rgba(6,17,29,.60),rgba(5,13,23,.83));border:1px solid rgba
-(242,199,106,.45);border-radius:15px;box-shadow:0 22px 75px #0009,inset 0 1px #ffffff26;backdrop-filter:blur(6
-px)}
+#cityStart{position:fixed;inset:0;z-index:80;display:flex;align-items:center;justify-content:center;overflow:hidden;
+padding:calc(18px + env(safe-area-inset-top)) 18px calc(18px + env(safe-area-inset-bottom));background:#07111b;
+color:#fff;text-align:center;isolation:isolate}
+#cityStart::before{content:"";position:absolute;inset:-12px;background:url("pittsburgh-downtown-start.jpg") center
+44%/cover no-repeat;filter:brightness(.57) saturate(.85) contrast(1.12) blur(2px);transform:scale(1.035);z-index:-2}
+#cityStart::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(4,11,20,.68),rgba(4,11,20,
+.28) 32%,rgba(4,11,20,.72) 75%,#030911 100%),linear-gradient(90deg,rgba(3,10,19,.42),transparent 55%,rgba(3,10,19,.42));
+z-index:-1}
+#cityStart .startShell{width:min(560px,100%);display:flex;flex-direction:column;align-items:center;gap:0;padding:22px
+20px 20px;background:linear-gradient(180deg,rgba(6,17,29,.60),rgba(5,13,23,.83));border:1px solid rgba(242,199,106,.45);
+border-radius:15px;box-shadow:0 22px 75px #0009,inset 0 1px #ffffff26;backdrop-filter:blur(6px)}
 #cityStart .startKicker{font-size:10px;letter-spacing:4px;color:#f2c977;font-weight:800;margin:0 0 14px}
-#cityStart .startEmblem{width:52px;height:52px;border:1px solid #e9bb64;border-radius:50%;display:grid;place-i
-tems:center;color:#f0c77a;font-size:27px;margin-bottom:13px;background:#d7a64b17;box-shadow:0 0 22px #d9ac4633
-}
-#cityStart h1{font-family:Impact,'Arial Narrow',Arial,sans-serif;font-stretch:condensed;font-size:clamp(36px,8
-.5vw,72px);line-height:.96;letter-spacing:2px;margin:0;color:#fff;text-shadow:0 3px 12px #000,0 0 25px #000;ma
-x-width:100%}
+#cityStart .startEmblem{width:52px;height:52px;border:1px solid #e9bb64;border-radius:50%;display:grid;
+place-items:center;color:#f0c77a;font-size:27px;margin-bottom:13px;background:#d7a64b17;box-shadow:0 0 22px #d9ac4633}
+#cityStart h1{font-family:Impact,'Arial Narrow',Arial,sans-serif;font-stretch:condensed;font-size:clamp(36px,8.5vw,72px)
+;line-height:.96;letter-spacing:2px;margin:0;color:#fff;text-shadow:0 3px 12px #000,0 0 25px #000;max-width:100%}
 #cityStart h1 span{color:#f4c66d}
 #cityStart .startSub{font-size:11px;letter-spacing:2.5px;color:#d8e0e4;font-weight:700;margin:16px 0 0}
 #cityStart .startRule{width:74px;height:2px;background:#e6b65a;margin:18px 0}
 #cityStart .startDescription{font-size:12px;line-height:1.5;color:#c7d1d8;max-width:380px;margin:0 0 18px}
-#cityPlay{width:min(320px,100%);min-height:54px;border:1px solid #ffe3a0;border-radius:6px;background:linear-g
-radient(180deg,#f6d27f,#c78a2d);color:#14202a;font-size:15px;font-weight:900;letter-spacing:1.7px;box-shadow:0
-7px 24px #0008,0 0 19px #d69c3c40;cursor:pointer}
+#cityPlay{width:min(320px,100%);min-height:54px;border:1px solid #ffe3a0;border-radius:6px;
+background:linear-gradient(180deg,#f6d27f,#c78a2d);color:#14202a;font-size:15px;font-weight:900;letter-spacing:1.7px;
+box-shadow:0 7px 24px #0008,0 0 19px #d69c3c40;cursor:pointer}
 #cityPlay:active{transform:scale(.98);filter:brightness(1.1)}
 #cityStart .startFoot{font-size:9px;letter-spacing:1.7px;color:#abb7bf;margin-top:17px}
-#cityStart .startVersion{position:absolute;bottom:calc(9px + env(safe-area-inset-bottom));right:14px;font-size
-:9px;color:#e3e5e7b0;letter-spacing:1px}
-@media(max-height:470px){#cityStart .startShell{padding:12px 20px}#cityStart .startEmblem{display:none}#citySt
-art .startKicker{margin-bottom:7px}#cityStart h1{font-size:clamp(30px,6vw,48px)}#cityStart .startRule{margin:9
-px 0}#cityStart .startDescription{margin-bottom:10px}#cityPlay{min-height:42px}#cityStart .startFoot{margin-to
-p:8px}}
+#cityStart .startVersion{position:absolute;bottom:calc(9px + env(safe-area-inset-bottom));right:14px;font-size:9px;
+color:#e3e5e7b0;letter-spacing:1px}
+@media(max-height:470px){#cityStart .startShell{padding:12px 20px}#cityStart .startEmblem{display:none}#cityStart
+.startKicker{margin-bottom:7px}#cityStart h1{font-size:clamp(30px,6vw,48px)}#cityStart .startRule{margin:9px 0}
+#cityStart .startDescription{margin-bottom:10px}#cityPlay{min-height:42px}#cityStart .startFoot{margin-top:8px}}
 /* STEP 20: realistic materials + clean stylized mobile presentation */
-#top{top:calc(7px + env(safe-area-inset-top));font-size:12px;letter-spacing:1px;background:#091725a8;border-ra
-dius:10px;padding:6px 10px;width:min(68%,410px)}
+#top{top:calc(7px + env(safe-area-inset-top));font-size:12px;letter-spacing:1px;background:#091725a8;border-radius:10px;
+padding:6px 10px;width:min(68%,410px)}
 #objective{font-size:11px;color:#b8f5cf}
-#stats{top:calc(61px + env(safe-area-inset-top));font-size:10px;line-height:1.42;border-radius:10px;padding:9p
-x;background:#06131dd9;max-width:46vw}
+#stats{top:calc(61px + env(safe-area-inset-top));font-size:10px;line-height:1.42;border-radius:10px;padding:9px;
+background:#06131dd9;max-width:46vw}
 #map{top:calc(61px + env(safe-area-inset-top));width:88px;height:88px;border-radius:12px}
 #weapons{top:calc(157px + env(safe-area-inset-top));right:7px;flex-direction:column;gap:4px}
 #weapons button{min-width:69px;background:#193748e8;border-radius:9px;padding:8px 5px}
@@ -132,31 +125,31 @@ x;background:#06131dd9;max-width:46vw}
 #squad{left:110px;bottom:calc(142px + env(safe-area-inset-bottom))}
 #movement{left:183px;bottom:calc(142px + env(safe-area-inset-bottom))}
 #actions{right:9px;bottom:calc(16px + env(safe-area-inset-bottom));grid-template-columns:50px 66px}
-#tools button,#squad button,#movement button{font-size:8px;min-height:24px;border-radius:8px;background:#16384
-bcf;backdrop-filter:blur(3px)}
+#tools button,#squad button,#movement button{font-size:8px;min-height:24px;border-radius:8px;background:#16384bcf;
+backdrop-filter:blur(3px)}
 #fire{border-radius:22px;min-height:91px}
-@media(max-width:390px){#tools{left:105px}#squad{left:105px}#movement{left:172px}#tools button,#squad button,#
-movement button{font-size:7px;padding:6px 5px}#stats{font-size:9px}}
-#styleToggle{position:fixed;right:7px;top:calc(306px + env(safe-area-inset-top));z-index:10;background:#1b394a
-df;color:#e9f7ff;border:1px solid #d5b779a8;border-radius:9px;padding:8px 6px;font-size:9px;max-width:74px}
+@media(max-width:390px){#tools{left:105px}#squad{left:105px}#movement{left:172px}#tools button,#squad button,#movement
+button{font-size:7px;padding:6px 5px}#stats{font-size:9px}}
+#styleToggle{position:fixed;right:7px;top:calc(306px + env(safe-area-inset-top));z-index:10;background:#1b394adf;
+color:#e9f7ff;border:1px solid #d5b779a8;border-radius:9px;padding:8px 6px;font-size:9px;max-width:74px}
 /* STEP 22 — SINGLE CLEAN STARTUP + MOBILE MISSION MENU */
-#cityStart{z-index:1000;display:flex;align-items:center;justify-content:center;padding:calc(20px + env(safe-ar
-ea-inset-top)) 18px calc(28px + env(safe-area-inset-bottom));background:#091b2a;isolation:isolate}
-#cityStart::before{content:"";position:absolute;inset:0;z-index:-2;background:url("pittsburgh-step21-skyline.j
-pg") center center/cover no-repeat;filter:brightness(.88) saturate(1.1);transform:none}
-#cityStart::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(2,12,
-24,.35) 0%,rgba(3,13,25,.25) 30%,rgba(3,12,22,.88) 100%)}
-#cityStart .startShell{width:min(460px,96%);padding:22px 18px 24px;background:rgba(4,15,28,.77);border:1px sol
-id rgba(239,196,105,.65);border-radius:16px;box-shadow:0 18px 55px #0009;backdrop-filter:blur(5px)}
+#cityStart{z-index:1000;display:flex;align-items:center;justify-content:center;padding:calc(20px +
+env(safe-area-inset-top)) 18px calc(28px + env(safe-area-inset-bottom));background:#091b2a;isolation:isolate}
+#cityStart::before{content:"";position:absolute;inset:0;z-index:-2;background:url("pittsburgh-step21-skyline.jpg")
+center center/cover no-repeat;filter:brightness(.88) saturate(1.1);transform:none}
+#cityStart::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(2,12,24,.35)
+0%,rgba(3,13,25,.25) 30%,rgba(3,12,22,.88) 100%)}
+#cityStart .startShell{width:min(460px,96%);padding:22px 18px 24px;background:rgba(4,15,28,.77);border:1px solid
+rgba(239,196,105,.65);border-radius:16px;box-shadow:0 18px 55px #0009;backdrop-filter:blur(5px)}
 #cityStart h1{font-size:clamp(38px,10vw,65px);line-height:.95;letter-spacing:1px}
 #cityStart .startDescription{font-size:13px}
 #cityStart .startVersion{display:none}
 #cityPlay{width:min(300px,100%);font-size:15px;min-height:53px}
-#menu{display:none;z-index:1100;background:linear-gradient(180deg,rgba(3,12,24,.66),rgba(3,12,24,.94)),url("pi
-ttsburgh-step21-skyline.jpg") center/cover no-repeat;padding:calc(12px + env(safe-area-inset-top)) 12px calc(1
-2px + env(safe-area-inset-bottom))}
-#menu .panel{max-width:480px;max-height:calc(100dvh - 45px);overflow-y:auto;padding:15px 12px;background:rgba(
-4,17,31,.88);border:1px solid #d5b77988;border-radius:14px}
+#menu{display:none;z-index:1100;background:linear-gradient(180deg,rgba(3,12,24,.66),rgba(3,12,24,.94)),
+url("pittsburgh-step21-skyline.jpg") center/cover no-repeat;padding:calc(12px + env(safe-area-inset-top)) 12px
+calc(12px + env(safe-area-inset-bottom))}
+#menu .panel{max-width:480px;max-height:calc(100dvh - 45px);overflow-y:auto;padding:15px 12px;background:rgba(4,17,31,
+.88);border:1px solid #d5b77988;border-radius:14px}
 #menu .panel h1{font-size:clamp(26px,7vw,43px);line-height:.97;margin:6px 0}
 #menu .panel h3{font-size:14px;margin:10px 0 7px}
 #menu .panel p{font-size:11px;margin:7px 0}
@@ -168,15 +161,15 @@ ttsburgh-step21-skyline.jpg") center/cover no-repeat;padding:calc(12px + env(saf
 #intro,#resultScreen,#settings{z-index:1200}
 #top{font-size:11px;letter-spacing:0}
 #styleToggle{z-index:12}
-@media(max-width:430px){#cityStart .startShell{padding:18px 12px}#cityStart .startKicker{font-size:9px;letter-
-spacing:2px}#cityStart .startEmblem{width:40px;height:40px;font-size:21px;margin-bottom:10px}#cityStart .start
-Rule{margin:12px 0}#cityStart .startFoot{font-size:8px;letter-spacing:1px}#menu .panel{max-height:calc(100dvh
-- 28px)}}
-@media(max-height:600px){#cityStart .startEmblem{display:none}#cityStart .startDescription{margin-bottom:9px}#
-cityStart .startShell{padding:12px}#menu .panel{max-height:92dvh}}
+@media(max-width:430px){#cityStart .startShell{padding:18px 12px}#cityStart .startKicker{font-size:9px;
+letter-spacing:2px}#cityStart .startEmblem{width:40px;height:40px;font-size:21px;margin-bottom:10px}#cityStart
+.startRule{margin:12px 0}#cityStart .startFoot{font-size:8px;letter-spacing:1px}#menu .panel{max-height:calc(100dvh -
+28px)}}
+@media(max-height:600px){#cityStart .startEmblem{display:none}#cityStart .startDescription{margin-bottom:9px}#cityStart
+.startShell{padding:12px}#menu .panel{max-height:92dvh}}
 /* STEP 22 — polished mobile HUD, with the play area kept visible */
-#top{font-size:11px;letter-spacing:.4px;width:min(58%,310px);top:calc(7px + env(safe-area-inset-top));padding:
-6px 8px;background:#081a27b8}
+#top{font-size:11px;letter-spacing:.4px;width:min(58%,310px);top:calc(7px + env(safe-area-inset-top));padding:6px 8px;
+background:#081a27b8}
 #stats{font-size:9px;line-height:1.42;top:calc(55px + env(safe-area-inset-top));max-width:43vw;padding:7px}
 #map{width:76px;height:76px;top:calc(55px + env(safe-area-inset-top))}
 #weapons{top:calc(140px + env(safe-area-inset-top));gap:3px}
@@ -222,7 +215,7 @@ operation.</p>
 <button id="styleToggle" title="Switch graphics style">STYLE: HYBRID</button>
 <div id="hud">
 <div id="damage"></div><div id="thermal"></div>
-<div id="top">PITTSBURGH STREETS — STEP 28
+<div id="top">PITTSBURGH STREETS — STEP 25
 <div id="objective">SELECT A MISSION</div></div>
 <div id="stats">
 HP <span id="hp">100</span> |
@@ -335,43 +328,8 @@ WAVE <span id="wave">1</span>/3<br>
 <button id="retry">RETRY</button>
 <button id="mainMenu">MAIN MENU</button>
 </div></div>
-<script>
-/* Startup button remains responsive even if a 3D library fails to download. */
-window.psEngineReady=false;
-window.addEventListener("DOMContentLoaded",()=>{
-const b=document.getElementById("cityPlay");
-const menu=document.getElementById("menu");
-const cover=document.getElementById("cityStart");
-b.addEventListener("click",()=>{
-cover.style.display="none";
-menu.style.display="flex";
-if(!window.psEngineReady){
-const brief=document.getElementById("brief");
-brief.textContent="Loading 3D game engine… If this message remains, check your internet connection and re
-load.";
-}
-});
-});
-window.addEventListener("error",e=>{
-const brief=document.getElementById("brief");
-if(brief&&!window.psEngineReady)brief.textContent="Game startup error: "+(e.message||"unknown error");
-});
-window.addEventListener("unhandledrejection",e=>{
-const brief=document.getElementById("brief");
-if(brief&&!window.psEngineReady)brief.textContent="3D engine loading error. Refresh Safari and check internet
-access.";
-});
-</script>
 <script type="module">
-let THREE;
-for(const source of [
-"https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js",
-"https://unpkg.com/three@0.160.1/build/three.module.js",
-"https://esm.sh/three@0.160.1"
-]){
-try{THREE=await import(source);break;}catch(e){console.warn("Three.js source failed:",source,e);}
-}
-if(!THREE)throw new Error("Three.js could not load. Check your connection and refresh.");
+import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js";
 const $=id=>document.getElementById(id);
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const vec=(x,y,z)=>new THREE.Vector3(x,y,z);
@@ -845,8 +803,7 @@ const steel=mat(0x20292d,.65,.4),black=mat(0x10191d,.35,.66);
 const alloy=mat(0x59676b,.72,.35),poly=mat(0x313e43,.15,.78);
 const wood=mat(0x805232,.05,.76),olive=mat(0x4e6044,.2,.7);
 function part(w,h,d,m,x,y,z){return box(w,h,d,m,x,y,z,g);}
-function tube(radius,length,m,x,y,z){const t=cyl(radius,radius,length,m,x,y,z,g);t.rotation.x=Math.PI/2;retur
-n t;}
+function tube(radius,length,m,x,y,z){const t=cyl(radius,radius,length,m,x,y,z,g);t.rotation.x=Math.PI/2;return t;}
 if(rpg){
 tube(.22,2.15,olive,0,.05,-1.15);
 tube(.28,.18,black,0,.05,-2.12);
@@ -2113,8 +2070,7 @@ const dark=mat(0x26333b,.26,.56),glass=new THREE.MeshStandardMaterial({
 color:0x34556a,metalness:.52,roughness:.19,envMapIntensity:.5
 });
 const asphalt=mat(0x3a4043,.02,.98),rust=mat(0x765344,.14,.84);
-const amber=new THREE.MeshStandardMaterial({color:0xe8c78a,emissive:0x8c5a22,emissiveIntensity:night?.6:.08})
-;
+const amber=new THREE.MeshStandardMaterial({color:0xe8c78a,emissive:0x8c5a22,emissiveIntensity:night?.6:.08});
 // Add visual depth to the street-facing facades, avoiding collision areas.
 if([1,3,5,6].includes(mission)){
 for(let z=-145;z<76;z+=30){
@@ -2170,10 +2126,10 @@ box(1.5,.16,.19,dark,x,1.52,z+.2);
 for(const dx of [-.6,.6])box(.1,.95,.1,dark,x+dx,.49,z);
 }
 }
-// A few low-cost airborne haze particles at a distance.
 if(high){
-const hazeMat=new THREE.MeshBasicMaterial({color:night?0x9caccb:0xd2dce1,transparent:true,opacity:.18,depthW
-rite:false});
+// A few low-cost airborne haze particles at a distance.
+const hazeMat=new THREE.MeshBasicMaterial({color:night?0x9caccb:0xd2dce1,transparent:true,opacity:.18,
+depthWrite:false});
 for(let i=0;i<28;i++){
 const m=mesh(new THREE.PlaneGeometry(.15+Math.random()*.25,.15+Math.random()*.25),hazeMat);
 m.position.set(rand(-8,8),rand(1.3,7),rand(-130,25));
@@ -2523,92 +2479,7 @@ crack.rotation.y=Math.sin(z*.2)*.3;
 }
 const step25ResetBase=reset;
 reset=function(data=null){step25ResetBase(data);step25Street();};
-/* STEP 28 — CHARACTER & ENVIRONMENT DETAIL
-Built on working Step 25. Existing controls, missions, and startup are retained. */
-const step28HumanBase=human;
-human=function(x,z,team=false,commander=false,sniper=false,civilian=false){
-const u=step28HumanBase(x,z,team,commander,sniper,civilian);
-const g=u.g, torso=u.torso, head=u.head;
-const fabric=mat(team?0x536b72:commander?0x655b46:0x58634d,.02,.94);
-const armor=mat(team?0x253e47:0x303a31,.12,.77);
-const rubber=mat(0x1b2224,.02,.95);
-const steel=mat(0x343d3d,.55,.43);
-const highlight=mat(team?0x78b4c4:commander?0xc6a35b:0x8b9572,.12,.68);
-// Contoured vest, front armor plate and straps.
-box(.53,.55,.085,armor,0,.12,.345,torso);
-box(.45,.23,.095,fabric,0,-.16,.395,torso);
-for(const side of [-1,1]){
-box(.105,.83,.10,armor,side*.29,.13,.23,torso);
-box(.19,.17,.12,armor,side*.18,-.15,.44,torso);
-box(.14,.14,.08,steel,side*.16,.20,.43,torso);
-// Shoulder insignia and elbow protection.
-box(.17,.13,.035,highlight,side*.49,.22,.18,torso);
-const arm=u.arms[side===-1?0:1];
-ellipsoid(0,-.46,.20,.15,.15,.07,armor,arm);
-const leg=u.legs[side===-1?0:1];
-box(.28,.22,.09,armor,0,-.51,.19,leg);
-box(.25,.11,.06,rubber,0,-.86,.28,leg);
-}
-if(!civilian){
-// Backpack and equipment pouches.
-box(.56,.63,.24,fabric,0,-.03,-.44,torso);
-box(.40,.22,.12,armor,0,-.25,-.61,torso);
-box(.13,.34,.13,armor,.43,-.20,-.13,torso);
-// Helmet rim, ear protection, chin strap and optics.
-ellipsoid(0,.39,-.025,.345,.13,.32,armor,head);
-box(.49,.065,.18,rubber,0,.30,.24,head);
-for(const side of [-1,1]){
-ellipsoid(side*.30,.06,-.015,.075,.17,.105,armor,head);
-box(.045,.25,.04,rubber,side*.24,-.11,.17,head);
-}
-box(.24,.10,.08,steel,0,.51,.16,head);
-box(.17,.035,.035,highlight,0,.55,.22,head);
-// Weapon sling detail.
-const sling=box(.035,.76,.045,rubber,-.28,-.04,.31,torso);
-sling.rotation.z=-.38;
-if(commander){
-box(.35,.09,.10,highlight,0,.62,.04,head);
-box(.16,.12,.05,highlight,0,.34,.39,torso);
-}
-if(sniper){
-box(.40,.10,.14,fabric,0,.55,-.10,head);
-}
-}else{
-// Civilians get a collar and more distinctive clothing silhouette.
-box(.50,.10,.22,highlight,0,.52,.10,torso);
-box(.17,.26,.11,fabric,.34,-.22,.13,torso);
-return u;
-}
-};
-const step28BuildingBase=building;
-building=function(x,z,h,w=12,d=14){
-step28BuildingBase(x,z,h,w,d);
-if(settings.quality==="performance")return;
-const trim=mat(0x757b7b,.12,.82);
-const frame=mat(0x293943,.34,.58);
-const side=x<0?1:-1;
-const faceX=x-side*(w/2+.19);
-// Sparse window sills and structural detail, limited for mobile performance.
-for(let y=3;y<h-1;y+=7.2){
-for(let zz=-d/2+1.6;zz<d/2-1;zz+=5.6){
-box(.12,.09,1.65,trim,faceX,y-.9,z+zz);
-box(.12,1.45,.075,frame,faceX,y,z+zz);
-}
-}
-};
-box(w+.15,.18,d+.15,trim,x,h+.58,z);
-const step28SetupBase=setup;
-setup=function(){
-step28SetupBase();
-// Subtle distance haze: inexpensive, mobile friendly.
-if(scene && !scene.fog)scene.fog=new THREE.Fog(night?0x101c29:0x8197a1,95,260);
-if(renderer){
-renderer.toneMapping=THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure=1.12;
-}
-};
 setup();
-window.psEngineReady=true;
 </script>
 </body>
 </html>
